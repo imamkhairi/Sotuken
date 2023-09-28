@@ -1,0 +1,23 @@
+link web 
+https://www.kushiro-ct.ac.jp/yanagawa/gr/ 
+
+
+
+ソフトウェアの追加：（Fedora）
+
+$ sudo dnf -y install guvcview	# カメラアプリ
+$ sudo dnf -y install opencv-*	# OpenCV ライブラリ＋ヘッダファイル
+$ sudo dnf -y install gcc-c++	# C++ コンパイラ
+$ sudo dnf -y install pkgconfig	# 開発支援ツール
+
+software yang dibutuhkan linux
+
+01 detect ada 
+02 block point salah satu udh
+06 ada tambahan di bgrm
+
+
+coba pikir gravel atau yang lain gitu biar ga polosan rumput aja
+
+
+https://www.youtube.com/watch?v=JxDLGHil-Cw -> liat link ini
