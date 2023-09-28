@@ -13,6 +13,7 @@ GLfloat vertices[] =
 	 0.5f, -0.5f, 0.5f, 	 1.0f,  0.0f
 };
 
+
 // Plane Indices
 GLuint indices[] = {
 	0, 2, 1, // upper triangle
@@ -82,57 +83,22 @@ int main()
 	Model treeModel("../Models/trees/scene.gltf");
 
 	// Buffers
-	unsigned int VAO, VBO, EBO;
+	VAO VAO;
+	VAO.Bind();
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+	VBO VBO(vertices, sizeof(vertices));
+	EBO EBO(indices, sizeof(indices));
 
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
+	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, 5 * sizeof(float), (void *)(0 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 1, 2, GL_FLOAT, 5 * sizeof(float), (void *)(3 * sizeof(float)));
 
-	// Unbind
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
+	VAO.Unbind();
+	VBO.Unbind();
+	EBO.Unbind();
 	
 	// Texture 
-	GLuint texture;
-    GLenum type = GL_TEXTURE_2D;
-
-	int widthImg, heightImg, numColCh;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* bytes = stbi_load("../Textures/brick.png", &widthImg, &heightImg, &numColCh, 0);
-
-	// Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
-
-	// Generate an OpenGL texture object
-	glGenTextures(1, &texture);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	stbi_image_free(bytes);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	GLuint texUni = glGetUniformLocation(planeProgram.ID, "tex0");
-    // Shader need to be activated before changing the value of a uniform
-	planeProgram.Activate();
-    // Sets the value of the uniform
-	glUniform1i(texUni, 0);
+	Texture test("../Textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	test.texUnit(planeProgram, "tex0", 0);
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -143,7 +109,7 @@ int main()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(planeProgram.ID);
+		planeProgram.Activate();
 
 		// Handles camera inputs
 		camera.Inputs(window);
@@ -154,9 +120,8 @@ int main()
 		// Draw a model
 		// treeModel.Draw(shaderProgram, camera);
 
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glBindVertexArray(VAO);
-
+		test.Bind();
+		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Swap the back buffer with the front buffer
@@ -164,11 +129,10 @@ int main()
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
-
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteTextures(1, &texture);
+	VAO.Delete();
+	VBO.Delete();
+	EBO.Delete();
+	test.Delete();
 	
 	// Delete all the objects we've created
 	shaderProgram.Delete();
