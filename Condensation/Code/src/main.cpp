@@ -119,6 +119,7 @@ int main()
 		treeModel.Draw(shaderProgram, camera);
 
 		planeProgram.Activate();
+		camera.Matrix(planeProgram, "camMatrix");
 		test.Bind();
 		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
