@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/01/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/window.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/01/src/window.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/01/src/window.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/window.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/01/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/test_opengl.dir/src/glad.c.o -c /home/p214071/Sotuken/learnGLFW/lab/01/src/glad.c",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/01/src/glad.c",
+  "output": "CMakeFiles/test_opengl.dir/src/glad.c.o"
+}
+]

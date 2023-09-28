@@ -1,0 +1,46 @@
+Think shader as a function that run in gpu
+can take input and have output
+
+defult.vert
+#version 330 core -> version of glsl we are using
+
+layout (location = 0) in vec3 aPos; -> input (aPos)
+    layout helps OpenGL read the Vertex Data it recieves
+    on the 0th layout there is a vec3 datatype for position
+
+void main()
+{
+    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+        assign the "gl_Position" a vec4 with all our positions
+        OpenGL recognizes the keyword "gl_Position" and knows it needs to use it as the position for the Vertex
+
+}
+-> this shader is kind of outputting the shader position
+
+
+default.frag
+#version 330 core
+out vec4 FragColor; -> outputting a vec4 Color.
+void main()
+{
+    FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);
+        give FragColor the RGBA format to use for all the vertices
+}
+
+
+
+(variable name) for input and output of shader program should have same name
+
+
+X Y Z R G B | X Y Z R G B
+
+
+In OpenGL if a primitive has different colors for its vertices, then OpenGL will automatically create gradient from one color to another (interpolation)
+
+
+# Second method to get inputs and ouputs within and outside of a shader
+- Make use of uniform ->  sort of like universal variable that an be accessed by other shaders, and can accessed from within the main function of the program without the use of a VAO.
+- Never declare uniform if you dont use it, since OpenGL will delete it automatically and cause errors.
+
+# To help with visualization
+https://rgbcolorpicker.com/0-1

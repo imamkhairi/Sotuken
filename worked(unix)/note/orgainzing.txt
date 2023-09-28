@@ -1,0 +1,2 @@
+parent directorynya akan jadi build\
+soalnya execute filenya disana

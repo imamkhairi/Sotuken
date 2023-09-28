@@ -1,0 +1,4 @@
+Mesh 
+-> is a data set that almost always contains vertices, often contains indices, and sometimes contains texture as well.
+
+Screenshot class dependencies from tutorial video

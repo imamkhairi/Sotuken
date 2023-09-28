@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/04organizing.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/04organizing.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/04organizing.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/04organizing.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/test_opengl.dir/src/glad.c.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/glad.c",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/glad.c",
+  "output": "CMakeFiles/test_opengl.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/EBO.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/EBO.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/EBO.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/EBO.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/shaderClass.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/shaderClass.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/shaderClass.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/shaderClass.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/VAO.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/VAO.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/VAO.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/VAO.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/VBO.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/VBO.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/04_organizing/src/VBO.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/VBO.cpp.o"
+}
+]

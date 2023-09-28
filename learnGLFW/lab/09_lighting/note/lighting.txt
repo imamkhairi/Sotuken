@@ -1,0 +1,13 @@
+Color of an object actually the result of multiplying the RBG of the light and the object
+
+the higher the angle between a surface and the source of light -> the less intense color is on that surface
+-> so we need to know the position of the light and the slope of the object (using a normal vector)
+
+# NORMALS
+Normals are unit vectors, that help up calculate how light should act on a certain object
+
+- These can be either perpendicular to the surface of one trianle (called face normal)
+Will produce flat shading
+
+- Arrange on different way such as being perpendicular to the plane created by all the adjacent vertices (called vertex normal)
+Will produce smooth shading

@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/02_triangle/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/triangle.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/02_triangle/src/triangle.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/02_triangle/src/triangle.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/triangle.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/02_triangle/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/test_opengl.dir/src/glad.c.o -c /home/p214071/Sotuken/learnGLFW/lab/02_triangle/src/glad.c",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/02_triangle/src/glad.c",
+  "output": "CMakeFiles/test_opengl.dir/src/glad.c.o"
+}
+]

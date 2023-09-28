@@ -1,0 +1,45 @@
+OpenGL restrict the coordinate to normalize coordinate
+
+
+# Local Coordinate (Object Space)
+Local coordinate is the coordinate which its origin same with the object origin
+Usually located at the center of an object
+Simply the coordinate system that the model was made in
+
+# World Coordinate
+Whose origin is at the center of the world
+These coordinate usually contatin the location of other object
+Coordinate system where the model is going to be in
+
+# View Coordinate 
+Which have the smae origin as a camera or viewpoint
+This don not yet account for perspective
+Everything is relative to camera positions.
+The camera never moves, the world moves around the camera
+
+# Clip Coordinate
+Essentially the same as the view coordinate, 
+except they clip (delete) any vertices outside the normalize range, 
+and can also account the perspective
+
+# Screen Coordinate
+Where everything is flattened out such that it can be viewed on your screen
+
+
+Local ---Model Matrix---> world
+world ---View Matrix---> view
+view ---Projection Matrix---> clip
+clip ---Automatic---> screen
+
++z axis is toward viewpoint 
+
+
+Model Matrix -> transform the model from object space into the world space (one for each model)
+
+View Matrix -> Transform from the world coordinate system to camera coordiante system (one only)
+
+Projection Matrix -> Take 3D data and project it into 2D space
+Two kind :
+- Orthographic: depth doesn't matter
+- Perspective: Used to give depth to the screen
+The result of multiplying with projection matrix gives the normalize device coordinate (-1.0 ~ 1.0) 

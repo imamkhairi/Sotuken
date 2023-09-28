@@ -1,0 +1,3 @@
+/home/p214071/Sotuken/learnGLFW/lab/02_triangle/build/CMakeFiles/test_opengl.dir
+/home/p214071/Sotuken/learnGLFW/lab/02_triangle/build/CMakeFiles/edit_cache.dir
+/home/p214071/Sotuken/learnGLFW/lab/02_triangle/build/CMakeFiles/rebuild_cache.dir

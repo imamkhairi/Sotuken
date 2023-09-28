@@ -1,0 +1,54 @@
+texture can be 1D, 2D, 3D
+
+Texture unit 
+-> kind of slots for textures, that come as bundle 
+generally holds about 16 textures, and allow fragment shader work with all at the same time.
+
+
+
+# How image will be processed when scale up or down
+
+- GL_NEAREST
+-> Keeps all the pixels as they are (preferred for pixel arts) 
+
+- GL_LINEAR
+-> create new pixels according to the pixels nearby (relusts in a blurred image)
+
+
+# How texture will be repeated
+
+- GL_REPEAT
+-> repeat the image 
+
+- GL_MIRRORED_REPEAT
+-> repeat but mirror it every repeats
+
+- GL_CLAMP_TO_EDGE
+-> stetch the border of the image
+
+- GL_CLAMP_TO_BORDER
+-> put flat color of your choice outside of the image
+
+This can be mixed, since its only apply for one axis.
+This axis is named (s, t, r) corresponding to (x, y, z)
+
+
+# Mipmap
+
+Smaller resolution versions, of the same texture that are used when the texture is far away for example
+
+
+# Coordinate for Texture
+
+Start from 0,0 on the bottom left
+0,1   1,1
+ 
+0,0   0,1
+
+If the value higher than 1, the texture will be repeated such as in this example.
+
+
+# Image upside down
+
+OpenGL reads images form the bottom left corner to the top right corner, 
+while stb reads from the top left corner to the bottom right corner

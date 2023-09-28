@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/test_opengl.dir/src/indexBuffer.cpp.o -c /home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/src/indexBuffer.cpp",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/src/indexBuffer.cpp",
+  "output": "CMakeFiles/test_opengl.dir/src/indexBuffer.cpp.o"
+},
+{
+  "directory": "/home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/test_opengl.dir/src/glad.c.o -c /home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/src/glad.c",
+  "file": "/home/p214071/Sotuken/learnGLFW/lab/03_indexbuffer/src/glad.c",
+  "output": "CMakeFiles/test_opengl.dir/src/glad.c.o"
+}
+]

@@ -1,0 +1,14 @@
+Point Light
+Illuminate the environment in all direction, but the intensity of their light withers as it gets further away
+- the intensity of the light have inverse square law 1/d^2 (bukan ini), tapi 1/(ad^2+bd+1)
+- ax^2 -> quadratic term 
+- bx -> linear term 
+apply to speculat and diffuse
+
+
+Directional Light
+Consider so distantt from your scene, that the light rays it emits are essentially parallel to one another, just like the rays of the Sun
+
+
+Spot Light
+only lights a conic area, just like a flashlight or a desk lamp.

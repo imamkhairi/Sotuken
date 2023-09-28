@@ -1,0 +1,27 @@
+Graphics pipe line is a series of function that take some data at the beginning and the end it out a frame
+
+Input : vertexdata[] -> array of vertices, contain (position, color or texture coordinate)
+
+1. Vertex Shader
+Take the positions of the vertices and transforms them or keep them on the same positions
+
+2. Shape Assembly
+Takes all positions and connects them according to a primitive.
+primitive -> a shape such as triange, point or a line.
+Each primitive interprets the data differently. 
+- Triangle will take 3 points and draw a triangle between them
+- Lines will take 2 points and draw a line between them
+
+3. Geometry Shader
+Can add vertices and then create new primitive out of already existing primitives
+
+4. Rasterization
+transforms mathemathical shape into an actual pixel
+
+5. Fragment Shader
+add colors to the pixel
+depend on lighting, texture or shadows
+
+6. Test and Blending 
+process overlapping object.
+blending the transparent object to the final color

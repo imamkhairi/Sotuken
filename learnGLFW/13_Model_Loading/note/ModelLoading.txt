@@ -1,0 +1,9 @@
+JSON
+Work like dictionaries within dictionaries
+
+ss branches of tree dr gltf
+
+liat lagi ini kalau mau
+https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
+
+lanjut di 10:25

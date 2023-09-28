@@ -1,0 +1,7 @@
+Specular Map
+-> black and white texture that tell the program where specular light should appear, 
+and how strong it should be at that point
+
+whiter -> more specular light
+
+https://antongerdelan.net/colour/

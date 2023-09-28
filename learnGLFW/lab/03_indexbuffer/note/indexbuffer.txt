@@ -1,0 +1,1 @@
+index buffer tells OpenGL the order in which it should go over vertices

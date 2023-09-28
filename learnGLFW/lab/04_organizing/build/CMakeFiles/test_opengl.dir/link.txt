@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/test_opengl.dir/src/04organizing.cpp.o CMakeFiles/test_opengl.dir/src/glad.c.o CMakeFiles/test_opengl.dir/src/EBO.cpp.o CMakeFiles/test_opengl.dir/src/shaderClass.cpp.o CMakeFiles/test_opengl.dir/src/VAO.cpp.o CMakeFiles/test_opengl.dir/src/VBO.cpp.o -o test_opengl  -lglfw 
