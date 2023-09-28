@@ -1,0 +1,13 @@
+bumpmap
+-> biar kaya ada texture nya gitu (bump)
+
+
+normalmap
+-> using rgb to provide depth represent x y z
+often use to create illusion of complex surface detail
+e.g. ripple, rivet on steampunk, brain in wooden table, roughness of asphalt road
+
+
+displacementmap
+-> transform the geometry of the model (making shape and contour)
+using greyscale value, ligher stepup more
