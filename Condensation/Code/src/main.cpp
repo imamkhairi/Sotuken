@@ -107,7 +107,6 @@ int main()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shaderProgram.Activate();
 
 		// Handles camera inputs
 		camera.Inputs(window);
@@ -116,10 +115,11 @@ int main()
 			// setting cam
 
 		// Draw a model
-		treeModel.Draw(shaderProgram, camera);
+		// shaderProgram.Activate();
+		// treeModel.Draw(shaderProgram, camera);
 
 		planeProgram.Activate();
-		camera.Matrix(planeProgram, "camMatrix");
+		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
 		test.Bind();
 		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
