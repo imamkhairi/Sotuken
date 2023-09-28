@@ -7,10 +7,10 @@ const unsigned int height = 800;
 GLfloat vertices[] = 
 {
 	// Coordinates      	/ Texture Coordinate
-	-1.0f, -1.0f, 0.0f, 	 0.0f,  0.0f,
-	-1.0f,  1.0f, 0.0f, 	 0.0f,  1.0f,
-	 1.0f,  1.0f, 0.0f, 	 1.0f,  1.0f,
-	 1.0f, -1.0f, 0.0f, 	 1.0f,  0.0f
+	-0.5f, -0.5f, 0.5f, 	 0.0f,  0.0f,
+	-0.5f,  0.5f, 0.5f, 	 0.0f,  1.0f,
+	 0.5f,  0.5f, 0.5f, 	 1.0f,  1.0f,
+	 0.5f, -0.5f, 0.5f, 	 1.0f,  0.0f
 };
 
 // Plane Indices
@@ -56,6 +56,7 @@ int main()
 
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
+	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	// glm::vec4 lightColor = glm::vec4(0.3f, 0.47f, 0.78f, 1.0f);
@@ -63,9 +64,12 @@ int main()
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
-	shaderProgram.Activate();
+	// shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+	planeProgram.Activate();
+
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -102,11 +106,16 @@ int main()
 
 	
 	// Texture 
+	GLuint texture;
+    GLenum type = GL_TEXTURE_2D;
+
 	int widthImg, heightImg, numColCh;
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* bytes = stbi_load("../Textures/pop_cat.png", &widthImg, &heightImg, &numColCh, 0);
-	
-	unsigned int texture;
+	unsigned char* bytes = stbi_load("../Textures/brick.png", &widthImg, &heightImg, &numColCh, 0);
+
+	// Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
+
+	// Generate an OpenGL texture object
 	glGenTextures(1, &texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -114,17 +123,16 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_TEXTURE_2D, bytes);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
 	glGenerateMipmap(GL_TEXTURE_2D);
-	
 	stbi_image_free(bytes);
-
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	GLuint texUni = glGetUniformLocation(shaderProgram.ID, "tex0");
-	shaderProgram.Activate();
+	GLuint texUni = glGetUniformLocation(planeProgram.ID, "tex0");
+    // Shader need to be activated before changing the value of a uniform
+	planeProgram.Activate();
+    // Sets the value of the uniform
 	glUniform1i(texUni, 0);
-
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -135,6 +143,8 @@ int main()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glUseProgram(planeProgram.ID);
+
 		// Handles camera inputs
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex Shader
@@ -142,7 +152,12 @@ int main()
 			// setting cam
 
 		// Draw a model
-		treeModel.Draw(shaderProgram, camera);
+		// treeModel.Draw(shaderProgram, camera);
+
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindVertexArray(VAO);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -150,8 +165,14 @@ int main()
 		glfwPollEvents();
 	}
 
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteTextures(1, &texture);
+	
 	// Delete all the objects we've created
 	shaderProgram.Delete();
+	planeProgram.Delete();
 
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
