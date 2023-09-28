@@ -1,0 +1,9 @@
+namespace di c++ untuk menentukan library yang mana yang akan diakses
+contoh penggunaan kalaua ada library yang beda tapi punya 2 fungsi yang namanya sama 
+atau juga bisa digunakan untuk meringkas penulisan code
+ex: cv::aa -> aa 
+
+:noh -> matikan highlight habis search
+
+cv::Mat ...; -> ini untuk simpan data gambarnya
+

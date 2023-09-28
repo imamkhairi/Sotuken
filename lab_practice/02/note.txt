@@ -1,0 +1,4 @@
+https://stackoverflow.com/questions/36763924/how-do-i-declare-a-vector-in-opencv
+reference for vector type
+
+cv::Mat 
