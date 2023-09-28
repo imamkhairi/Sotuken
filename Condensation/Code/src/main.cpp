@@ -30,8 +30,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	// Tell GLFW we are using the CORE profile
-	// So that means we only have the modern functions
+	// Tell GLFW we are using the CORE profile (modern functions)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels
@@ -65,12 +64,11 @@ int main()
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
-	// shaderProgram.Activate();
+	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	planeProgram.Activate();
-
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -97,7 +95,7 @@ int main()
 	EBO.Unbind();
 	
 	// Texture 
-	Texture test("../Textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Texture test("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	test.texUnit(planeProgram, "tex0", 0);
 
 	// Main while loop
@@ -109,7 +107,7 @@ int main()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		planeProgram.Activate();
+		shaderProgram.Activate();
 
 		// Handles camera inputs
 		camera.Inputs(window);
@@ -118,8 +116,9 @@ int main()
 			// setting cam
 
 		// Draw a model
-		// treeModel.Draw(shaderProgram, camera);
+		treeModel.Draw(shaderProgram, camera);
 
+		planeProgram.Activate();
 		test.Bind();
 		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -129,12 +128,12 @@ int main()
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
+	// Delete all the objects we've created
 	VAO.Delete();
 	VBO.Delete();
 	EBO.Delete();
 	test.Delete();
 	
-	// Delete all the objects we've created
 	shaderProgram.Delete();
 	planeProgram.Delete();
 
