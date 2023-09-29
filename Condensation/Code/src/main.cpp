@@ -13,17 +13,6 @@ GLfloat vertices[] =
 	 1.0f, -1.0f, 0.0f, 	 1.0f,  0.0f,		    0.0f, 0.0f, 1.0f
 };
 
-// GLfloat vertices[] = 
-// {
-// 	// Coordinates      	/ Texture Coordinate  / Normals 
-// 	-1.0f,  0.0f,  1.0f, 	 0.0f,  0.0f,		    0.0f, 1.0f, 0.0f,
-// 	-1.0f,  0.0f, -1.0f, 	 0.0f,  1.0f,		    0.0f, 1.0f, 0.0f,
-// 	 1.0f,  0.0f, -1.0f, 	 1.0f,  1.0f,		    0.0f, 1.0f, 0.0f,
-// 	 1.0f,  0.0f,  1.0f, 	 1.0f,  0.0f,		    0.0f, 1.0f, 0.0f
-// };
-
-
-
 // Plane Indices
 GLuint indices[] = {
 	0, 2, 1, // upper triangle
@@ -132,6 +121,8 @@ int main()
 	// Texture 
 	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	texture.texUnit(planeProgram, "tex0", 0);
+	Texture spec("../Textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
+	texture.texUnit(planeProgram, "tex1", 1);
 
 	
 
@@ -173,6 +164,7 @@ int main()
 		glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
 		texture.Bind();
+		spec.Bind();
 		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

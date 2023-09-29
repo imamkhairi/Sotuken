@@ -177,7 +177,7 @@ int main()
 	planksTex.texUnit(shaderProgram, "tex0", 0);
 
 	Texture planksSpec("../Textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
-	planksSpec.texUnit(shaderProgram, "tex0", 0);
+	planksSpec.texUnit(shaderProgram, "tex1", 1);
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
