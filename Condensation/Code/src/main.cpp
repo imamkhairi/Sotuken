@@ -6,12 +6,22 @@ const unsigned int height = 800;
 // Plane Vertices
 GLfloat vertices[] = 
 {
-	// Coordinates      	/ Texture Coordinate
-	-0.5f, -0.5f, 0.5f, 	 0.0f,  0.0f,
-	-0.5f,  0.5f, 0.5f, 	 0.0f,  1.0f,
-	 0.5f,  0.5f, 0.5f, 	 1.0f,  1.0f,
-	 0.5f, -0.5f, 0.5f, 	 1.0f,  0.0f
+	// Coordinates      	/ Texture Coordinate  / Normals 
+	-1.0f, -1.0f, 0.0f, 	 0.0f,  0.0f,		    0.0f, 0.0f, 1.0f,
+	-1.0f,  1.0f, 0.0f, 	 0.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
+	 1.0f,  1.0f, 0.0f, 	 1.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
+	 1.0f, -1.0f, 0.0f, 	 1.0f,  0.0f,		    0.0f, 0.0f, 1.0f
 };
+
+// GLfloat vertices[] = 
+// {
+// 	// Coordinates      	/ Texture Coordinate  / Normals 
+// 	-1.0f,  0.0f,  1.0f, 	 0.0f,  0.0f,		    0.0f, 1.0f, 0.0f,
+// 	-1.0f,  0.0f, -1.0f, 	 0.0f,  1.0f,		    0.0f, 1.0f, 0.0f,
+// 	 1.0f,  0.0f, -1.0f, 	 1.0f,  1.0f,		    0.0f, 1.0f, 0.0f,
+// 	 1.0f,  0.0f,  1.0f, 	 1.0f,  0.0f,		    0.0f, 1.0f, 0.0f
+// };
+
 
 
 // Plane Indices
@@ -54,20 +64,25 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-	// Generates Shader
-	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
-	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
-
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
+
+	glm::mat4 planeModel = glm::mat4(1.0f);
+
+	// Generates Shader
+	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
+	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	planeProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
+	glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -106,16 +121,17 @@ int main()
 	VBO VBO(vertices, sizeof(vertices));
 	EBO EBO(indices, sizeof(indices));
 
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, 5 * sizeof(float), (void *)(0 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 1, 2, GL_FLOAT, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)(0 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
 
 	VAO.Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
 	
 	// Texture 
-	Texture test("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
-	test.texUnit(planeProgram, "tex0", 0);
+	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	texture.texUnit(planeProgram, "tex0", 0);
 
 	
 
@@ -154,8 +170,9 @@ int main()
 		// treeModel.Draw(shaderProgram, camera);
 
 		planeProgram.Activate();
+		glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
-		test.Bind();
+		texture.Bind();
 		VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -168,7 +185,7 @@ int main()
 	VAO.Delete();
 	VBO.Delete();
 	EBO.Delete();
-	test.Delete();
+	texture.Delete();
 	
 	shaderProgram.Delete();
 	planeProgram.Delete();
