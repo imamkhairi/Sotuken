@@ -54,12 +54,11 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-	// Generates Shader object using shaders default.vert and default.frag
+	// Generates Shader
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
 	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	// glm::vec4 lightColor = glm::vec4(0.3f, 0.47f, 0.78f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
@@ -72,13 +71,33 @@ int main()
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS); // option ini masih banyak yg lain, refer to documentation
+	glDepthFunc(GL_LESS); // there are several options
+	
+	// face culling
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_FRONT);
+	// glFrontFace(GL_CCW);
+
+	// Enable vsync
+	glfwSwapInterval(1);
+
+	// FPS
+	double prevTime = 0.0;
+	double crntTime = 0.0;
+	double timeDiff;
+
+	unsigned int counter = 0;
+
+
+
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	// Load in a model
-	Model treeModel("../Models/trees/scene.gltf");
+	// Model treeModel("../Models/trees/scene.gltf");
+
+
 
 	// Buffers
 	VAO VAO;
@@ -98,9 +117,25 @@ int main()
 	Texture test("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	test.texUnit(planeProgram, "tex0", 0);
 
+	
+
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
+		crntTime = glfwGetTime();
+		timeDiff = crntTime - prevTime;
+		counter++;
+
+		if (timeDiff >= 1.0 / 30.0) {
+			std::string FPS = std::to_string((1.0 / timeDiff) * counter);
+			std::string ms = std::to_string((timeDiff / counter) * 1000);
+			std::string newTitle = "Condensation - " + FPS + "FPS / " + ms + "ms";
+			glfwSetWindowTitle(window, newTitle.c_str());
+
+			prevTime = crntTime;
+			counter = 0;
+		}
+
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 
