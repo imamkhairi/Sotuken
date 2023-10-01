@@ -1,4 +1,4 @@
-#include"shaderClass.h"
+#include <shaderClass.h>
 
 // Reads a text file and outputs a string with everything in the text file
 std::string get_file_contents(const char* filename)
@@ -43,7 +43,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* geo
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	// Attach Fragment Shader source to the Fragment Shader Object
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-	// Compile the Fragment Shader into machine code
+	// Compile the Vertex Shader into machine code
 	glCompileShader(fragmentShader);
 	// Checks if Shader compiled succesfully
 	compileErrors(fragmentShader, "FRAGMENT");
@@ -52,10 +52,11 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* geo
 	GLuint geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 	// Attach Geometry Shader source to the Fragment Shader Object
 	glShaderSource(geometryShader, 1, &geometrySource, NULL);
-	// Compile the Geometry Shader into machine code
+	// Compile the Vertex Shader into machine code
 	glCompileShader(geometryShader);
 	// Checks if Shader compiled succesfully
 	compileErrors(geometryShader, "GEOMETRY");
+	
 
 	// Create Shader Program Object and get its reference
 	ID = glCreateProgram();

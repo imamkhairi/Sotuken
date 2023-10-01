@@ -4,6 +4,7 @@
 const unsigned int width = 800;
 const unsigned int height = 800;
 
+
 int main()
 {
 	// Initialize GLFW
@@ -18,7 +19,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(width, height, "YoutubeOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "Geometry Shader", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
@@ -39,16 +40,13 @@ int main()
 
 
 
-	// Generates Shader object using shaders default.vert and default.frag
-	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag", "../Shaders/default.geom");
+	// Generates Shader objects
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag", "../Shaders/default.geom");
-
+	Shader normalsShader("../Shaders/default.vert", "../Shaders/normals.frag", "../Shaders/normals.geom");
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::mat4 lightModel = glm::mat4(1.0f);
-	lightModel = glm::translate(lightModel, lightPos);
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -68,8 +66,9 @@ int main()
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
+	
 	// Load in models
-	Model model("../Models/statue/scene.gltf"); 
+	Model model("../Models/statue/scene.gltf");
 
 
 
@@ -81,7 +80,8 @@ int main()
 	unsigned int counter = 0;
 
 	// Use this to disable VSync (not advized)
-	glfwSwapInterval(1);
+	//glfwSwapInterval(0);
+
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -96,7 +96,7 @@ int main()
 			// Creates new title
 			std::string FPS = std::to_string((1.0 / timeDiff) * counter);
 			std::string ms = std::to_string((timeDiff / counter) * 1000);
-			std::string newTitle = "YoutubeOpenGL - " + FPS + "FPS / " + ms + "ms";
+			std::string newTitle = "Geometry Shader - " + FPS + "FPS / " + ms + "ms";
 			glfwSetWindowTitle(window, newTitle.c_str());
 
 			// Resets times and counter
@@ -120,8 +120,7 @@ int main()
 
 		// Draw the normal model
 		model.Draw(shaderProgram, camera);
-		// Draw the normals
-		// model.Draw(normalsShader, camera);
+		model.Draw(normalsShader, camera);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -133,7 +132,6 @@ int main()
 
 	// Delete all the objects we've created
 	shaderProgram.Delete();
-	// normalsShader.Delete();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
