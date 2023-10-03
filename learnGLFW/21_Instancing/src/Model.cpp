@@ -1,6 +1,6 @@
 #include <Model.h>
 
-Model::Model(const char* file, unsigned int instancing, std::vector <glm::mat4> instanceMatrix = {})
+Model::Model(const char* file, unsigned int instancing, std::vector <glm::mat4> instanceMatrix)
 {
 	// Make a JSON object
 	std::string text = get_file_contents(file);
