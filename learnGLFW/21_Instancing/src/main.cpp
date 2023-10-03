@@ -41,7 +41,9 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
-
+float randf() {
+	return -1.0f + (rand() / (RAND_MAX / 2.0f));
+}
 
 int main()
 {
@@ -81,6 +83,7 @@ int main()
 	// Generates Shader objects
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
 	Shader skyboxShader("../Shaders/skybox.vert", "../Shaders/skybox.frag");
+	Shader asteroidShader("../Shaders/asteroid.vert", "../Shaders/default.frag");
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -91,7 +94,9 @@ int main()
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
-
+	asteroidShader.Activate();
+	glUniform4f(glGetUniformLocation(asteroidShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(asteroidShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 
 	
@@ -112,6 +117,7 @@ int main()
 	
 	// Load in models
 	Model model("../Models/jupiter/scene.gltf");
+	Model asteroid("../Models/asteroid/scene.gltf");
 
 
 
@@ -196,11 +202,20 @@ int main()
 		}
 	}
 
+	// The number of asteroids to be created
+	const unsigned int number = 5000;
+	// Radius of circle around which Asteroid orbit
+	float radius = 100.0f;
+	// How muc asteroids deviate from the radius
+	float radiusDeviation = 25.0f;
 
+	std::vector <glm::mat4> instanceMatrix;
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
-	{
+	{	
+		
+
 		// Updates counter and times
 		crntTime = glfwGetTime();
 		timeDiff = crntTime - prevTime;
