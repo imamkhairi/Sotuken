@@ -1,3 +1,4 @@
+#include <cmath>
 #include <Model.h>
 
 const unsigned int width = 800;
@@ -19,15 +20,13 @@ GLuint indices[] = {
 	0, 3, 2  // lower triangle
 };
 
-
 int main()
 {
 	// Initialize GLFW
 	glfwInit();
 
-	// Tell GLFW what OpenGL version  3.3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
 	// Tell GLFW we are using the CORE profile (modern functions)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
