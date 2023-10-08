@@ -827,9 +827,11 @@ void Icosphere::addVertices(const float v1[3], const float v2[3], const float v3
     vertices.push_back(v1[0]);  // x
     vertices.push_back(v1[1]);  // y
     vertices.push_back(v1[2]);  // z
+
     vertices.push_back(v2[0]);
     vertices.push_back(v2[1]);
     vertices.push_back(v2[2]);
+    
     vertices.push_back(v3[0]);
     vertices.push_back(v3[1]);
     vertices.push_back(v3[2]);

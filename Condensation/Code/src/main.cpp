@@ -1,5 +1,5 @@
-#include <cmath>
 #include <Model.h>
+#include <icosphere.h>
 
 const unsigned int width = 800;
 const unsigned int height = 800;
@@ -48,24 +48,23 @@ int main()
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
 
-	// Specify the viewport of OpenGL in the Window
-	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
+	// Specify the viewport of OpenGL in the Window. From x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::mat4 lightModel = glm::mat4(1.0f);
-	lightModel = glm::translate(lightModel, lightPos);
+	// glm::mat4 lightModel = glm::mat4(1.0f);
+	// lightModel = glm::translate(lightModel, lightPos);
 
 	glm::mat4 planeModel = glm::mat4(1.0f);
 
 	// Generates Shader
-	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
+	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
 	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
-	shaderProgram.Activate();
-	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	// shaderProgram.Activate();
+	// glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	// glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	planeProgram.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
@@ -102,20 +101,20 @@ int main()
 
 
 
-	// Buffers
-	VAO VAO;
-	VAO.Bind();
+	// Plane
+	VAO pVAO;
+	pVAO.Bind();
 
-	VBO VBO(vertices, sizeof(vertices));
-	EBO EBO(indices, sizeof(indices));
+	VBO pVBO(vertices, sizeof(vertices));
+	EBO pEBO(indices, sizeof(indices));
 
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)(0 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
+	pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)(0 * sizeof(float)));
+	pVAO.LinkAttrib(pVBO, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+	pVAO.LinkAttrib(pVBO, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
 
-	VAO.Unbind();
-	VBO.Unbind();
-	EBO.Unbind();
+	pVAO.Unbind();
+	pVBO.Unbind();
+	pEBO.Unbind();
 	
 	// Texture 
 	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -123,7 +122,9 @@ int main()
 	Texture spec("../Textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
 	texture.texUnit(planeProgram, "tex1", 1);
 
-	
+
+	// Sphere
+	Icosphere sphere(0.0f, 0.0f, 0.0f, 1.0f);	
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -164,7 +165,7 @@ int main()
 		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
 		texture.Bind();
 		spec.Bind();
-		VAO.Bind();
+		pVAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Swap the back buffer with the front buffer
@@ -173,12 +174,12 @@ int main()
 		glfwPollEvents();
 	}
 	// Delete all the objects we've created
-	VAO.Delete();
-	VBO.Delete();
-	EBO.Delete();
+	pVAO.Delete();
+	pVBO.Delete();
+	pEBO.Delete();
 	texture.Delete();
 	
-	shaderProgram.Delete();
+	// shaderProgram.Delete();
 	planeProgram.Delete();
 
 	// Delete window before ending the program
