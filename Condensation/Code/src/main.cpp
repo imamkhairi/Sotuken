@@ -61,6 +61,7 @@ int main()
 	// Generates Shader
 	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
 	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
+	Shader sphereProgram("../Shaders/sphere.vert", "../Shaders/sphere.frag");
 
 	// shaderProgram.Activate();
 	// glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -70,6 +71,10 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
 	glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+	sphereProgram.Activate();
+	glUniform4f(glGetUniformLocation(sphereProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(sphereProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -104,19 +109,14 @@ int main()
 	// Plane
 	VAO pVAO;
 	pVAO.Bind();
-
 	VBO pVBO(vertices, sizeof(vertices));
 	EBO pEBO(indices, sizeof(indices));
-
 	pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)(0 * sizeof(float)));
 	pVAO.LinkAttrib(pVBO, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
 	pVAO.LinkAttrib(pVBO, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
-
 	pVAO.Unbind();
 	pVBO.Unbind();
-	pEBO.Unbind();
-	
-	// Texture 
+	pEBO.Unbind();	
 	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	texture.texUnit(planeProgram, "tex0", 0);
 	Texture spec("../Textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
@@ -125,6 +125,16 @@ int main()
 
 	// Sphere
 	Icosphere sphere(0.0f, 0.0f, 0.0f, 1.0f);	
+	VAO sVAO;
+	sVAO.Bind();
+	VBO sVBO(sphere.interleavedVertices);
+	EBO sEBO(sphere.indices);
+	sVAO.LinkAttrib(sVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
+	sVAO.LinkAttrib(sVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	sVAO.Unbind();
+	sVBO.Unbind();
+	sEBO.Unbind();
+
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -167,6 +177,12 @@ int main()
 		spec.Bind();
 		pVAO.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		sphereProgram.Activate();
+		glUniform3f(glGetUniformLocation(sphereProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+		camera.Matrix(sphereProgram, "camMatrix");
+		sVAO.Bind();
+		glDrawElements(GL_TRIANGLES, sphere.indices.size(), GL_UNSIGNED_BYTE, 0);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);

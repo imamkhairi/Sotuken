@@ -9,6 +9,16 @@ class Icosphere {
     public:
         // Constructor
         Icosphere(float x0 = 0.0f, float y0 = 0.0f, float z0 = 0.0f, float radius = 1.0f);
+
+        // std::vector <float> getVertices() { return vertices;}; -> doesnot work
+        // unsigned int getVertexCount() const { return (unsigned int)vertices.size() * sizeof(float);}
+
+        std::vector <float> vertices;
+        std::vector <float> normals;
+        std::vector <unsigned int> indices;
+        
+        std::vector <float> interleavedVertices;
+        int interleavedStride;
         
     
     private:
@@ -18,9 +28,7 @@ class Icosphere {
         float radius;
         int subdivision;
         
-        std::vector <float> vertices;
-        std::vector <float> normals;
-        std::vector <unsigned int> indices;
+        
 
         static void computeHalfVertex(const float v1[3], const float v2[3], float length, float newV[3]);
         static void computeFaceNormal(const float v1[3], const float v2[3], const float v3[3], float n[3]);
@@ -28,6 +36,7 @@ class Icosphere {
 
         void subdivideVerticesFlat();
         void buildVertices();
+        void buildInterleavedVertices();
 
         std::vector<float> computeIcosahedronVertices();
 

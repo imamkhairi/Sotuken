@@ -119,6 +119,28 @@ void Icosphere::subdivideVerticesFlat() {
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// generate interleaved vertices: V/N/T
+// stride must be 32 bytes
+///////////////////////////////////////////////////////////////////////////////
+void Icosphere::buildInterleavedVertices()
+{
+    std::vector<float>().swap(interleavedVertices);
+
+    std::size_t i;
+    std::size_t count = vertices.size();
+    for(i = 0; i < count; i += 3)
+    {
+        interleavedVertices.push_back(vertices[i]);
+        interleavedVertices.push_back(vertices[i+1]);
+        interleavedVertices.push_back(vertices[i+2]);
+
+        interleavedVertices.push_back(normals[i]);
+        interleavedVertices.push_back(normals[i+1]);
+        interleavedVertices.push_back(normals[i+2]);
+    }
+}
+
 void Icosphere::buildVertices() {
     std::vector <float> tmpVertices = computeIcosahedronVertices();
 
