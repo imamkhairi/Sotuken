@@ -5,7 +5,7 @@ Icosphere::Icosphere(float x0, float y0, float z0, float radius) {
     this->y0 = y0;
     this->z0 = z0;
     this->radius = radius;
-    this->subdivision = 1;
+    this->subdivision = 0;
 
     buildVertices();
 }
@@ -69,6 +69,7 @@ void Icosphere::subdivideVerticesFlat() {
     // iteration
     for(i = 1; i <= subdivision; ++i)
     {
+        std::cout << "masuk sini" << std::endl;
         // copy prev arrays
         tmpVertices = vertices;
         tmpIndices = indices;

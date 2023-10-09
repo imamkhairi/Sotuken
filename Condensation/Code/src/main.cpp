@@ -197,6 +197,7 @@ int main()
 	
 	// shaderProgram.Delete();
 	planeProgram.Delete();
+	sphereProgram.Delete();
 
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
