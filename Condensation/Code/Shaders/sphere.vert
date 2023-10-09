@@ -10,6 +10,7 @@ uniform mat4 camMatrix;
 
 void main() {
     crntPos = aPos;
-    gl_Position = camMatrix * vec4(aPos, 1.0f);
-    Normal = aNorm;
+    // gl_Position = camMatrix * vec4(aPos, 1.0f);
+    gl_Position  = vec4(aPos, 1.0f);
+    // Normal = aNorm;
 }

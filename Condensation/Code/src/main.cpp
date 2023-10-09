@@ -5,7 +5,7 @@ const unsigned int width = 800;
 const unsigned int height = 800;
 
 // Plane Vertices
-GLfloat vertices[] = 
+float vertices[] = 
 {
 	// Coordinates      	/ Texture Coordinate  / Normals 
 	-1.0f, -1.0f, 0.0f, 	 0.0f,  0.0f,		    0.0f, 0.0f, 1.0f,
@@ -15,7 +15,7 @@ GLfloat vertices[] =
 };
 
 // Plane Indices
-GLuint indices[] = {
+unsigned int indices[] = {
 	0, 2, 1, // upper triangle
 	0, 3, 2  // lower triangle
 };
@@ -125,10 +125,25 @@ int main()
 
 	// Sphere
 	Icosphere sphere(0.0f, 0.0f, 0.0f, 1.0f);	
+
+	// for (int i = 0; i < (int)sphere.vertices.size(); i) {
+    //     std::cout << sphere.vertices[i++] << " " <<  sphere.vertices[i++] << " " << sphere.vertices[i++] << " " << std::endl;
+    //     // std::cout << sphere.indices[i++] << " " <<  sphere.indices[i++] << " " << sphere.indices[i++] << " " << std::endl;
+    //     if(i%9==0) std::cout << std::endl;
+    // }
+	
+	for (int i = 0; i < (int)sphere.interleavedVertices.size(); i) {
+        std::cout << sphere.interleavedVertices[i++] << ", " <<  sphere.interleavedVertices[i++] << ", " << sphere.interleavedVertices[i++] << ", ";
+        std::cout << sphere.interleavedVertices[i++] << ", " <<  sphere.interleavedVertices[i++] << ", " << sphere.interleavedVertices[i++] << ", " << std::endl;
+        // std::cout << sphere.indices[i++] << " " <<  sphere.indices[i++] << " " << sphere.indices[i++] << " " << std::endl;
+        // if(i%6==0) std::cout << std::endl;
+    }
+
+
 	VAO sVAO;
 	sVAO.Bind();
-	VBO sVBO(sphere.interleavedVertices);
-	EBO sEBO(sphere.indices);
+	VBO sVBO(sphere.interleavedVertices.data(), sphere.interleavedVertices.size() * sizeof(float));
+	EBO sEBO(sphere.indices.data(), sphere.indices.size() * sizeof(unsigned int));
 	sVAO.LinkAttrib(sVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
 	sVAO.LinkAttrib(sVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 	sVAO.Unbind();
@@ -163,7 +178,7 @@ int main()
 		// Handles camera inputs
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex Shader
-		camera.updateMatrix(45.0f, 0.1f, 100.0f);
+		camera.updateMatrix(45.0f, 0.1f, 1000.0f);
 			// setting cam
 
 		// Draw a model
@@ -182,7 +197,7 @@ int main()
 		glUniform3f(glGetUniformLocation(sphereProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		camera.Matrix(sphereProgram, "camMatrix");
 		sVAO.Bind();
-		glDrawElements(GL_TRIANGLES, sphere.indices.size(), GL_UNSIGNED_BYTE, 0);
+		glDrawElements(GL_TRIANGLES, (int)sphere.indices.size(), GL_UNSIGNED_BYTE, 0);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);

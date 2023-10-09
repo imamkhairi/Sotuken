@@ -196,6 +196,8 @@ void Icosphere::buildVertices() {
 
     // subdivide icosahedron
     subdivideVerticesFlat();
+
+    buildInterleavedVertices();
 }
 
 void Icosphere::computeHalfVertex(const float v1[3], const float v2[3], float length, float newV[3])
