@@ -1,11 +1,11 @@
 #include <icosphere.h>
 
-Icosphere::Icosphere(float x0, float y0, float z0, float radius) {
+Icosphere::Icosphere(float x0, float y0, float z0, float radius, int subdivision) {
     this->x0 = x0;
     this->y0 = y0;
     this->z0 = z0;
     this->radius = radius;
-    this->subdivision = 3;
+    this->subdivision = subdivision;
 
     buildVertices();
 }
@@ -60,7 +60,7 @@ void Icosphere::subdivideVerticesFlat() {
     std::vector<float> tmpVertices;
     std::vector<unsigned int> tmpIndices;
     int indexCount;
-    const float *v1, *v2, *v3;          // ptr to original vertices of a triangle
+    float *v1, *v2, *v3;          // ptr to original vertices of a triangle
     float newV1[3], newV2[3], newV3[3]; // new vertex positions
     float normal[3];                    // new face normal
     unsigned int index = 0;             // new index value
@@ -91,6 +91,13 @@ void Icosphere::subdivideVerticesFlat() {
             computeHalfVertex(v1, v2, radius, newV1);
             computeHalfVertex(v2, v3, radius, newV2);
             computeHalfVertex(v1, v3, radius, newV3);
+
+            zThreshold(v1);
+            zThreshold(v2);
+            zThreshold(v3);
+            zThreshold(newV1);
+            zThreshold(newV2);
+            zThreshold(newV3);
 
             // add 4 new triangles
             addVertices(v1, newV1, newV3);
@@ -267,6 +274,14 @@ void Icosphere::addVertices(const float v1[3], const float v2[3], const float v3
     this->vertices.push_back(v3[0]);
     this->vertices.push_back(v3[1]);
     this->vertices.push_back(v3[2]);
+}
+
+void Icosphere::zThreshold(float v[3]) {
+    if ( v[2] < 0.0f) {
+        v[0] -= 0.1 * v[0];
+        v[1] -= 0.1 * v[1];
+        v[2] = 0.0f;
+    }
 }
 
 void Icosphere::addIndices(unsigned int i1, unsigned int i2, unsigned int i3)

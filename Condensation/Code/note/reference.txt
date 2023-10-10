@@ -48,3 +48,9 @@ GLuint texture;
 	planeProgram.Activate();
     // Sets the value of the uniform
 	glUniform1i(texUni, 0);
+
+
+
+
+
+g++ -fdiagnostics-color=always -g ../src/*.cpp ../src/*.c -I ../include/ -o main -lGL -lglfw

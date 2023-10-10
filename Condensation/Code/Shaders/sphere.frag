@@ -11,6 +11,7 @@ uniform vec3 camPos;
 
 void main() {
 	    // Ambient Lighting
+	// if(crntPos.z == 0.0f) discard;
 	float ambient = 0.20f;
 
 	// Diffuse Lighting
@@ -27,6 +28,8 @@ void main() {
 
 	// Outputs final color
 	// FragColor = texture(tex0, texCoord) * lightColor * (diffuse + ambient + specular);
-	FragColor = (vec4(0.5f, 0.5f, 0.5f, 1.0f) * (diffuse + ambient) + vec4(0.5f, 0.5f, 0.5f, 1.0f).r * specular) * lightColor;
+	vec4 waterColor = vec4(0.4f, 0.4f, 0.4f, 1.0f);
+	FragColor = (waterColor* (diffuse + ambient) + waterColor.r * specular) * lightColor;
+	// FragColor = waterColor;
 
 }
