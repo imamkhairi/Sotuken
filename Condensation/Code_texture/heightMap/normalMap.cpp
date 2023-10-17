@@ -36,9 +36,9 @@ int main() {
     };
     
     int sobel_y[3][3] = {
-         1,  2,  1,
+        -1, -2, -1,
          0,  0,  0,
-        -1, -2, -1
+         1,  2,  1
     };
 
     cv::Mat heightMap = cv::imread("test.jpeg", cv::IMREAD_GRAYSCALE);
@@ -58,8 +58,8 @@ int main() {
                     int x_i = x-1+i;
                     int y_i = y-1+j;
                     checkCoordinate(&x_i, &y_i);
-                    value_x += sobel_x[i][j] * heightMap.at<unsigned char>(y_i,x_i);
-                    value_y += sobel_y[i][j] * heightMap.at<unsigned char>(y_i, x_i);
+                    value_x += sobel_x[j][i] * heightMap.at<unsigned char>(y_i,x_i);
+                    value_y += sobel_y[j][i] * heightMap.at<unsigned char>(y_i, x_i);
                 }
             }
             offsetAndClamp(&value_x);
@@ -69,20 +69,19 @@ int main() {
         }
     }
 
+    for (int y = 0; y < height; y++) {
     int i = 0;
     int j = 0;
-    std::cout << normalMap.size().width << std::endl;
-    for (int y = 0; y < height; y++) {
         for (int x = 0; x < width * 3 ; x +=3) {
             normalMap.at<unsigned char>(y,x) = 255;
+            std::cout << x << std::endl;
             normalMap.at<unsigned char>(y,x+1) = grad_y.at<unsigned char>(y, i++);
             normalMap.at<unsigned char>(y,x+2) = grad_x.at<unsigned char>(y, j++);
-            // std::cout << x << std::endl;
         }
     }
 
-    // cv::imwrite("grad_x.jpeg", grad_x);
-    // cv::imwrite("grad_y.jpeg", grad_y);
+    cv::imwrite("grad_x.jpeg", grad_x);
+    cv::imwrite("grad_y.jpeg", grad_y);
     cv::imwrite("normal.png", normalMap);
     return 0;
 }
