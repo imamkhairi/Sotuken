@@ -45,6 +45,8 @@ int main() {
     unsigned int max_y = heightMap.size().height;
     unsigned int max_x = heightMap.size().width;
 
+    std::cout << heightMap.at<unsigned char>(0,0) << std::endl;
+
     srand(time(0));
     std::vector <droplet> dropletParticles;
     int particleAmmount = 20;
