@@ -57,14 +57,19 @@ int main() {
     for (unsigned int y = 0; y < max_y; y++) {
         for (unsigned int x = 0; x < max_x; x++) {
             float h = calcHeight(dropletParticles[0], x, y);
-            if ( h > 0 ) {
-                // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
-                heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
-            }
-            h = calcHeight(dropletParticles[1], x, y);
-            if ( h > 0 ) {
-                // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
-                heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+            // if ( h > 0 ) {
+            //     // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
+            //     heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+            // }
+            // h = calcHeight(dropletParticles[1], x, y);
+            // if ( h > 0 ) {
+            //     heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+            // }
+            for (auto & particle : dropletParticles) {
+                float h = calcHeight(particle, x, y);
+                if ( h > 0 ) {
+                    heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+                }
             }
         }
     }
