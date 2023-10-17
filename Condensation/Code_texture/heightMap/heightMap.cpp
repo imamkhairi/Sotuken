@@ -46,20 +46,22 @@ int main() {
     unsigned int max_x = heightMap.size().width;
 
     srand(time(0));
-    // std::vector <droplet> dropletPraticles;
+    std::vector <droplet> dropletParticles;
     droplet a;
     initiateDroplet(&a);
+    dropletParticles.push_back(a);
     droplet b;
     initiateDroplet(&b);
+    dropletParticles.push_back(b);
 
     for (unsigned int y = 0; y < max_y; y++) {
         for (unsigned int x = 0; x < max_x; x++) {
-            float h = calcHeight(a, x, y);
+            float h = calcHeight(dropletParticles[0], x, y);
             if ( h > 0 ) {
                 // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
                 heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
             }
-            h = calcHeight(b, x, y);
+            h = calcHeight(dropletParticles[1], x, y);
             if ( h > 0 ) {
                 // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
                 heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
