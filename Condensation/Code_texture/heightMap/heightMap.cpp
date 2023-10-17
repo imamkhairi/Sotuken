@@ -47,7 +47,7 @@ int main() {
 
     srand(time(0));
     std::vector <droplet> dropletParticles;
-    int particleAmmount = 50;
+    int particleAmmount = 20;
     for (int i = 0; i < particleAmmount; i++) {
         droplet a;
         initiateDroplet(&a);
