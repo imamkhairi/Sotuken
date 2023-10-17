@@ -36,7 +36,7 @@ float calcHeight(droplet a, int x_i, int y_i) {
 
 void initiateDroplet(droplet *a) {
     a->position = glm::vec2((rand() % width) + 1, (rand() % height) + 1);
-    a->mass = (float)10;
+    a->mass = 1.5f;
     a->radius = calcRadius(*a);
 }
 
@@ -47,7 +47,8 @@ int main() {
 
     srand(time(0));
     std::vector <droplet> dropletParticles;
-    for (int i = 0; i < 5; i++) {
+    int particleAmmount = 50;
+    for (int i = 0; i < particleAmmount; i++) {
         droplet a;
         initiateDroplet(&a);
         dropletParticles.push_back(a);
@@ -56,8 +57,7 @@ int main() {
     for (unsigned int y = 0; y < max_y; y++) {
         for (unsigned int x = 0; x < max_x; x++) {
             float h = calcHeight(dropletParticles[0], x, y);
-            //     // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
-            //     heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+            // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
             for (auto & particle : dropletParticles) {
                 float h = calcHeight(particle, x, y);
                 if ( h > 0 ) {
