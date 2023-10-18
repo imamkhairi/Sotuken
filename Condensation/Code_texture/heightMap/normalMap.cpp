@@ -49,17 +49,37 @@ int main() {
     cv::Mat grad_x = cv::Mat::zeros(width, height, CV_8UC1);
     cv::Mat grad_y = cv::Mat::zeros(width, height, CV_8UC1);
 
+    // for (int y = 0; y < height; y++) {
+    //     for (int x = 0; x < width; x++) {
+    //         int value_x = 0;
+    //         int value_y = 0;
+    //         for (int i = 0; i < 3; i++) {
+    //             for (int j = 0; j < 3; j++) {
+    //                 int x_i = x-1+i;
+    //                 int y_i = y-1+j;
+    //                 checkCoordinate(&x_i, &y_i);
+    //                 value_x += sobel_x[j][i] * heightMap.at<unsigned char>(y_i,x_i);
+    //                 value_y += sobel_y[j][i] * heightMap.at<unsigned char>(y_i, x_i);
+    //             }
+    //         }
+    //         offsetAndClamp(&value_x);
+    //         offsetAndClamp(&value_y);
+    //         grad_x.at<unsigned char>(y,x) = value_x;
+    //         grad_y.at<unsigned char>(y,x) = value_y;
+    //     }
+    // }
+
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             int value_x = 0;
             int value_y = 0;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    int x_i = x-1+i;
-                    int y_i = y-1+j;
+                    int y_i = y-1+i;
+                    int x_i = x-1+j;
                     checkCoordinate(&x_i, &y_i);
-                    value_x += sobel_x[j][i] * heightMap.at<unsigned char>(y_i,x_i);
-                    value_y += sobel_y[j][i] * heightMap.at<unsigned char>(y_i, x_i);
+                    value_x += sobel_x[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                    value_y += sobel_y[i][j] * heightMap.at<unsigned char>(y_i, x_i);
                 }
             }
             offsetAndClamp(&value_x);
@@ -74,7 +94,7 @@ int main() {
     int j = 0;
         for (int x = 0; x < width * 3 ; x +=3) {
             normalMap.at<unsigned char>(y,x) = 255;
-            std::cout << x << std::endl;
+            // std::cout << x << std::endl;
             normalMap.at<unsigned char>(y,x+1) = grad_y.at<unsigned char>(y, i++);
             normalMap.at<unsigned char>(y,x+2) = grad_x.at<unsigned char>(y, j++);
         }
