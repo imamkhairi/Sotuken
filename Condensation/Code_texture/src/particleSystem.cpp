@@ -1,6 +1,8 @@
 #include <particleSystem.h>
 
 particleSystem::particleSystem(int particleAmmount, int mapHeight, int mapWidth) {
+	srand(time(0));
+    
     this->particleAmmount = particleAmmount;
     this->mapHeigth = mapHeight;
     this->mapWidth = mapWidth;
@@ -18,7 +20,7 @@ void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
     }
 }
 
-void particleSystem::initiateDroplet(Droplet *a) {
+void particleSystem::initiateDroplet(Droplet *a) {    
     a->mass = 1.3f;
     calcRadius(a);
     a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 

@@ -23,7 +23,7 @@ unsigned int indices[] = {
 };
 
 int main()
-{
+{	
 	// Initialize GLFW
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -41,7 +41,7 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(20, texHeight, texWidth);
+	particleSystem ParticleSystem(30, texHeight, texWidth);
 	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
 
 	// Introduce the window into the current context

@@ -3,7 +3,6 @@
 
 #include <opencv2/opencv.hpp>
 #include <particleSystem.h>
-#include <time.h>
 
 
 const int avg[3][3] = {
