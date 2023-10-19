@@ -1,13 +1,16 @@
 #include <Model.h>
+#include <heightMap.h>
 
 const unsigned int width = 1000;
 const unsigned int height = 1000;
+const unsigned int texWidth = 256;
+const unsigned int texHeight = 256;
 
 // Plane Vertices
 float vertices[] = 
 {
 	// Coordinates      	/ Texture Coordinate  / Normals 
-	-1.0f, -1.0f, 0.0f, 	 0.0f,  0.0f,		    0.0f, 0.0f, 1.0f,
+	-1.0f, -1.0f, 0.0f,  	 0.0f,  0.0f,		    0.0f, 0.0f, 1.0f,
 	-1.0f,  1.0f, 0.0f, 	 0.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
 	 1.0f,  1.0f, 0.0f, 	 1.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
 	 1.0f, -1.0f, 0.0f, 	 1.0f,  0.0f,		    0.0f, 0.0f, 1.0f
@@ -23,13 +26,10 @@ int main()
 {
 	// Initialize GLFW
 	glfwInit();
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
 	// Tell GLFW we are using the CORE profile (modern functions)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 	// Create a GLFWwindow object of 800 by 800 pixels
 	GLFWwindow* window = glfwCreateWindow(width, height, "Condensation", NULL, NULL);
 
@@ -41,6 +41,9 @@ int main()
 		return -1;
 	}
 	
+	particleSystem ParticleSystem(20, texHeight, texWidth);
+	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
+
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
 
@@ -55,7 +58,7 @@ int main()
 	// glm::mat4 lightModel = glm::mat4(1.0f);
 	// lightModel = glm::translate(lightModel, lightPos);
 
-	glm::mat4 planeModel = glm::mat4(1.0f);
+	glm::mat4 planeModel = glm::mat4(1.0f); //scale
 
 	// Generates Shader
 	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
