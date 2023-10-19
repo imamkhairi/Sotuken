@@ -7,6 +7,8 @@ heightMap::heightMap(std::vector <Droplet> ParticleSystem, int mapHeight, int ma
 }
 
 void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
+    srand(time(0));
+
     cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
     for (unsigned int y = 0; y < this->mapHeight; y++) {
         for (unsigned int x = 0; x < this->mapWidth; x++) {
@@ -19,7 +21,8 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
             }
         }
     }
-    cv::imwrite("../Textures/heightMap.jpg", heightMap);
+
+    this->smoothingHeightMap(heightMap);
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
@@ -32,45 +35,46 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     } else return 0;
 }
 
-// void checkCoordinate(int *x, int *y) {
-//     if (*x < 0) *x += 1;
-//     if (*y < 0) *y += 1;
-//     if (*x > width - 1) *x -= 1;
-//     if (*y > height - 1) *y -= 1;
-// }
+void heightMap::smoothingHeightMap(cv::Mat heightMap) {
+    cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
-// void heightThreshold(float *value) {
-//     float e = 0.01;
-//     if (*value < e) *value = 0;
-//     else *value = *value;
-// }
+    for (int y = 0; y < this->mapHeight; y++) {
+        for (int x = 0; x < this->mapWidth; x++) {
+            float value = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    int y_i = y-1+i;
+                    int x_i = x-1+j;
+                    checkCoordinate(&x_i, &y_i);
+                    value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                }
+            }
+            value = value/9;
+            if (value < 1 && value > 0)  std::cout << value << std::endl;
+            heightThreshold(&value);
+            smoothed.at<unsigned char>(y,x) = value;
+        }
+    }
 
+    cv::imwrite("../Textures/heightMap.jpg", smoothed);
+}
 
-// void smoothingHeightMap(cv::Mat heightMap, cv::Mat *smoothed) {
-//     for (int y = 0; y < height; y++) {
-//         for (int x = 0; x < width; x++) {
-//             float value = 0;
-//             for (int i = 0; i < 3; i++) {
-//                 for (int j = 0; j < 3; j++) {
-//                     int y_i = y-1+i;
-//                     int x_i = x-1+j;
-//                     checkCoordinate(&x_i, &y_i);
-//                     value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
-//                 }
-//             }
-//             value = value/9;
-//             if (value < 1 && value > 0)  std::cout << value << std::endl;
-//             heightThreshold(&value);
-//             smoothed->at<unsigned char>(y,x) = value;
-//         }
-//     }
-// }
+void heightMap::checkCoordinate(int *x, int *y) {
+    if (*x < 0) *x += 1;
+    if (*y < 0) *y += 1;
+    if (*x > this->mapWidth - 1) *x -= 1;
+    if (*y > this->mapHeight - 1) *y -= 1;
+}
 
+// e value still can be changed
+void heightMap::heightThreshold(float *value) {
+    float e = 0.01;
+    if (*value < e) *value = 0;
+    else *value = *value;
+}
 
 // int main() {
-//     srand(time(0));
 
-//     cv::Mat smoothed  = cv::Mat::zeros(width, height, CV_8UC1);
 //     
 
 //     // calculate height
