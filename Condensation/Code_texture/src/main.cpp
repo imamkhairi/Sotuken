@@ -79,7 +79,7 @@ int main()
 	// glCullFace(GL_FRONT);
 	// glFrontFace(GL_CCW);
 
-	// Enable vsync
+	// 1 Enable vsync // 0 disable
 	glfwSwapInterval(1);
 
 	// FPS
