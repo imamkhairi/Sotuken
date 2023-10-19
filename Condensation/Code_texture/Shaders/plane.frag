@@ -30,5 +30,6 @@ void main() {
 
 	// Outputs final color
 	// FragColor = texture(tex0, texCoord) * lightColor * (diffuse + ambient + specular);
-	FragColor = (texture(tex0, texCoord) * (diffuse + ambient) + texture(tex1, texCoord).r * specular) * lightColor;
+	if(texture(tex1, texCoord).r != 0)FragColor = (texture(tex0, texCoord) * (diffuse + ambient) + texture(tex1, texCoord).r * specular) * lightColor * 0.2;
+	else FragColor = (texture(tex0, texCoord) * (diffuse + ambient) + texture(tex1, texCoord).r * specular) * lightColor;
 }

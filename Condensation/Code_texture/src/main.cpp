@@ -1,6 +1,8 @@
 #include <Model.h>
 #include <heightMap.h>
 
+// constanta ini sepertinya bisa disimpat di header file
+
 const unsigned int width = 1000;
 const unsigned int height = 1000;
 const unsigned int texWidth = 256;
@@ -60,18 +62,6 @@ int main()
 
 	glm::mat4 planeModel = glm::mat4(1.0f); //scale
 
-	// Generates Shader
-	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
-	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
-
-	// shaderProgram.Activate();
-	// glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	// glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-	planeProgram.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
-	glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -85,11 +75,22 @@ int main()
 	// 1 Enable vsync // 0 disable
 	glfwSwapInterval(1);
 
-	// FPS
-	double prevTime = 0.0;
-	double crntTime = 0.0;
-	double timeDiff;
-	unsigned int counter = 0;
+
+
+	// Generates Shader
+	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
+	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
+
+	// shaderProgram.Activate();
+	// glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	// glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+	planeProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
+	glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+	
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -110,10 +111,17 @@ int main()
 	pEBO.Unbind();	
 	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	texture.texUnit(planeProgram, "tex0", 0);
-	Texture spec("../Textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
+	Texture spec("../Textures/heightMap.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
 	texture.texUnit(planeProgram, "tex1", 1);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	// FPS
+	double prevTime = 0.0;
+	double crntTime = 0.0;
+	double timeDiff;
+	unsigned int counter = 0;
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))

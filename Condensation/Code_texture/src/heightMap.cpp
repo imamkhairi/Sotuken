@@ -54,7 +54,7 @@ void heightMap::smoothingHeightMap(cv::Mat heightMap) {
         }
     }
 
-    cv::imwrite("../Textures/heightMap.jpg", smoothed);
+    cv::imwrite("../Textures/heightMap.png", smoothed);
 }
 
 void heightMap::checkCoordinate(int *x, int *y) {
