@@ -8,21 +8,21 @@
 
 // dibagian bawah muncul garis putih
 
-const int height = 256;
-const int width = 256;
+const int height = 1024;
+const int width = 1024;
 
 float z = -1;
 
 int sobel_x[3][3] = {
-    -1, 0, 1,
-    -2, 0, 2,
-    -1, 0, 1
+    1, 0, -1,
+    2, 0, -2,
+    1, 0, -1
 };
 
 int sobel_y[3][3] = {
     -1, -2, -1,
-        0,  0,  0,
-        1,  2,  1
+    0,  0,  0,
+    1,  2,  1
 };
 
 
@@ -77,7 +77,7 @@ void generateNormalMap(cv::Mat *normalMap, cv::Mat grad_x, cv::Mat grad_y) {
 }
 
 int main() {
-    cv::Mat heightMap = cv::imread("smoothed.jpg", cv::IMREAD_GRAYSCALE);
+    cv::Mat heightMap = cv::imread("brick.png", cv::IMREAD_GRAYSCALE);
     cv::Mat normalMap = cv::Mat::zeros(width, height, CV_8UC3);
     cv::Mat grad_x = cv::Mat::zeros(width, height, CV_8UC1);
     cv::Mat grad_y = cv::Mat::zeros(width, height, CV_8UC1);
@@ -88,6 +88,6 @@ int main() {
 
     // cv::imwrite("grad_x.jpeg", grad_x);
     // cv::imwrite("grad_y.jpeg", grad_y);
-    cv::imwrite("normal_smoothed.png", normalMap);
+    cv::imwrite("normal.png", normalMap);
     return 0;
 }

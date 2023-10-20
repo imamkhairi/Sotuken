@@ -5,8 +5,8 @@
 
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 256;
-const unsigned int texHeight = 256;
+const unsigned int texWidth = 500;
+const unsigned int texHeight = 500;
 
 // Plane Vertices
 float vertices[] = 
