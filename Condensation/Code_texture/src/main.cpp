@@ -11,17 +11,17 @@ const unsigned int texHeight = 500;
 // Plane Vertices
 float vertices[] = 
 {
-	// Coordinates      	/ Texture Coordinate  / Normals 
-	-1.0f, -1.0f, 0.0f,  	 0.0f,  0.0f,		    0.0f, 0.0f, 1.0f,
-	-1.0f,  1.0f, 0.0f, 	 0.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
-	 1.0f,  1.0f, 0.0f, 	 1.0f,  1.0f,		    0.0f, 0.0f, 1.0f,
-	 1.0f, -1.0f, 0.0f, 	 1.0f,  0.0f,		    0.0f, 0.0f, 1.0f
+	// Coordinates      	/ Normals 
+	-1.0f, -1.0f, -1.0f,  	0.0f, 0.0f, 1.0f,
+	-1.0f,  1.0f, -1.0f, 	0.0f, 0.0f, 1.0f,
+	 1.0f,  1.0f, -1.0f, 	0.0f, 0.0f, 1.0f,
+	 1.0f, -1.0f, -1.0f, 	0.0f, 0.0f, 1.0f
 };
 
 // Plane Indices
 unsigned int indices[] = {
-	0, 2, 1, // upper triangle
-	0, 3, 2  // lower triangle
+	0, 2, 3,  // lower triangle
+	0, 1, 2 // upper triangle
 };
 
 float skyboxVertices[] =
@@ -123,8 +123,9 @@ int main()
 
 	planeProgram.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
-	glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glUniform1i(glGetUniformLocation(planeProgram.ID, "skybox"), 0);
+	// glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	// glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
@@ -142,19 +143,11 @@ int main()
 	pVAO.Bind();
 	VBO pVBO(vertices, sizeof(vertices));
 	EBO pEBO(indices, sizeof(indices));
-	pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)(0 * sizeof(float)));
-	pVAO.LinkAttrib(pVBO, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-	pVAO.LinkAttrib(pVBO, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
+	pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
+	pVAO.LinkAttrib(pVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 	pVAO.Unbind();
 	pVBO.Unbind();
 	pEBO.Unbind();	
-	Texture texture("../Textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
-	texture.texUnit(planeProgram, "tex0", 0);
-	Texture spec("../Textures/heightMap.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
-	texture.texUnit(planeProgram, "tex1", 1);
-
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
 	// Sky box
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
@@ -176,12 +169,12 @@ int main()
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
-		"../skybox/right.jpg",
-		"../skybox/left.jpg",
-		"../skybox/top.jpg",
-		"../skybox/bottom.jpg",
-		"../skybox/front.jpg",
-		"../skybox/back.jpg"
+		"../skybox2/right.jpg",
+		"../skybox2/left.jpg",
+		"../skybox2/top.jpg",
+		"../skybox2/bottom.jpg",
+		"../skybox2/front.jpg",
+		"../skybox2/back.jpg"
 	};
 
 	// Creates the cubemap texture object
@@ -195,7 +188,7 @@ int main()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	// This might help with seams on some systems
-	//glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 	// Cycles through all the textures and attaches them to the cubemap object
 	for (unsigned int i = 0; i < 6; i++)
@@ -206,17 +199,7 @@ int main()
 		{
 			stbi_set_flip_vertically_on_load(false);
 			glTexImage2D
-			(
-				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0,
-				GL_RGB,
-				width,
-				height,
-				0,
-				GL_RGB,
-				GL_UNSIGNED_BYTE,
-				data
-			);
+			(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
 			stbi_image_free(data);
 		}
 		else
@@ -271,12 +254,12 @@ int main()
 		// glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
 		pVAO.Bind();
-		texture.Bind();
-		spec.Bind();
+		glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+		// sky box draw
 		glDepthFunc(GL_LEQUAL);
-
 		skyboxShader.Activate();
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
@@ -286,7 +269,6 @@ int main()
 		projection = glm::perspective(glm::radians(45.0f), (float)width / height, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
 		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
 		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
 		glBindVertexArray(skyboxVAO);
@@ -294,7 +276,6 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
 
@@ -309,8 +290,6 @@ int main()
 	pVAO.Delete();
 	pVBO.Delete();
 	pEBO.Delete();
-	texture.Delete();
-	spec.Delete();
 
 	// shaderProgram.Delete();
 	planeProgram.Delete();
