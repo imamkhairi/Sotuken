@@ -12,10 +12,10 @@ const unsigned int texHeight = 500;
 float vertices[] = 
 {
 	// Coordinates      	/ Normals 
-	-1.0f, -1.0f, -1.0f,  	0.0f, 0.0f, 1.0f,
-	-1.0f,  1.0f, -1.0f, 	0.0f, 0.0f, 1.0f,
-	 1.0f,  1.0f, -1.0f, 	0.0f, 0.0f, 1.0f,
-	 1.0f, -1.0f, -1.0f, 	0.0f, 0.0f, 1.0f
+	-1.0f, -1.0f, -0.5f,  	0.0f, 0.0f, 1.0f,
+	-1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
+	 1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
+	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
 };
 
 // Plane Indices
@@ -169,12 +169,12 @@ int main()
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
-		"../skybox2/right.jpg",
-		"../skybox2/left.jpg",
-		"../skybox2/top.jpg",
-		"../skybox2/bottom.jpg",
-		"../skybox2/front.jpg",
-		"../skybox2/back.jpg"
+		"../skybox3/right.jpg",
+		"../skybox3/left.jpg",
+		"../skybox3/top.jpg",
+		"../skybox3/bottom.jpg",
+		"../skybox3/front.jpg",
+		"../skybox3/back.jpg"
 	};
 
 	// Creates the cubemap texture object
