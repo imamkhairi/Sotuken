@@ -5,7 +5,7 @@ const unsigned int height = 800;
 
 unsigned int samples = 8;
 
-float gammaValue = 2.2;
+float gammaValue = 2.2f;
 
 float rectangleVertices[] =
 {
@@ -37,21 +37,21 @@ std::vector<GLuint> indices =
 
 int main()
 {
-	// Initialize GLFW
+		// Initialize GLFW
 	glfwInit();
 
 	// Tell GLFW what version of OpenGL we are using 
 	// In this case we are using OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
+	// Only use this if you don't have a framebuffer
+	//glfwWindowHint(GLFW_SAMPLES, samples);
 	// Tell GLFW we are using the CORE profile
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(width, height, "Transparency", NULL, NULL);
-
+	GLFWwindow* window = glfwCreateWindow(width, height, "YoutubeOpenGL", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
@@ -59,65 +59,59 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
-	
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
 
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
-
 	// Specify the viewport of OpenGL in the Window
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-	// Depth Test
-	glEnable(GL_DEPTH_TEST);
 
-	// Enables Multisampling
-	glEnable(GL_MULTISAMPLE);
-	
-	// Face Culling
-	glEnable(GL_CULL_FACE);
-	// Keeps the front
-	glCullFace(GL_FRONT);
-	// Uses counter clock-wise standard
-	glFrontFace(GL_CCW);
-
-	// Count FPS
-	double prevTime = 0.0;
-	double crntTime = 0.0;
-	double timeDiff = 0.0;
-	unsigned int counter = 0;
-		// to count how many frames we have in a certain amount of time.
-
-	// Vsync
-	// Kalau fps stuck di 60 FPS artinya VSync on
-	// Untuk matikan VSync
-	// glfwSwapInterval(0);
-	// Untuk hidupkan VSync
-	glfwSwapInterval(1);
-
-	// Generates Shader object using shaders default.vert and default.frag
+	// Generates shaders
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag", "../Shaders/default.geom");
 	Shader framebufferProgram("../Shaders/framebuffer.vert", "../Shaders/framebuffer.frag");
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.5f);
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
 	framebufferProgram.Activate();
 	glUniform1i(glGetUniformLocation(framebufferProgram.ID, "screenTexture"), 0);
 	glUniform1f(glGetUniformLocation(framebufferProgram.ID, "gammaValue"), gammaValue);
 
+
+	
+
+	// Enables the Depth Buffer
+	glEnable(GL_DEPTH_TEST);
+
+	// Enables Multisampling
+	glEnable(GL_MULTISAMPLE);
+
+	// Enables Cull Facing
+	glEnable(GL_CULL_FACE);
+	// Keeps front faces
+	glCullFace(GL_FRONT);
+	// Uses counter clock-wise standard
+	glFrontFace(GL_CCW);
+
+
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
-	// Load in a model
-	Model crow("../Models/crow/scene.gltf"); 
+
+	/*
+	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
+	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
+	* folder and then give a relative path from this folder to whatever resource you want to get to.
+	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
+	*/
+
 
 	// Prepare framebuffer rectangle VBO and VAO
 	unsigned int rectVAO, rectVBO;
@@ -131,6 +125,20 @@ int main()
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
+
+
+	// Variables to create periodic event for FPS displaying
+	double prevTime = 0.0;
+	double crntTime = 0.0;
+	double timeDiff;
+	// Keeps track of the amount of frames in timeDiff
+	unsigned int counter = 0;
+
+	// Use this to disable VSync (not advized)
+	//glfwSwapInterval(0);
+
+
+	// Create Frame Buffer Object
 	unsigned int FBO;
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -139,25 +147,27 @@ int main()
 	unsigned int framebufferTexture;
 	glGenTextures(1, &framebufferTexture);
 	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture);
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB16F, width, height,GL_TRUE);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB16F, width, height, GL_TRUE);
 	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
 	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture, 0);
 
-	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "Framebuffer error: " << fboStatus << std::endl;
-	
 	// Create Render Buffer Object
 	unsigned int RBO;
 	glGenRenderbuffers(1, &RBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples ,GL_DEPTH24_STENCIL8, width, height);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
-	// Create Framebuffer Object
+
+	// Error checking framebuffer
+	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "Framebuffer error: " << fboStatus << std::endl;
+
+	// Create Frame Buffer Object
 	unsigned int postProcessingFBO;
 	glGenFramebuffers(1, &postProcessingFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, postProcessingFBO);
@@ -173,18 +183,26 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, postProcessingTexture, 0);
 
+	// Error checking framebuffer
 	fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "Post-Processing Framebuffer error" << fboStatus << std::endl;
+		std::cout << "Post-Processing Framebuffer error: " << fboStatus << std::endl;
 
-	std::vector<Texture> textures = {
-		Texture("../Textures/diffuse.png", "diffuse", 0)	
+
+
+
+
+	std::vector<Texture> textures =
+	{
+		Texture("../Textures/diffuse.png", "diffuse", 0)
 	};
 
 	// Plane with the texture
 	Mesh plane(vertices, indices, textures);
 	// Normal map for the plane
 	Texture normalMap("../Textures/normal.png", "normal", 1);
+
+
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -199,40 +217,38 @@ int main()
 			// Creates new title
 			std::string FPS = std::to_string((1.0 / timeDiff) * counter);
 			std::string ms = std::to_string((timeDiff / counter) * 1000);
-			std::string newTitle = "Transparency - " + FPS + "FPS / " + ms + "ms";
+			std::string newTitle = "YoutubeOpenGL - " + FPS + "FPS / " + ms + "ms";
 			glfwSetWindowTitle(window, newTitle.c_str());
 
 			// Resets times and counter
 			prevTime = crntTime;
 			counter = 0;
 
-			// Use this if you have disabled VSync 
-			// Handles camera inputs
-			// camera.Inputs(window);
+			// Use this if you have disabled VSync
+			//camera.Inputs(window);
 		}
+
 
 		// Bind the custom framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 		// Specify the color of the background
-		glClearColor(pow(0.07f,gammaValue), pow(0.13f, gammaValue), pow(0.17f,gammaValue), 1.0f);
+		glClearColor(pow(0.07f, gammaValue), pow(0.13f, gammaValue), pow(0.17f, gammaValue), 1.0f);
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
-		// Handles camera inputs
+		// Handles camera inputs (delete this if you have disabled VSync)
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex Shader
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
-			// setting cam
 
-		// Draw a model
-		// crow.Draw(shaderProgram, camera);
 
 		shaderProgram.Activate();
 		normalMap.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
 
+		// Draw the normal model
 		plane.Draw(shaderProgram, camera);
 
 		// Make it so the multisampling FBO is read while the post-processing FBO is drawn
@@ -241,25 +257,29 @@ int main()
 		// Conclude the multisampling and copy it to the post-processing FBO
 		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
+
 		// Bind the default framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// Draw the frambuffer rectangle
+		// Draw the framebuffer rectangle
 		framebufferProgram.Activate();
 		glBindVertexArray(rectVAO);
-		glDisable(GL_DEPTH_TEST); // disable biar kotak framebuffer di depan
+		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 		glBindTexture(GL_TEXTURE_2D, postProcessingTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
+
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
-
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
 
+
+
 	// Delete all the objects we've created
 	shaderProgram.Delete();
-	framebufferProgram.Delete();
+	glDeleteFramebuffers(1, &FBO);
+	glDeleteFramebuffers(1, &postProcessingFBO);
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
