@@ -85,7 +85,7 @@ int main()
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(0.5f, 1.0f, 0.3f);
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -113,14 +113,6 @@ int main()
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
-
-
-	/*
-	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
-	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
-	* folder and then give a relative path from this folder to whatever resource you want to get to.
-	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
-	*/
 
 
 	// Prepare framebuffer rectangle VBO and VAO
@@ -204,13 +196,13 @@ int main()
 
 	std::vector<Texture> textures =
 	{
-		Texture("../Textures/diffuse.png", "diffuse", 0)
+		Texture("../Textures/brickwall.png", "diffuse", 0)
 	};
 
 	// Plane with the texture
 	Mesh plane(vertices, indices, textures);
 	// Normal map for the plane
-	Texture normalMap("../Textures/normal.png", "normal", 1);
+	Texture normalMap("../Textures/brickwall_normal.png", "normal", 1);
 
 
 
