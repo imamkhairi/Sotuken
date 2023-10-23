@@ -85,7 +85,7 @@ int main()
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.5f, 1.0f, 0.3f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.5f);
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -196,13 +196,13 @@ int main()
 
 	std::vector<Texture> textures =
 	{
-		Texture("../Textures/brickwall.png", "diffuse", 0)
+		Texture("../Textures/brickwall.jpg", "diffuse", 0)
 	};
 
 	// Plane with the texture
 	Mesh plane(vertices, indices, textures);
 	// Normal map for the plane
-	Texture normalMap("../Textures/brickwall_normal.png", "normal", 1);
+	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
 
 
 

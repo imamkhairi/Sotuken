@@ -1,0 +1,9 @@
+Stencil_Buffer, 
+holds a value for each pixel
+
+These values being used for image masking in general 
+
+each pixel holds 1 byte of data (8 bits = 0 ~ 255)
+
+glStencilMask(GLuint) -> allow us to choos which part of Stencil Buffer we want to be able to modify
+
