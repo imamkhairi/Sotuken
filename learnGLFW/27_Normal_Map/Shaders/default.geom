@@ -54,9 +54,9 @@ void main()
     color = data_in[0].color;
     texCoord = data_in[0].texCoord;
     // Change all lighting variables to TBN space
-    crntPos = gl_in[0].gl_Position.xyz;
-    lightPos = data_in[0].lightPos;
-    camPos =  data_in[0].camPos;
+    crntPos = TBN * gl_in[0].gl_Position.xyz;
+    lightPos = TBN * data_in[0].lightPos;
+    camPos = TBN * data_in[0].camPos;
     EmitVertex();
 
     gl_Position = data_in[1].projection * gl_in[1].gl_Position;
@@ -64,9 +64,9 @@ void main()
     color = data_in[1].color;
     texCoord = data_in[1].texCoord;
     // Change all lighting variables to TBN space
-    crntPos = gl_in[1].gl_Position.xyz;
-    lightPos =  data_in[1].lightPos;
-    camPos =  data_in[1].camPos;
+    crntPos = TBN * gl_in[1].gl_Position.xyz;
+    lightPos = TBN * data_in[1].lightPos;
+    camPos = TBN * data_in[1].camPos;
     EmitVertex();
 
     gl_Position = data_in[2].projection * gl_in[2].gl_Position;
@@ -74,9 +74,9 @@ void main()
     color = data_in[2].color;
     texCoord = data_in[2].texCoord;
     // Change all lighting variables to TBN space
-    crntPos =  gl_in[2].gl_Position.xyz;
-    lightPos = data_in[2].lightPos;
-    camPos =  data_in[2].camPos;
+    crntPos = TBN * gl_in[2].gl_Position.xyz;
+    lightPos = TBN * data_in[2].lightPos;
+    camPos = TBN * data_in[2].camPos;
     EmitVertex();
 
     EndPrimitive();

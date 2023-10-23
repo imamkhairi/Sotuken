@@ -42,7 +42,8 @@ vec4 pointLight()
 
 	// diffuse lighting
 	// Normals are mapped from the range [0, 1] to the range [-1, 1]
-	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
+	// vec3 normal = normalize(Normal);
+	vec3 normal = normalize(texture(normal0, texCoord).xyz);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -66,7 +67,7 @@ vec4 direcLight()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(Normal);
+	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -94,7 +95,7 @@ vec4 spotLight()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(Normal);
+	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
 	vec3 lightDirection = normalize(lightPos - crntPos);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
