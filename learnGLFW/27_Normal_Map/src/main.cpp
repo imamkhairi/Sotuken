@@ -72,9 +72,15 @@ int main()
 
 	// Depth Test
 	glEnable(GL_DEPTH_TEST);
+
+	// Enables Multisampling
+	glEnable(GL_MULTISAMPLE);
+	
 	// Face Culling
 	glEnable(GL_CULL_FACE);
+	// Keeps the front
 	glCullFace(GL_FRONT);
+	// Uses counter clock-wise standard
 	glFrontFace(GL_CCW);
 
 	// Count FPS
@@ -98,8 +104,6 @@ int main()
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::mat4 lightModel = glm::mat4(1.0f);
-	// lightModel = glm::translate(lightModel, lightPos);
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -173,6 +177,15 @@ int main()
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Post-Processing Framebuffer error" << fboStatus << std::endl;
 
+	std::vector<Texture> textures = {
+		Texture("../Textures/diffuse.png", "diffuse", 0)	
+	};
+
+	// Plane with the texture
+	Mesh plane(vertices, indices, textures);
+	// Normal map for the plane
+	Texture normalMap("../Textures/normal.png", "normal", 1);
+
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -198,13 +211,13 @@ int main()
 			// camera.Inputs(window);
 		}
 
+		// Bind the custom framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
 		// Specify the color of the background
 		glClearColor(pow(0.07f,gammaValue), pow(0.13f, gammaValue), pow(0.17f,gammaValue), 1.0f);
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
 		// Handles camera inputs
@@ -214,11 +227,18 @@ int main()
 			// setting cam
 
 		// Draw a model
-		crow.Draw(shaderProgram, camera);
+		// crow.Draw(shaderProgram, camera);
 
+		shaderProgram.Activate();
+		normalMap.Bind();
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
 
+		plane.Draw(shaderProgram, camera);
+
+		// Make it so the multisampling FBO is read while the post-processing FBO is drawn
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBO);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postProcessingFBO);
+		// Conclude the multisampling and copy it to the post-processing FBO
 		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		// Bind the default framebuffer
