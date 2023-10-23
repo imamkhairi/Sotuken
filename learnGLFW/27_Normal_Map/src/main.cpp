@@ -87,8 +87,8 @@ int main()
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	// framebufferProgram.Activate();
-	// glUniform1i(glGetUniformLocation(framebufferProgram.ID, "screenTexture"), 0);
+	framebufferProgram.Activate();
+	glUniform1i(glGetUniformLocation(framebufferProgram.ID, "screenTexture"), 0);
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
