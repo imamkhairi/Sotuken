@@ -21,10 +21,10 @@ float rectangleVertices[] =
 // Vertices for plane with texture
 std::vector<Vertex> vertices =
 {
-	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
-	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}
+	Vertex{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+	Vertex{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3( 1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
 };
 
 // Indices for plane with texture
@@ -73,6 +73,7 @@ int main()
 
 	// Generates Shader objects
 	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag", "../Shaders/default.geom");
+	Shader normalsShader("../Shaders/default.vert", "../Shaders/normals.frag", "../Shaders/normals.geom");
 	Shader frameBufferProgram("../Shaders/framebuffer.vert", "../Shaders/framebuffer.frag");
 
 	// Take care of all the light related things
@@ -94,11 +95,11 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Enables Cull Facing
-	glEnable(GL_CULL_FACE);
-	// Keeps front faces
-	glCullFace(GL_FRONT);
-	// Uses counter clock-wise standard
-	glFrontFace(GL_CCW);
+	// glEnable(GL_CULL_FACE);
+	// // Keeps front faces
+	// glCullFace(GL_FRONT);
+	// // Uses counter clock-wise standard
+	// glFrontFace(GL_CCW);
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -233,6 +234,7 @@ int main()
 		// Draw the normal model
 		// model.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
+		plane.Draw(normalsShader, camera);
 
 		// Make it so the multisampling FBO is read while the post-processing FBO is drawn
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBO);

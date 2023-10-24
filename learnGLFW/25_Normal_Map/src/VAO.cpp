@@ -15,6 +15,14 @@ void VAO::LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type,
 	VBO.Unbind();
 }
 
+VBO::VBO(GLfloat* vertices, GLsizeiptr size)
+{
+	glGenBuffers(1, &ID);
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+}
+
+
 // Binds the VAO
 void VAO::Bind()
 {

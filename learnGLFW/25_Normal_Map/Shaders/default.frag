@@ -32,7 +32,7 @@ vec4 pointLight()
 
 	// intensity of light with respect to distance
 	float dist = length(lightVec);
-	float a = 3.0;
+	float a = 1.0;
 	float b = 0.7;
 	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
 
@@ -51,6 +51,8 @@ vec4 pointLight()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
+	
+				// object color                                                       
 	return (texture(diffuse0, texCoord) * (diffuse * inten + ambient) + texture(specular0, texCoord).r * specular * inten) * lightColor;
 }
 
@@ -106,5 +108,23 @@ vec4 spotLight()
 void main()
 {
 	// outputs final color
-	FragColor = direcLight();
+	// FragColor = pointLight();
+
+	float ambientStrength = 0.1;
+	vec4 ambient = ambientStrength * lightColor;
+	
+
+	vec3 norm = normalize(Normal);
+	vec3 lightDir = normalize(lightPos - crntPos);
+	float diff = max(dot(norm, lightDir), 0.0f);
+	vec4 diffuse = diff * lightColor;
+
+	float specularStrength = 0.5;
+	vec3 viewDir = normalize(camPos - crntPos);
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	vec4 specular = specularStrength * spec * lightColor;
+
+	vec4 result = (ambient + diffuse + specular) * vec4(0.4, 0.3, 0.7, 1.0);
+	FragColor = result;
 }
