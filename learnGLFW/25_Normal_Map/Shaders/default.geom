@@ -3,10 +3,10 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
+out vec3 crntPos;
 out vec3 Normal;
 out vec3 color;
 out vec2 texCoord;
-out vec3 crntPos;
 
 in DATA 
 {
