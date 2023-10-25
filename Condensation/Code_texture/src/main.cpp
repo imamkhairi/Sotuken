@@ -118,9 +118,9 @@ int main()
 	glDepthFunc(GL_LESS); // there are several options
 
 	// face culling
-	// glEnable(GL_CULL_FACE);
-	// glCullFace(GL_FRONT);
-	// glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 
 	// 1 Enable vsync // 0 disable
 	glfwSwapInterval(1);
@@ -151,7 +151,7 @@ int main()
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	// Load in a model
-	Model treeModel("../Models/crow/scene.gltf");
+	Model treeModel("../Models/statue/scene.gltf");
 
 	// Plane
 	VAO pVAO;
