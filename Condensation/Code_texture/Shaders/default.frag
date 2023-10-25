@@ -106,5 +106,23 @@ vec4 spotLight()
 void main()
 {
 	// outputs final color
-	FragColor = direcLight();
+	// FragColor = pointLight();
+
+	float ambientStrength = 0.1;
+	vec4 ambient = ambientStrength * lightColor;
+	
+	vec3 norm = normalize(Normal);
+	// vec3 norm = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
+	vec3 lightDir = normalize(lightPos - crntPos);
+	float diff = max(dot(norm, lightDir), 0.0f);
+	vec4 diffuse = diff * lightColor;
+
+	float specularStrength = 0.5;
+	vec3 viewDir = normalize(camPos - crntPos);
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	vec4 specular = specularStrength * spec * lightColor;
+
+	vec4 result = (ambient + diffuse + specular) * texture(diffuse0,texCoord);
+	FragColor = result;
 }

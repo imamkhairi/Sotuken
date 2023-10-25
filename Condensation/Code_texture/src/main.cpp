@@ -8,21 +8,21 @@ const unsigned int height = 1000;
 const unsigned int texWidth = 500;
 const unsigned int texHeight = 500;
 
-// Plane Vertices
-float vertices[] = 
-{
-	// Coordinates      	/ Normals 
-	-1.0f, -1.0f, -0.5f,  	0.0f, 0.0f, 1.0f,
-	-1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
-	 1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
-	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
-};
+// // Plane Vertices
+// float vertices[] = 
+// {
+// 	// Coordinates      	/ Normals 
+// 	-1.0f, -1.0f, -0.5f,  	0.0f, 0.0f, 1.0f,
+// 	-1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
+// 	 1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
+// 	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
+// };
 
-// Plane Indices
-unsigned int indices[] = {
-	0, 2, 3,  // lower triangle
-	0, 1, 2 // upper triangle
-};
+// // Plane Indices
+// unsigned int indices[] = {
+// 	0, 2, 3,  // lower triangle
+// 	0, 1, 2 // upper triangle
+// };
 
 float skyboxVertices[] =
 {
@@ -59,20 +59,20 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
-// std::vector<Vertex> vertices =
-// {
-// 	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
-// 	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-// 	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-// 	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
-// };
+std::vector<Vertex> vertices =
+{
+	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
+};
 
-// // Indices for plane with texture
-// std::vector<GLuint> indices =
-// {
-// 	0, 1, 2,
-// 	0, 2, 3
-// };
+// Indices for plane with texture
+std::vector<GLuint> indices =
+{
+	0, 1, 2,
+	0, 2, 3
+};
 
 int main()
 {	
@@ -154,15 +154,15 @@ int main()
 	Model treeModel("../Models/statue/scene.gltf");
 
 	// Plane
-	VAO pVAO;
-	pVAO.Bind();
-	VBO pVBO(vertices, sizeof(vertices));
-	EBO pEBO(indices, sizeof(indices));
-	pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
-	pVAO.LinkAttrib(pVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-	pVAO.Unbind();
-	pVBO.Unbind();
-	pEBO.Unbind();	
+	// VAO pVAO;
+	// pVAO.Bind();
+	// VBO pVBO(vertices, sizeof(vertices));
+	// EBO pEBO(indices, sizeof(indices));
+	// pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
+	// pVAO.LinkAttrib(pVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	// pVAO.Unbind();
+	// pVBO.Unbind();
+	// pEBO.Unbind();	
 
 	// Sky box
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
@@ -224,6 +224,13 @@ int main()
 		}
 	}
 
+	// new Plane
+	std::vector<Texture> textures = {
+		Texture("../Textures/brick.png", "diffuse", 0)
+	};
+	Mesh plane(vertices, indices, textures);
+
+
 	// FPS
 	double prevTime = 0.0;
 	double crntTime = 0.0;
@@ -261,17 +268,18 @@ int main()
 		// setting cam
 
 		// Draw a model
-		// shaderProgram.Activate();
-		treeModel.Draw(shaderProgram, camera);
+		shaderProgram.Activate();
+		// treeModel.Draw(shaderProgram, camera);
+		plane.Draw(shaderProgram, camera);
 
-		planeProgram.Activate();
-		glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		// glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
-		pVAO.Bind();
-		glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// planeProgram.Activate();
+		// glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+		// // glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+		// camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
+		// pVAO.Bind();
+		// glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// sky box draw
 		glDepthFunc(GL_LEQUAL);
@@ -302,9 +310,9 @@ int main()
 	}
 
 	// Delete all the objects we've created
-	pVAO.Delete();
-	pVBO.Delete();
-	pEBO.Delete();
+	// pVAO.Delete();
+	// pVBO.Delete();
+	// pEBO.Delete();
 
 	shaderProgram.Delete();
 	planeProgram.Delete();
