@@ -8,6 +8,7 @@ const unsigned int height = 1000;
 const unsigned int texWidth = 500;
 const unsigned int texHeight = 500;
 
+//  =========================  Not Used
 // // Plane Vertices
 // float vertices[] = 
 // {
@@ -18,6 +19,7 @@ const unsigned int texHeight = 500;
 // 	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
 // };
 
+//  =========================  Not Used
 // // Plane Indices
 // unsigned int indices[] = {
 // 	0, 2, 3,  // lower triangle
@@ -59,20 +61,21 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
+// Test TBN Mat
 // std::vector<Vertex> vertices =
 // {
-// 	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
-// 	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-// 	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-// 	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
+// 	Vertex{glm::vec3(-1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+// 	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+// 	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+// 	Vertex{glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}
 // };
 
 std::vector<Vertex> vertices =
 {
-	Vertex{glm::vec3(-1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}
+	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
 };
 
 // Indices for plane with texture
@@ -115,8 +118,6 @@ int main()
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.0f, 0.5f, 0.0f);
-	// glm::mat4 lightModel = glm::mat4(1.0f);
-	// lightModel = glm::translate(lightModel, lightPos);
 
 	glm::mat4 planeModel = glm::mat4(1.0f); //scale
 
@@ -133,27 +134,26 @@ int main()
 	// 1 Enable vsync // 0 disable
 	glfwSwapInterval(1);
 
-
-
 	// Generates Shader
 	Shader shaderProgram("../Shaders/new.vert", "../Shaders/new.frag", "../Shaders/new.geom");
-	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 	Shader skyboxShader("../Shaders/skybox.vert", "../Shaders/skybox.frag");
+	
+	//  =========================  Not Used (old plane Shader)
+	// Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	planeProgram.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
-	glUniform1i(glGetUniformLocation(planeProgram.ID, "skybox"), 0);
+	//  =========================  Not Used (Bikin Shader)
+	// planeProgram.Activate();
+	// glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
+	// glUniform1i(glGetUniformLocation(planeProgram.ID, "skybox"), 0);
 	// glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	// glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
-
-	
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -161,6 +161,7 @@ int main()
 	// Load in a model
 	Model treeModel("../Models/statue/scene.gltf");
 
+	//  =========================  Not Used (Initiate Plane old)
 	// Plane
 	// VAO pVAO;
 	// pVAO.Bind();
@@ -283,6 +284,7 @@ int main()
 		// treeModel.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
 
+		//  =========================  Not Used (draw plane old)
 		// planeProgram.Activate();
 		// glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		// // glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), camera.Position.x, camera.Position.y, camera.Position.z);
@@ -321,18 +323,17 @@ int main()
 	}
 
 	// Delete all the objects we've created
+
+	//  =========================  Not Used (Delete Object)
 	// pVAO.Delete();
 	// pVBO.Delete();
 	// pEBO.Delete();
 
 	shaderProgram.Delete();
-	planeProgram.Delete();
 	skyboxShader.Delete();
+	// planeProgram.Delete();
 
-	// Delete window before ending the program
 	glfwDestroyWindow(window);
-	
-	// Terminate GLFW before ending the program
 	glfwTerminate();
 	return 0;
 }
