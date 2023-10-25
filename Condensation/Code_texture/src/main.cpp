@@ -226,9 +226,10 @@ int main()
 
 	// new Plane
 	std::vector<Texture> textures = {
-		Texture("../Textures/brick.png", "diffuse", 0)
+		Texture("../Textures/brickwall.jpg", "diffuse", 0)
 	};
 	Mesh plane(vertices, indices, textures);
+	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
 
 
 	// FPS
@@ -267,8 +268,10 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 1000.0f);
 		// setting cam
 
-		// Draw a model
+		// Draw 
 		shaderProgram.Activate();
+		normalMap.Bind();
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
 		// treeModel.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
 

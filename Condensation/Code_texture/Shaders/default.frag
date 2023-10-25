@@ -17,6 +17,7 @@ in vec2 texCoord;
 // Gets the Texture Units from the main function
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
+uniform sampler2D normal0;
 // Gets the color of the light from the main function
 uniform vec4 lightColor;
 // Gets the position of the light from the main function
@@ -32,24 +33,29 @@ vec4 pointLight()
 
 	// intensity of light with respect to distance
 	float dist = length(lightVec);
-	float a = 3.0;
-	float b = 0.7;
+	float a = 1.00f;
+	float b = 0.70f;
 	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
 
 	// ambient lighting
-	float ambient = 0.20f;
+	float ambient = 0.05f;
 
 	// diffuse lighting
-	vec3 normal = normalize(Normal);
+	// Normals are mapped from the range [0, 1] to the range [-1, 1]
+	vec3 normal = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
 	// specular lighting
-	float specularLight = 0.50f;
-	vec3 viewDirection = normalize(camPos - crntPos);
-	vec3 reflectionDirection = reflect(-lightDirection, normal);
-	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
-	float specular = specAmount * specularLight;
+	float specular = 0.0f;
+	if (diffuse != 0.0f)
+	{
+		float specularLight = 0.50f;
+		vec3 viewDirection = normalize(camPos - crntPos);
+		vec3 halfwayVec = normalize(viewDirection + lightDirection);
+		float specAmount = pow(max(dot(normal, halfwayVec), 0.0f), 16);
+		specular = specAmount * specularLight;
+	};
 
 	return (texture(diffuse0, texCoord) * (diffuse * inten + ambient) + texture(specular0, texCoord).r * specular * inten) * lightColor;
 }
@@ -111,18 +117,18 @@ void main()
 	float ambientStrength = 0.1;
 	vec4 ambient = ambientStrength * lightColor;
 	
-	vec3 norm = normalize(Normal);
+	// vec3 norm = normalize(Normal);
 	// vec3 norm = normalize(texture(normal0, texCoord).xyz * 2.0f - 1.0f);
-	vec3 lightDir = normalize(lightPos - crntPos);
-	float diff = max(dot(norm, lightDir), 0.0f);
-	vec4 diffuse = diff * lightColor;
+	// vec3 lightDir = normalize(lightPos - crntPos);
+	// float diff = max(dot(norm, lightDir), 0.0f);
+	// vec4 diffuse = diff * lightColor;
 
-	float specularStrength = 0.5;
-	vec3 viewDir = normalize(camPos - crntPos);
-	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-	vec4 specular = specularStrength * spec * lightColor;
+	// float specularStrength = 0.5;
+	// vec3 viewDir = normalize(camPos - crntPos);
+	// vec3 reflectDir = reflect(-lightDir, norm);
+	// float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	// vec4 specular = specularStrength * spec * lightColor;
 
-	vec4 result = (ambient + diffuse + specular) * texture(diffuse0,texCoord);
-	FragColor = result;
+	// vec4 result = (ambient + diffuse + specular) * texture(diffuse0,texCoord);
+	// FragColor = result;
 }
