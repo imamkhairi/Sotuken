@@ -59,6 +59,21 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
+// std::vector<Vertex> vertices =
+// {
+// 	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+// 	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+// 	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+// 	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
+// };
+
+// // Indices for plane with texture
+// std::vector<GLuint> indices =
+// {
+// 	0, 1, 2,
+// 	0, 2, 3
+// };
+
 int main()
 {	
 	// Initialize GLFW
@@ -113,13 +128,13 @@ int main()
 
 
 	// Generates Shader
-	// Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag");
+	Shader shaderProgram("../Shaders/default.vert", "../Shaders/default.frag", "../Shaders/default.geom");
 	Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 	Shader skyboxShader("../Shaders/skybox.vert", "../Shaders/skybox.frag");
 
-	// shaderProgram.Activate();
-	// glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	// glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	shaderProgram.Activate();
+	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	planeProgram.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
@@ -136,7 +151,7 @@ int main()
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	// Load in a model
-	// Model treeModel("../Models/trees/scene.gltf");
+	Model treeModel("../Models/crow/scene.gltf");
 
 	// Plane
 	VAO pVAO;
@@ -247,7 +262,7 @@ int main()
 
 		// Draw a model
 		// shaderProgram.Activate();
-		// treeModel.Draw(shaderProgram, camera);
+		treeModel.Draw(shaderProgram, camera);
 
 		planeProgram.Activate();
 		glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
@@ -291,7 +306,7 @@ int main()
 	pVBO.Delete();
 	pEBO.Delete();
 
-	// shaderProgram.Delete();
+	shaderProgram.Delete();
 	planeProgram.Delete();
 	skyboxShader.Delete();
 
