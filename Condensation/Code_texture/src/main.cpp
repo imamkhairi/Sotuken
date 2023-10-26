@@ -144,6 +144,7 @@ int main()
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
 	//  =========================  Not Used (Bikin Shader)
 	// planeProgram.Activate();
@@ -193,7 +194,7 @@ int main()
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
-		"../skybox3/right.jpg",
+		"../skybox3/right1.jpg",
 		"../skybox3/left.jpg",
 		"../skybox3/top.jpg",
 		"../skybox3/bottom.jpg",
@@ -239,6 +240,7 @@ int main()
 	};
 	Mesh plane(vertices, indices, textures);
 	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
+	Texture heightTex("../Textures/heightMap.png", "height", 2);
 
 
 	// FPS
@@ -281,6 +283,10 @@ int main()
 		shaderProgram.Activate();
 		normalMap.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
+		heightTex.Bind();
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		// treeModel.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
 
