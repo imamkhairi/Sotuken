@@ -5,8 +5,8 @@
 
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 1000;
-const unsigned int texHeight = 1000;
+const unsigned int texWidth = 512;
+const unsigned int texHeight = 512;
 
 //  =========================  Not Used (old plane vertices)
 // // Plane Vertices
@@ -72,10 +72,10 @@ unsigned int skyboxIndices[] =
 
 std::vector<Vertex> vertices =
 {
-	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
-	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
+	Vertex{glm::vec3(-1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+	Vertex{glm::vec3(-1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3( 1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
 };
 
 // Indices for plane with texture
@@ -116,7 +116,7 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(30, texHeight, texWidth);
+	particleSystem ParticleSystem(50, texHeight, texWidth);
 	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
 
 	// Introduce the window into the current context

@@ -131,8 +131,8 @@ float sobel_y[9] = float[]
     -1, -2, -1
 );
 
-const float offset_x = 1.0f / 1000.0f; 
-const float offset_y = 1.0f / 1000.0f; 
+const float offset_x = 1.0f / 512.0f; 
+const float offset_y = 1.0f / 512.0f; 
 
 vec2 offsets[9] = vec2[](
     vec2(-offset_x, offset_y), vec2(0.0f, offset_y), vec2(offset_x, offset_y),
@@ -179,8 +179,9 @@ void main()
 		vec3 I = normalize(crntPos - camPos);
 		vec3 R = refract(I, normalize(normalMap), ratio);
 		FragColor = vec4(texture(skybox, vec3(R.xy, -R.z)).rgb, 1.0);
+		
 		// FragColor = vec4(normalMap, 1.0f);
+		// FragColor = vec4(texture(height0, texCoord).r);
 	}
 	else discard;
-	// FragColor = vec4(texture(height0, texCoord).r);
 }
