@@ -8,7 +8,7 @@ const unsigned int height = 1000;
 const unsigned int texWidth = 500;
 const unsigned int texHeight = 500;
 
-//  =========================  Not Used
+//  =========================  Not Used (old plane vertices)
 // // Plane Vertices
 // float vertices[] = 
 // {
@@ -19,7 +19,7 @@ const unsigned int texHeight = 500;
 // 	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
 // };
 
-//  =========================  Not Used
+//  =========================  Not Used (old plane indices)
 // // Plane Indices
 // unsigned int indices[] = {
 // 	0, 2, 3,  // lower triangle
@@ -117,7 +117,7 @@ int main()
 	glViewport(0, 0, width, height);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.5f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.5f);
 
 	glm::mat4 planeModel = glm::mat4(1.0f); //scale
 
