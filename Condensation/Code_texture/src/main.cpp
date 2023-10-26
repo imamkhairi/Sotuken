@@ -85,6 +85,18 @@ std::vector<GLuint> indices =
 	0, 2, 3
 };
 
+float rectangleVertices[] =
+{
+	//  Coords   // texCoords
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	-1.0f, -1.0f,  0.0f, 0.0f,
+	-1.0f,  1.0f,  0.0f, 1.0f,
+
+	 1.0f,  1.0f,  1.0f, 1.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	-1.0f,  1.0f,  0.0f, 1.0f
+};
+
 int main()
 {	
 	// Initialize GLFW
