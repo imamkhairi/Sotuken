@@ -28,15 +28,9 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
         // starting point
         int x = particle.position.x - (int)particle.radius - 1;
         int y = particle.position.y - (int)particle.radius - 1;
+        // end point
         int x1 = particle.position.x + (int)particle.radius + 1;
         int y1 = particle.position.y + (int)particle.radius + 1;
-        
-        // std::cout << "center: " << particle.position.x << ", " << particle.position.y << std::endl;
-        // std::cout << x << ", " << y << std::endl;
-        // std::cout << particle.radius << std::endl;
-        // std::cout << x1 << ", " << y1 << std::endl;
-
-        // std::cout << std::endl;
 
         for (int y0 = y; y0 <= y1; y0++) {
             for (int x0 = x; x0 <= x1; x0++) {
