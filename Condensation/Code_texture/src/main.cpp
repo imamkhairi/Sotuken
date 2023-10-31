@@ -85,8 +85,6 @@ std::vector<GLuint> indices =
 	0, 2, 3
 };
 
-unsigned int samples = 8;
-
 float rectangleVertices[] =
 {
 	//  Coords   // texCoords
