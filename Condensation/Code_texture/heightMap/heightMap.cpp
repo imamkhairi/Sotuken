@@ -18,7 +18,7 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
     //             float h = calcHeight(particle, x, y);
     //             if ( h > 0 ) {
     //                 // std::cout << "h value : " << h * 50 << std::endl;
-    //                 heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
+    //                 heightMap.at<unsigned char>(y, x) = h*75; // 50 konstansta
     //             }
     //         }
     //     }
@@ -26,20 +26,23 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
 
     for (auto & particle : particleSystem) {
         // starting point
-        int x = particle.position.x - (int)particle.radius - 1;
-        int y = particle.position.y - (int)particle.radius - 1;
+        int x = particle.position.x - (int)particle.radius - 2;
+        int y = particle.position.y - (int)particle.radius - 2;
         // end point
-        int x1 = particle.position.x + (int)particle.radius + 1;
-        int y1 = particle.position.y + (int)particle.radius + 1;
+        int x1 = particle.position.x + (int)particle.radius + 2;
+        int y1 = particle.position.y + (int)particle.radius + 2;
+
+        // std::cout << "center :" << particle.position.x << ", " << particle.position.y << std::endl;
+        // std::cout << "radius :" << particle.radius << std::endl;
+        // std::cout << "radius :" << (int)particle.radius << std::endl;
+        // std::cout << "start :" << x << ", " << y << std::endl;
+        // std::cout << "end :" << x1 << ", " << y1 << std::endl;
 
         for (int y0 = y; y0 <= y1; y0++) {
             for (int x0 = x; x0 <= x1; x0++) {
-                // std::cout << x0 << ", " << y0 << std::endl;
                 float h = calcHeight(particle, x0, y0);
-                // std::cout << "h value : " << h * 50 << std::endl;
                 if ( h > 0 ) {
-                    // std::cout << h << std::endl;
-                    heightMap.at<unsigned char>(y0, x0) = h*50; // 50 konstansta
+                    heightMap.at<unsigned char>(y0, x0) = h*75; // 50 konstansta
                 }
             }
         }

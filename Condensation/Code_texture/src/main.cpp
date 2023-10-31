@@ -5,8 +5,8 @@
 
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 512;
-const unsigned int texHeight = 512;
+const unsigned int texWidth = 1024;
+const unsigned int texHeight = 1024;
 
 //  =========================  Not Used (old plane vertices)
 // // Plane Vertices

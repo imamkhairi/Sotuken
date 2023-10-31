@@ -1,0 +1,12 @@
+No Smoothing
+512 100 particle
+Old : 898 ms
+New : 2 ms
+1024 100 particle
+Old : 3631
+New : 4 ms
+
+With smoothing
+512 100 particle
+Old : 920
+New : 18 ms
