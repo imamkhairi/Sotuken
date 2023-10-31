@@ -15,10 +15,11 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
     //     for (unsigned int x = 0; x < this->mapWidth; x++) {
     //         // heightMap.at<unsigned char>(y, x) = h*(255/r); // 255/r ini asumsi max 255
     //         for (auto & particle : particleSystem) {
+    //             std::cout << "radius :" << particle.radius << std::endl;
     //             float h = calcHeight(particle, x, y);
-    //             if ( h > 0 ) {
+    //             if ( h > 0.0 ) {
     //                 // std::cout << "h value : " << h * 50 << std::endl;
-    //                 heightMap.at<unsigned char>(y, x) = h*75; // 50 konstansta
+    //                 heightMap.at<unsigned char>(y, x) = h*50; // 50 konstansta
     //             }
     //         }
     //     }
@@ -42,7 +43,7 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
             for (int x0 = x; x0 <= x1; x0++) {
                 float h = calcHeight(particle, x0, y0);
                 if ( h > 0 ) {
-                    heightMap.at<unsigned char>(y0, x0) = h*75; // 50 konstansta
+                    heightMap.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
                 }
             }
         }
@@ -54,7 +55,7 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     glm::vec2 dp(a.position.x - x_i, a.position.y - y_i);
-    float value = a.radius*a.radius - glm::length(dp);
+    float value = a.radius*a.radius - glm::length(dp)*glm::length(dp);
     float height;
     if (value > 0) {
         height = std::sqrt(value);

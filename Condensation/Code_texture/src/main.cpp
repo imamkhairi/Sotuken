@@ -1,5 +1,6 @@
 #include <Model.h>
 #include <heightMap.h>
+#include <time.h>
 
 // constanta ini sepertinya bisa disimpat di header file
 
@@ -119,7 +120,10 @@ int main()
 	}
 	
 	particleSystem ParticleSystem(150, texHeight, texWidth);
+
+    // clock_t tStart = clock();
 	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
+    // printf("Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);

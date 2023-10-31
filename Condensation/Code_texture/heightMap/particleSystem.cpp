@@ -21,7 +21,7 @@ void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
 }
 
 void particleSystem::initiateDroplet(Droplet *a) {    
-    a->mass = 1.5f;
+    a->mass = 100.0f;
     calcRadius(a);
     a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
         (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
@@ -29,7 +29,7 @@ void particleSystem::initiateDroplet(Droplet *a) {
 }
 
 void particleSystem::calcRadius(Droplet *a) {
-    a->radius = std::cbrt((double)(3*a->mass)/(2*a->density*M_1_PI));
+    a->radius = std::cbrt((double)(3*a->mass)/(double)(2*a->density*M_1_PI));
 }
 
 std::vector <Droplet> particleSystem::getParticleSystem() {
