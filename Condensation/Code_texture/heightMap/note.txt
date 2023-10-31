@@ -5,8 +5,9 @@ New : 2 ms
 1024 100 particle
 Old : 3631
 New : 4 ms
+2048 100 particle
 
 With smoothing
 512 100 particle
-Old : 920
+Old : 920 ms
 New : 18 ms
