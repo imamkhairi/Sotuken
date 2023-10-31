@@ -48,7 +48,7 @@ void heightMap::smoothingHeightMap(cv::Mat heightMap) {
                 }
             }
             value = value/9;
-            if (value < 1 && value > 0)  std::cout << value << std::endl;
+            // if (value < 1 && value > 0)  std::cout << value << std::endl;
             heightThreshold(&value);
             smoothed.at<unsigned char>(y,x) = value;
         }

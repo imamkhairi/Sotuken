@@ -173,7 +173,7 @@ void main()
 	vec3 normalMap = generateNormalMap();
 	
 	// threshold to discard 
-	if (texture(height0, vec2(texCoord.x - 1, texCoord.y)).r > 0.005)
+	if (texture(height0, vec2(texCoord.x - 1, texCoord.y)).r > 0.0)
 	{
 		float ratio = 1.00 / 1.52;
 		vec3 I = normalize(crntPos - camPos);

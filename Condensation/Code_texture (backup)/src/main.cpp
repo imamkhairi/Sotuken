@@ -5,8 +5,8 @@
 
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 500;
-const unsigned int texHeight = 500;
+const unsigned int texWidth = 512;
+const unsigned int texHeight = 512;
 
 //  =========================  Not Used (old plane vertices)
 // // Plane Vertices
@@ -72,10 +72,10 @@ unsigned int skyboxIndices[] =
 
 std::vector<Vertex> vertices =
 {
-	Vertex{glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
-	Vertex{glm::vec3(-1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3( 1.0f,  1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3( 1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
+	Vertex{glm::vec3(-1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
+	Vertex{glm::vec3(-1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3( 1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
 };
 
 // Indices for plane with texture
@@ -84,6 +84,8 @@ std::vector<GLuint> indices =
 	0, 1, 2,
 	0, 2, 3
 };
+
+unsigned int samples = 8;
 
 float rectangleVertices[] =
 {
@@ -97,6 +99,8 @@ float rectangleVertices[] =
 	-1.0f,  1.0f,  0.0f, 1.0f
 };
 
+
+//  Remove FrameBuffer
 int main()
 {	
 	// Initialize GLFW
@@ -116,7 +120,7 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(30, texHeight, texWidth);
+	particleSystem ParticleSystem(150, texHeight, texWidth);
 	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
 
 	// Introduce the window into the current context
@@ -125,7 +129,7 @@ int main()
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
 
-	// Specify the viewport of OpenGL in the Window. From x = 0, y = 0, to x = 800, y = 800
+	// Specify the viewport of OpenGL in the Window. From x = 0, y = 0, to x = width, y = height
 	glViewport(0, 0, width, height);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -206,12 +210,12 @@ int main()
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
-		"../skybox3/right1.jpg",
-		"../skybox3/left.jpg",
-		"../skybox3/top.jpg",
-		"../skybox3/bottom.jpg",
-		"../skybox3/front.jpg",
-		"../skybox3/back.jpg"
+		"../skybox2/right1.jpg",
+		"../skybox2/left.jpg",
+		"../skybox2/top.jpg",
+		"../skybox2/bottom.jpg",
+		"../skybox2/front.jpg",
+		"../skybox2/back.jpg"
 	};
 
 	// Creates the cubemap texture object
@@ -245,6 +249,7 @@ int main()
 			stbi_image_free(data);
 		}
 	}
+
 
 	// new Plane
 	std::vector<Texture> textures = {
@@ -280,9 +285,10 @@ int main()
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
+		glEnable(GL_DEPTH_TEST);
 
 
 		// Handles camera inputs
@@ -333,7 +339,6 @@ int main()
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
 
-	
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
