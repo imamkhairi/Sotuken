@@ -49,8 +49,8 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
         }
     }
 
-    // this->smoothingHeightMap(heightMap);
-    cv::imwrite("heightMap.png", heightMap);
+    this->smoothingHeightMap(heightMap);
+    // cv::imwrite("heightMap.png", heightMap);
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
@@ -65,6 +65,7 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
 
 void heightMap::smoothingHeightMap(cv::Mat heightMap) {
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
+    for (int i = 0; i < 1; i++) {
 
     for (int y = 0; y < this->mapHeight; y++) {
         for (int x = 0; x < this->mapWidth; x++) {
@@ -82,6 +83,8 @@ void heightMap::smoothingHeightMap(cv::Mat heightMap) {
             heightThreshold(&value);
             smoothed.at<unsigned char>(y,x) = value;
         }
+    }
+    
     }
 
     cv::imwrite("heightMap.png", smoothed);
