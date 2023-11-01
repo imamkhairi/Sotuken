@@ -6,7 +6,8 @@ particleSystem::particleSystem(int particleAmmount, int mapHeight, int mapWidth)
     this->particleAmmount = particleAmmount;
     this->mapHeigth = mapHeight;
     this->mapWidth = mapWidth;
-    this->initiateParticleSystem(&this->Particles);
+    this->initiateParticleSystem(&this->Particles); 
+    this->drewAmmount = 0;
 };
 
 void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
@@ -29,9 +30,6 @@ void particleSystem::calcRadius(Droplet *a) {
     a->radius = std::cbrt((double)(3*a->mass)/(double)(2*a->density*M_1_PI));
 }
 
-std::vector <Droplet> particleSystem::getParticleSystem() {
-    return this->Particles;
-}
 
 void particleSystem::addParticle(int ammount)
 {
@@ -43,3 +41,21 @@ void particleSystem::addParticle(int ammount)
     }
 }
 
+void particleSystem::setDrewAmmount(int value)
+{
+    this->drewAmmount = value;
+}
+
+std::vector <Droplet> particleSystem::getParticleSystem() {
+    return this->Particles;
+}
+
+int particleSystem::getParticleAmmount()
+{
+    return this->particleAmmount;
+}
+
+int particleSystem::getDrewAmmount() 
+{
+    return this->drewAmmount;
+}

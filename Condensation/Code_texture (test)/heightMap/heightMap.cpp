@@ -1,13 +1,33 @@
 #include <heightMap.h>
 
-heightMap::heightMap(std::vector <Droplet> ParticleSystem, int mapHeight, int mapWidth) {
+heightMap::heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth) {
     this->mapHeight = mapHeight;
     this->mapWidth = mapWidth;
     this->generateHeightMap(ParticleSystem);
 }
 
+void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
+    for (int i = start; i < end; i++) {
+        // starting point
+        int x = PS[i].position.x - (int)PS[i].radius - 2;
+        int y = PS[i].position.y - (int)PS[i].radius - 2;
+        // end point
+        int x1 = PS[i].position.x + (int)PS[i].radius + 2;
+        int y1 = PS[i].position.y + (int)PS[i].radius + 2;
+
+        for (int y0 = y; y0 <= y1; y0++) {
+            for (int x0 = x; x0 <= x1; x0++) {
+                float h = calcHeight(PS[i], x0, y0);
+                if ( h > 0 ) {
+                    dst.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
+                }
+            }
+        }
+    }
+}
+
 // need optimization
-void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
+void heightMap::generateHeightMap(particleSystem *PS) {
     cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
 
     // Old method
@@ -25,32 +45,15 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
     //     }
     // }
 
-    for (auto & particle : particleSystem) {
-        // starting point
-        int x = particle.position.x - (int)particle.radius - 2;
-        int y = particle.position.y - (int)particle.radius - 2;
-        // end point
-        int x1 = particle.position.x + (int)particle.radius + 2;
-        int y1 = particle.position.y + (int)particle.radius + 2;
+    std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
+    int start = PS->getDrewAmmount();
+    int end = PS->getParticleAmmount();
+    this->drawHeightMap(heightMap, particle, start, end);
 
-        // std::cout << "center :" << particle.position.x << ", " << particle.position.y << std::endl;
-        // std::cout << "radius :" << particle.radius << std::endl;
-        // std::cout << "radius :" << (int)particle.radius << std::endl;
-        // std::cout << "start :" << x << ", " << y << std::endl;
-        // std::cout << "end :" << x1 << ", " << y1 << std::endl;
+    PS->setDrewAmmount(PS->getParticleAmmount());
 
-        for (int y0 = y; y0 <= y1; y0++) {
-            for (int x0 = x; x0 <= x1; x0++) {
-                float h = calcHeight(particle, x0, y0);
-                if ( h > 0 ) {
-                    heightMap.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
-                }
-            }
-        }
-    }
-
-    this->smoothingHeightMap(heightMap);
-    // cv::imwrite("heightMap.png", heightMap);
+    // this->smoothingHeightMap(heightMap);
+    cv::imwrite("heightMap.png", heightMap);
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
@@ -77,7 +80,6 @@ void heightMap::smoothingHeightMap(cv::Mat heightMap) {
                 }
             }
             value = value/9;
-            // if (value < 1 && value > 0)  std::cout << value << std::endl;
             heightThreshold(&value);
             smoothed.at<unsigned char>(y,x) = value;
         }
@@ -86,9 +88,21 @@ void heightMap::smoothingHeightMap(cv::Mat heightMap) {
     cv::imwrite("heightMap.png", smoothed);
 }
 
-void heightMap::updateHeightMap()
+void heightMap::updateHeightMap(particleSystem *PS)
 {
+    int last = PS->getDrewAmmount();
+    int ammount = PS->getParticleAmmount();
     cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
+
+    if (last < ammount) {
+        int dif = ammount - last;
+        std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
+        this->drawHeightMap(heightMap, particle, last, ammount);
+    }
+    
+    PS->setDrewAmmount(PS->getParticleAmmount());
+
+    cv::imwrite("heightMap.png", heightMap);
 }
 
 void heightMap::checkCoordinate(int *x, int *y) {
