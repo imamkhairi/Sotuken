@@ -12,7 +12,6 @@ int main() {
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-    // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
     for (int i = 0; i < 1000; i++) {
         tStart = clock();
         ParticleSystem.addParticle(1);
@@ -20,4 +19,6 @@ int main() {
         printf("Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
         usleep(50000); 
     }
+    std::cout << ParticleSystem.getParticleAmmount() << std::endl;
+    std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 }
