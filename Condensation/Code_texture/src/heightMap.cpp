@@ -21,7 +21,7 @@ void heightMap::generateHeightMap(std::vector <Droplet> particleSystem) {
             for (int x0 = x; x0 <= x1; x0++) {
                 float h = calcHeight(particle, x0, y0);
                 if ( h > 0 ) {
-                    heightMap.at<unsigned char>(y0, x0) = h*10; // 50 konstansta
+                    heightMap.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
                 }
             }
         }
