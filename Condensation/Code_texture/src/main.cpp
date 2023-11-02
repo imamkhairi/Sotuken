@@ -123,7 +123,7 @@ int main()
 
     // clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-	ParticleSystem.addParticle(3);
+	ParticleSystem.addParticle(120);
 	HeightMap.updateHeightMap(&ParticleSystem);
     // printf("Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;

@@ -119,16 +119,16 @@ vec4 spotLight()
 
 float sobel_x[9] = float[]
 (
-    1, 0, -1,
-    2, 0, -2,
-    1, 0, -1
+    -1, 0, 1,
+    -2, 0, 2,
+    -1, 0, 1
 );
 
 float sobel_y[9] = float[]
 (
-    1, 2, 1,
+    -1, -2, -1,
     0, 0, 0,
-    -1, -2, -1
+    1, 2, 1
 );
 
 const float offset_x = 1.0f / 512.0f; 
