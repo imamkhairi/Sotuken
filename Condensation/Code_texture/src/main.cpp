@@ -152,7 +152,7 @@ int main()
 	glFrontFace(GL_CCW);
 
 	// 1 Enable vsync // 0 disable
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	// Generates Shader
 	Shader shaderProgram("../Shaders/new.vert", "../Shaders/new.frag", "../Shaders/new.geom");

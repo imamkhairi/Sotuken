@@ -32,12 +32,15 @@ void particleSystem::calcRadius(Droplet *a) {
 
 
 void particleSystem::addParticle(int ammount)
-{
-    this->particleAmmount += ammount;
-    for (int i = 0; i < ammount; i++) {
-        Droplet a;
-        this->initiateDroplet(&a);
-        this->Particles.push_back(a);
+{   
+    if(this->particleAmmount < 400) {
+        // std::cout << this->particleAmmount << std::endl;
+        this->particleAmmount += ammount;
+        for (int i = 0; i < ammount; i++) {
+            Droplet a;
+            this->initiateDroplet(&a);
+            this->Particles.push_back(a);
+        }
     }
 }
 
