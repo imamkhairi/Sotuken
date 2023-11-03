@@ -5,11 +5,13 @@ Current condition of commonly played game still doesn’t support sense from ski
 Need something to represent the temperature i.e room temperature or beverage temperature. For example some of current game already make condensation for human breath under low temperature. 
 By using condensation we can show that an object have low temperature by 
 Make gaming experience more realistic. 
+This simulation based on Particle system that would store all of the data for the water droplet and simultaneously store them in ID Map to store the droplets location. Based on the particle system generate 2D texture of Heihgt Map and calculate the image gradient using fragment shader. Finally calculate the refraction of the light and take the reference of the environment map to render on the screen.
 
 
 はじめに (OK)
-In commonly played games today, it is not yet possible to feel the temperature of objects in the game world. This can make the gaming experience feel less realistic, especially in games where temperature plays an important role. One way to represent temperature in games is to use condensation. Condensation is the process by which water vapor in the air turns into liquid water droplets. This happens when the air is cooled below its dew point, which is the temperature at which the air can no longer hold all of its water vapor. Condensation can be used to show that an object has a low temperature. For example, person's breath might condense in the air when they exhale in a cold environment, or cold beverage might have condensation on its surface. Using condensation to represent temperature in games can make the gaming experience more realistic. It can also help to create a more immersive atmosphere for players.
-
+In commonly played games today, it is not yet possible to feel the temperature of an objects directly as in the real life. This can make the gaming experience feel less realistic, especially in games where temperature plays an important role. 
+One way to represent temperature in games is to show condensation process. Condensation is the process by which water vapor in the air turns into liquid water droplets. This happens when the air is cooled below its dew point, which is the temperature at which the air can no longer hold all of its water vapor. Condensation can be used to show that an object has a low temperature. For example, person's breath might condense in the air when they exhale in a cold environment, or cold beverage might have condensation on its surface. 
+This simulation uses a particle system to store the data for each water droplet. The particle data is also stored in an ID map to track the location of each droplet. A 2D height map is generated from the particle system and the image gradient is calculated using a fragment shader. Finally, the refraction of light is calculated using the environment map to render the water droplets on the screen.
 
 Method
 Simulate condensation by using combination of OpenCV and OpenGL.
