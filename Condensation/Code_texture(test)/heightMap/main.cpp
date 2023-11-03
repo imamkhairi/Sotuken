@@ -3,8 +3,8 @@
 #include <time.h>
 #include <unistd.h>
 
-const unsigned int texWidth = 1024;
-const unsigned int texHeight = 1024;
+const unsigned int texWidth  = 512;
+const unsigned int texHeight = 512;
 
 int main() {
     clock_t tStart = clock();
@@ -12,7 +12,7 @@ int main() {
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 97; i++) {
         tStart = clock();
         ParticleSystem.addParticle(1);
         HeightMap.updateHeightMap(&ParticleSystem);

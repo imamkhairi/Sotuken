@@ -8,8 +8,8 @@
 
 // dibagian bawah muncul garis putih
 
-const int height = 1024;
-const int width = 1024;
+const int height = 512;
+const int width = 512;
 
 float z = -1;
 
@@ -77,7 +77,7 @@ void generateNormalMap(cv::Mat *normalMap, cv::Mat grad_x, cv::Mat grad_y) {
 }
 
 int main() {
-    cv::Mat heightMap = cv::imread("brick.png", cv::IMREAD_GRAYSCALE);
+    cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
     cv::Mat normalMap = cv::Mat::zeros(width, height, CV_8UC3);
     cv::Mat grad_x = cv::Mat::zeros(width, height, CV_8UC1);
     cv::Mat grad_y = cv::Mat::zeros(width, height, CV_8UC1);
