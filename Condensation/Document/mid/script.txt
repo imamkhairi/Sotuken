@@ -1,0 +1,55 @@
+Particle System
+Imagine each of the water droplet is a particle. One particle will data such as, position, mass, radius and density. So the particle system will store all of the water droplet data.
+
+Height Map
+From the data that stored in the particle map, we will calculate the height of the water surface on each pixel. Since the water droplet shape is based on the hemisphere shape, the calculation of the height will be based on this equation. Which only a pythagoras theorem.
+The value then represent the whiteness of each pixel, which means the whiter it is the higher it water surface.
+
+ID Map
+This map is a 2D array with the same size with height map that created before. Used to track wheter on a specific pixel there is water droplet or not. The checking process is quite simple since we already know the height, if the height is greater than  0, then the value of respective ID map is 1 and vice versa.
+
+Normal Map
+Normal Map used to represent the normal vecter of the water droplet surface. The value of RGB will represent the xyz axis direction. 
+Each red and green value is calculated based on the gradient of the height map by using sobel filter for the x and y axis. For the z axis the value is alwas 1, and that is also why the texture is blueish.
+All of this calculation was done in the fragment shader, since we don't need to store the texture data, instead we used it to calculate the refraction of the light based on snell's law.
+
+Environment Map
+To render the refraction result, we need a virtual environment to refer to. That is when environment map take place. 
+Used to represent the virtual environment for the rendered result. Build by using six 2Dtexture.
+Imagine this room is the environment map, the 4 walls, the ceiling and the floor will be represented by its own 2Dtexture.
+
+Current result
+Since the water dorplet rendered based on 2Dtexture, the result as we can see here was pixelated. Of course by increasing the resolution of the texture will reduce it. But that is alse means increasing the excecution time.
+
+Future works
+That is why there are more works to do in the future. Obviously the first is to improve height map generating algorithm, so that even if we increase the resolution of the height map, the increasing of excecution time can be reduced. The second is to make this system update the texture for each frame so that we can animate the whole process. The last one is to also calculate the fresnel reflection to make the rendered result looks like more realistic.
+
+------------------------------------------------
+パーティクルシステム
+水滴のひとつひとつがパーティクルであるとします。一つのパーティクルは、位置、質量、半径、密度などのデータを持っています。ようすると、パーティクルシステムにはすべての水滴データが格納されています。
+
+ハイトマップ
+パーティクルシステムに格納されたデータから、各ピクセルの水面の高さを計算します。水滴の形状は半球に基づいているので、高さの計算はこの式に基づきます。
+この値は各ピクセルの白さを表し、白ければ白いほど水面が高いことを意味しています。
+
+IDマップ
+このマップは、前に作成したハイトマップと同じサイズの2次元配列です。各ピクセルに水滴があるかどうかを追跡するために使用されています。ハイトマップの値が0より大きければ、それぞれのIDマップの値は1になり、逆もまた同様です。
+
+法線マップ
+法線マップは、水滴表面の法線ベクトルを表すために使用されています。RGBの値がxyz軸方向を表します。
+各赤と緑の値は、x軸とy軸については、ソーベルフィルタを使用してハイトマップの導関数に基づいて計算されました。z軸の値は常に1であり、これがテクスチャが青っぽい理由でもあります。
+テクスチャデータを保存する必要がないため、この計算はすべてフラグメントシェーダで行われ、代わりにスネルの法則に基づいて光の屈折を計算するために使用されまします。
+
+環境マップ
+屈折結果をレンダリングするには、参照する仮想環境が必要で、そこで環境マップが使われます。
+レンダリング結果の仮想環境を表現するために使用します。6つの2Dテクスチャを使って構築します。
+この部屋が環境マップだとすると、4つの壁、天井、床がそれぞれの2Dテクスチャで表現されます。
+
+現在の結果
+水滴のレンダリングは2Dテクスチャをベースにしているため、このようにピクセル化された結果となっています。もちろん、テクスチャの解像度を上げれば、ピクセル化は解消されますが、それは同時に実行時間の増加を意味しています。
+
+今後の課題
+というわけで、今後の課題はまだまだあります。ひとつは、ハイトマップ生成のアルゴリズムを改良し、ハイトマップの解像度を上げても実行時間の増加を抑えられるようにすることです。2つ目は、このシステムをフレームごとにテクスチャを更新するようにし、プロセス全体をアニメーション化できるようにすることです。最後の1つは、レンダリング結果をよりリアルに見せるために、フレネル反射を計算することです。
+
+
+
