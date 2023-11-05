@@ -1,114 +1,58 @@
-#include "opencv2/core.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/highgui.hpp"
-
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 
-using namespace cv;
-using namespace std;
-
-// int main() {
-//     // Read an input image in grayscale
-//     Mat I = imread("lena.jpg", IMREAD_GRAYSCALE);
-//     if (I.empty()) {
-//         cout << "Error opening image" << endl;
-//         return EXIT_FAILURE;
-//     }
-
-//     // Expand input image to optimal size for FFT
-//     int m = getOptimalDFTSize(I.rows);
-//     int n = getOptimalDFTSize(I.cols);
-//     // cout << m << ", " << n << endl;
-//     Mat padded;
-//     copyMakeBorder(I, padded, 0, m - I.rows, 0, n - I.cols, BORDER_CONSTANT, Scalar::all(0));
-
-//     // Perform FFT
-//     // cout << Mat_<float>(padded).size << endl;
-//     // cout << Mat::zeros(padded.size(), CV_32F) << endl;
-//     Mat planes[] = {Mat_<float>(padded), Mat::zeros(padded.size().width, padded.size().height, CV_32F)};
-//     // // imwrite("test.jpg", padded);
-//     Mat complexI;
-//     merge(planes, 2, complexI);
-//     dft(complexI, complexI);
-
-//     // Perform Inverse FFT (to demonstrate the process)
-//     Mat inverseTransform;
-//     idft(complexI, inverseTransform, DFT_REAL_OUTPUT);
-
-//     // Display the original and reconstructed images
-//     imshow("Original Image", I);
-//     imshow("Reconstructed Image", inverseTransform);
-//     waitKey(0);
-
-//     return 0;
-// }
-
-static void help(char ** argv)
-{
-    cout << endl
-        <<  "This program demonstrated the use of the discrete Fourier transform (DFT). " << endl
-        <<  "The dft of an image is taken and it's power spectrum is displayed."  << endl << endl
-        <<  "Usage:"                                                                      << endl
-        << argv[0] << " [image_name -- default lena.jpg]" << endl << endl;
-}
-int main(int argc, char ** argv)
-{
-    help(argv);
-    const char* filename = argc >=2 ? argv[1] : "lena.jpg";
-
-    Mat I = imread( samples::findFile( filename ), IMREAD_GRAYSCALE);
-    if( I.empty()){
-        cout << "Error opening image" << endl;
-        return EXIT_FAILURE;
+int main(int argc, char** argv) {
+    if (argc != 3) {
+        std::cout << "Missing required argument" << std::endl;
+        return -1;
     }
-    
-    Mat padded;                            //expand input image to optimal size
-    int m = getOptimalDFTSize( I.rows );
-    int n = getOptimalDFTSize( I.cols ); // on the border add zero values
-    copyMakeBorder(I, padded, 0, m - I.rows, 0, n - I.cols, BORDER_CONSTANT, Scalar::all(0));
-    
-    Mat planes[] = {Mat_<float>(padded), Mat::zeros(padded.size().width, padded.size().height, CV_32F)};
-    Mat complexI;
-    merge(planes, 2, complexI);         // Add to the expanded another plane with zeros
-    
-    dft(complexI, complexI);            // this way the result may fit in the source matrix
 
-    // compute the magnitude and switch to logarithmic scale
-    // => log(1 + sqrt(Re(DFT(I))^2 + Im(DFT(I))^2))
-    split(complexI, planes);                   // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
-    magnitude(planes[0], planes[1], planes[0]);// planes[0] = magnitude
-    Mat magI = planes[0];
+    std::string fileName = argv[1];
+    int filterOption = std::stoi(argv[2]);
 
-    magI += Scalar::all(1);                    // switch to logarithmic scale
-    log(magI, magI);
+    cv::Mat img = cv::imread(fileName, cv::IMREAD_GRAYSCALE);
+    if (img.empty()) {
+        std::cerr << "Error: Could not read the image file." << std::endl;
+        return -1;
+    }
 
-    // crop the spectrum, if it has an odd number of rows or columns
-    magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2)); // makse sure even
+    cv::Mat padded;
+    int m = cv::getOptimalDFTSize(img.rows);
+    int n = cv::getOptimalDFTSize(img.cols);
+    cv::copyMakeBorder(img, padded, 0, m - img.rows, 0, n - img.cols, cv::BORDER_CONSTANT, cv::Scalar::all(0));
 
-    // rearrange the quadrants of Fourier image  so that the origin is at the image center
-    int cx = magI.cols/2;
-    int cy = magI.rows/2;
+    cv::Mat planes[] = {cv::Mat_<float>(padded), cv::Mat::zeros(padded.size().height, padded.size().width, CV_32F)};
+    std::cout << "test" << std::endl;
+    cv::Mat complexImg;
+    cv::merge(planes, 2, complexImg);
 
-    Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
-    Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
-    Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
-    Mat q3(magI, Rect(cx, cy, cx, cy)); // Bottom-Right
+    cv::dft(complexImg, complexImg);
 
-    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
-    q0.copyTo(tmp);
-    q3.copyTo(q0);
-    tmp.copyTo(q3);
+    int centerX = padded.cols / 2;
+    int centerY = padded.rows / 2;
 
-    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
-    q2.copyTo(q1);
-    tmp.copyTo(q2);
+    cv::Mat mask = cv::Mat::zeros(padded.size().height, padded.size().width, CV_32FC2);
+    cv::Rect roi(centerX - filterOption, centerY - filterOption, 2 * filterOption, 2 * filterOption);
+    mask(roi) = 1;
 
-    normalize(magI, magI, 0, 1, NORM_MINMAX); // Transform the matrix with float values into a
-                                            // viewable image form (float between values 0 and 1).
+    cv::Mat filteredImg;
+    cv::multiply(complexImg, mask, filteredImg);
 
-    imshow("Input Image"       , I   );    // Show the result
-    imshow("spectrum magnitude", magI);
-    waitKey();
-    return EXIT_SUCCESS;
+    cv::idft(filteredImg, filteredImg);
+    cv::split(filteredImg, planes);
+    cv::magnitude(planes[0], planes[1], planes[0]);
+    cv::Mat magnitudeImage = planes[0];
+
+    magnitudeImage += cv::Scalar::all(1);
+    cv::log(magnitudeImage, magnitudeImage);
+    magnitudeImage = magnitudeImage(cv::Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
+
+    cv::normalize(magnitudeImage, magnitudeImage, 0, 1, cv::NORM_MINMAX);
+
+    cv::imshow("Filtered Image", magnitudeImage);
+    cv::waitKey(0);
+
+    return 0;
 }

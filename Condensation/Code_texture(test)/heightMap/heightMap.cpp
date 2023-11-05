@@ -89,6 +89,7 @@ void heightMap::smoothingHeightMap(const char *image, particleSystem *PS) {
                         int x_i = x0 - 1 + j;
                         checkCoordinate(&x_i, &y_i);
                         value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                        // value += heightMap.at<unsigned char>(y_i,x_i);
                     }
                 }
                 value = value/9;
