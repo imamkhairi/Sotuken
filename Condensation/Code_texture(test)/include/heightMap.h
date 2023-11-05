@@ -17,6 +17,7 @@ class heightMap {
         heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth);
 
         void updateHeightMap(particleSystem *PS);
+        void smoothingHeightMap(const char *image, particleSystem *PS);
 
     private:
         int mapHeight;
@@ -24,7 +25,6 @@ class heightMap {
 
         float calcHeight(Droplet a, int x_i, int y_i);
         void generateHeightMap(particleSystem *ParticleSystem);
-        void smoothingHeightMap(cv::Mat heightMap);
         void checkCoordinate(int *x, int *y);
         void heightThreshold(float *value);
         void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
