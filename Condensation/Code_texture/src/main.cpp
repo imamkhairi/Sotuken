@@ -119,11 +119,12 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(2, texHeight, texWidth);
+	particleSystem ParticleSystem(250, texHeight, texWidth);
 
-    // clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-    // printf("Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+    clock_t tStart = clock();
+	HeightMap.smoothingHeightMap("../Textures/heightMap.png", &ParticleSystem);
+    printf("Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
     // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
@@ -285,11 +286,11 @@ int main()
 
 			prevTime = crntTime;
 			counter = 0;
-			ParticleSystem.addParticle(1);
+			// ParticleSystem.addParticle(1);
 		}
 
-		HeightMap.updateHeightMap(&ParticleSystem);
-		Texture heightTex("../Textures/heightMap.png", "height", 2);
+		// HeightMap.updateHeightMap(&ParticleSystem);
+		// Texture heightTex("../Textures/heightMap.png", "height", 2);
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
