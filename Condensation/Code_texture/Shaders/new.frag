@@ -131,8 +131,8 @@ float sobel_y[9] = float[]
     1, 2, 1
 );
 
-const float offset_x = 1.0f / 512.0f; 
-const float offset_y = 1.0f / 512.0f; 
+const float offset_x = 1.0f / 1024.0f; 
+const float offset_y = 1.0f / 1024.0f; 
 
 vec2 offsets[9] = vec2[](
     vec2(-offset_x, offset_y), vec2(0.0f, offset_y), vec2(offset_x, offset_y),

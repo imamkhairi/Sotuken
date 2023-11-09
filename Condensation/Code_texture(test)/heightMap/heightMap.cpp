@@ -66,8 +66,8 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     } else return 0;
 }
 
-void heightMap::smoothingHeightMap(const char *image, particleSystem *PS) {
-    cv::Mat heightMap = cv::imread(image, cv::IMREAD_GRAYSCALE);
+void heightMap::smoothingHeightMap(particleSystem *PS) {
+    cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
@@ -120,6 +120,42 @@ void heightMap::smoothingHeightMap(const char *image, particleSystem *PS) {
     cv::imwrite("heightMap.png", smoothed);
 }
 
+void heightMap::smoothingHeightMap(int *IDMap, particleSystem *PS) {
+    cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
+    cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
+
+    std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
+    for (auto & p : particle) {
+        // starting point
+        int x = p.position.x - (int)p.radius - 2;
+        int y = p.position.y - (int)p.radius - 2;
+        // end point
+        int x1 = p.position.x + (int)p.radius + 2;
+        int y1 = p.position.y + (int)p.radius + 2;
+
+
+        for (int y0 = y; y0 <= y1; y0++) {
+            for (int x0 = x; x0 <= x1; x0++) {
+                float value = 0;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        int y_i = y0 - 1 + i;
+                        int x_i = x0 - 1 + j;
+                        checkCoordinate(&x_i, &y_i);
+                        value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                        // value += heightMap.at<unsigned char>(y_i,x_i);
+                    }
+                }
+                value = value/9;
+                if(heightThreshold(&value)) IDMap[y0 * 25 + x0] = 1;
+                smoothed.at<unsigned char>(y0,x0) = value;
+            }
+        }
+    }
+
+    cv::imwrite("heightMap.png", smoothed);
+}
+
 void heightMap::updateHeightMap(particleSystem *PS)
 {
     int last = PS->getDrewAmmount();
@@ -159,8 +195,13 @@ void heightMap::checkCoordinate(int *x, int *y) {
 }
 
 // e value still can be changed
-void heightMap::heightThreshold(float *value) {
+int heightMap::heightThreshold(float *value) {
     float e = 0.01;
-    if (*value < e) *value = 0;
-    else *value = *value;
+    if (*value < e) {
+        *value = 0;
+        return 0;
+    }
+    else {
+        return 1;
+    }
 }

@@ -24,11 +24,9 @@ class particleSystem {
         particleSystem(int particleAmmount, int mapHeight, int mapWidth);
         static void print();
 
-        void addParticle(int ammount);
-
-        void setDrewAmmount(int value);
-
         std::vector <Droplet> getParticleSystem();
+        void addParticle(int ammount);
+        void setDrewAmmount(int value);
         int getParticleAmmount();
         int getDrewAmmount();
 
