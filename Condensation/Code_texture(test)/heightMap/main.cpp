@@ -3,12 +3,12 @@
 #include <time.h>
 #include <unistd.h>
 
-const unsigned int texWidth  = 25;
-const unsigned int texHeight = 25;
+const unsigned int texWidth  = 50;
+const unsigned int texHeight = 50;
 
 int main() {
     clock_t tStart = clock();
-    particleSystem ParticleSystem(1, texHeight, texWidth);
+    particleSystem ParticleSystem(2, texHeight, texWidth);
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
@@ -33,13 +33,12 @@ int main() {
             p++;
         }
     }
-    
-    HeightMap.smoothingHeightMap(IDMap, &ParticleSystem);
 
+    HeightMap.smoothingHeightMap(IDMap, &ParticleSystem);
 
     p = IDMap;
     for (int y = 0; y < texHeight; y++) {
-        std::cout << y << " | ";
+        // std::cout << y << " | ";
         for (int x = 0; x < texWidth; x++) {
             std::cout << *p << " ";
             p++;
