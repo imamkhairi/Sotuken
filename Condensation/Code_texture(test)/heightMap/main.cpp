@@ -2,12 +2,12 @@
 #include <time.h>
 #include <unistd.h>
 
-const unsigned int texWidth  = 512;
-const unsigned int texHeight = 512;
+const unsigned int texWidth  = 25;
+const unsigned int texHeight = 25;
 
 int main() {
     clock_t tStart = clock();
-    particleSystem ParticleSystem(10, texHeight, texWidth);
+    particleSystem ParticleSystem(1, texHeight, texWidth);
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
@@ -27,7 +27,12 @@ int main() {
     //     }
     // }
 
+    IDMap idMap(texWidth, texHeight);
+
     tStart = clock();
-    HeightMap.smoothingHeightMap(&ParticleSystem);
+    HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
     printf("Smoothing: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+
+    idMap.print();
+    idMap.Delete();
 }

@@ -147,7 +147,7 @@ void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
                     }
                 }
                 value = value/9;
-                if(heightThreshold(&value)) ;
+                if(heightThreshold(&value)) idMap.setToOne(y0, x0);
                 smoothed.at<unsigned char>(y0,x0) = value;
             }
         }

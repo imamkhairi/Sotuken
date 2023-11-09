@@ -8,6 +8,8 @@ class IDMap {
         IDMap(int mapHeight, int mapWidth);
         
         void setToOne(int y, int x);
+        void print();
+        void Delete();
 
     private:
         int *idMap;
