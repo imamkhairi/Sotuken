@@ -120,7 +120,7 @@ void heightMap::smoothingHeightMap(particleSystem *PS) {
     cv::imwrite("heightMap.png", smoothed);
 }
 
-void heightMap::smoothingHeightMap(int *IDMap, particleSystem *PS) {
+void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
     cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
@@ -147,7 +147,7 @@ void heightMap::smoothingHeightMap(int *IDMap, particleSystem *PS) {
                     }
                 }
                 value = value/9;
-                if(heightThreshold(&value)) IDMap[y0 * mapWidth + x0] = 1;
+                if(heightThreshold(&value)) ;
                 smoothed.at<unsigned char>(y0,x0) = value;
             }
         }

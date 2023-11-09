@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <particleSystem.h>
+#include <IDMap.h>
 
 
 const int avg[3][3] = {
@@ -18,7 +19,7 @@ class heightMap {
 
         void updateHeightMap(particleSystem *PS);
         void smoothingHeightMap(particleSystem *PS);
-        void smoothingHeightMap(int *IDMap, particleSystem *PS);
+        void smoothingHeightMap(IDMap idMap, particleSystem *PS);
 
     private:
         int mapHeight;
