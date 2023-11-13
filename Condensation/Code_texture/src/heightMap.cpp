@@ -50,7 +50,7 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     } else return 0;
 }
 
-void heightMap::smoothingHeightMap(particleSystem *PS) {
+void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
     cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
@@ -77,7 +77,7 @@ void heightMap::smoothingHeightMap(particleSystem *PS) {
                     }
                 }
                 value = value/9;
-                heightThreshold(&value);
+                if(heightThreshold(&value)) idMap.setToOne(y0, x0);
                 smoothed.at<unsigned char>(y0,x0) = value;
             }
         }
@@ -126,8 +126,11 @@ void heightMap::checkCoordinate(int *x, int *y) {
 
 
 // e value still can be changed
-void heightMap::heightThreshold(float *value) {
+int heightMap::heightThreshold(float *value) {
     float e = 0.01;
-    if (*value < e) *value = 0;
-    else *value = *value;
+    if (*value < e){ 
+        *value = 0;
+        return 0;
+    } 
+    else return 1;
 }
