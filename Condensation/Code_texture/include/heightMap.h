@@ -16,7 +16,7 @@ class heightMap {
     public:
         heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth);
     
-        void smoothingHeightMap(const char *image, particleSystem *PS);
+        void smoothingHeightMap(particleSystem *PS);
         void updateHeightMap(particleSystem *PS);
 
     private:

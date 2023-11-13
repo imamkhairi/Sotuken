@@ -19,7 +19,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             for (int x0 = x; x0 <= x1; x0++) {
                 float h = calcHeight(PS[i], x0, y0);
                 if ( h > 0 ) {
-                    dst.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
+                    dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
                 }
             }
         }
@@ -50,8 +50,8 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     } else return 0;
 }
 
-void heightMap::smoothingHeightMap(const char *image, particleSystem *PS) {
-    cv::Mat heightMap = cv::imread(image, cv::IMREAD_GRAYSCALE);
+void heightMap::smoothingHeightMap(particleSystem *PS) {
+    cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
