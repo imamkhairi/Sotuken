@@ -28,6 +28,7 @@ class heightMap {
         float calcHeight(Droplet a, int x_i, int y_i);
         void generateHeightMap(particleSystem *ParticleSystem);
         void checkCoordinate(int *x, int *y);
+        void checkXY(int *x, int *y);
         int heightThreshold(float *value);
         void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
 

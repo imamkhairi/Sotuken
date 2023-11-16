@@ -19,7 +19,8 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             for (int x0 = x; x0 <= x1; x0++) {
                 float h = calcHeight(PS[i], x0, y0);
                 if ( h > 0.01 ) {
-                    dst.at<unsigned char>(y0, x0) = h * 10; // 50 konstansta
+                    // if (dst.at<unsigned char>(y0, x0) < h*10)
+                    dst.at<unsigned char>(y0, x0) += h * 8; // 50 konstansta
                 }
             }
         }
@@ -142,8 +143,8 @@ void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
                         int y_i = y0 - 1 + i;
                         int x_i = x0 - 1 + j;
                         checkCoordinate(&x_i, &y_i);
-                        value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
-                        // value += heightMap.at<unsigned char>(y_i,x_i);
+                        // value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                        value += heightMap.at<unsigned char>(y_i,x_i);
                     }
                 }
                 value = value/9;
@@ -192,6 +193,13 @@ void heightMap::checkCoordinate(int *x, int *y) {
         dif = this->mapHeight - *y;
         *y += 2*dif;
     }
+}
+
+void heightMap::checkXY(int *x, int *y) {
+    if (*x < 0) x ++;
+    if (*x > this->mapWidth - 1) x--;
+    if (*y < 0) y ++;
+    if (*y > this->mapHeight - 1) y--;
 }
 
 // e value still can be changed

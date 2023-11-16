@@ -19,6 +19,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             for (int x0 = x; x0 <= x1; x0++) {
                 float h = calcHeight(PS[i], x0, y0);
                 if ( h > 0 ) {
+                    if (dst.at<unsigned char>(y0, x0) < h*8)
                     dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
                 }
             }
