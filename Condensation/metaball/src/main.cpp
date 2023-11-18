@@ -4,8 +4,8 @@
 #include <glm/glm.hpp>
 #include <cmath>
 
-#define IMAGE_HEIGHT 600
-#define IMAGE_WIDTH 600
+#define IMAGE_HEIGHT 100
+#define IMAGE_WIDTH 100
 
 
 std::vector<glm::vec2> metaballs;
@@ -23,8 +23,8 @@ int main() {
     
     //// Add metaball
     addMetaball(50.0f, 50.0f, &metaballs);
-    addMetaball(100.0f, 100.0f, &metaballs);
-    addMetaball(50.0f, 100.0f, &metaballs);
+    // addMetaball(55.0f, 55.0f, &metaballs);
+    // addMetaball(60.0f, 50.0f, &metaballs);
 
 
     //// Loop all the pixels
@@ -34,14 +34,17 @@ int main() {
             
             for (auto & m :metaballs) {
                 d = Distance(m.x, m.y, x, y);
-                sum += 100.0f * std::exp(-1.f * 0.0008 * d * d);
+                // sum += 100.0f * std::exp(-1.f * 0.0008 * d * d);
+                float b = -2.3; // blobbiness
+                float r = 10; // radius
+                sum += r * std::exp(b/(r*r)*d*d-b);
             }
             
             // if (sum >= 50) sum = 255;   
             // else if (sum >= 40) sum = 255;
             // else sum = 0;   
             // if (sum < 20) sum = 0;
-            image.at<unsigned char>(y, x) = sum;
+            image.at<unsigned char>(y, x) =  sum;
         }
     }
     
