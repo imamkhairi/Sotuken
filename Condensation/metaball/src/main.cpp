@@ -29,7 +29,7 @@ int main() {
     //// Add metaball
     // addMetaball(50.0f, 50.0f, &metaballs);
     addMetaball(150.0f, 150.0f, &metaballs);
-    addMetaball(150.0f, 50.0f, &metaballs);
+    addMetaball(150.0f, 90.0f, &metaballs);
 
 
     //// Loop all the pixels
@@ -37,7 +37,7 @@ int main() {
         for (int x = 0; x < IMAGE_WIDTH; x++) {
             float d = 0, sum = 0;
             
-            float h = 80;
+            float h = 100;
             float r = 1000;
             for (auto & m :metaballs) {
                 d = Distance(m.x, m.y, x, y);
