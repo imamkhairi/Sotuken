@@ -27,9 +27,9 @@ int main() {
     cv::Mat image = cv::Mat::zeros(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC1);
     
     //// Add metaball
-    // addMetaball(50.0f, 50.0f, &metaballs);
-    addMetaball(150.0f, 150.0f, &metaballs);
-    addMetaball(150.0f, 90.0f, &metaballs);
+    addMetaball(50.0f, 50.0f, &metaballs);
+    addMetaball(150.0f, 80.0f, &metaballs);
+    addMetaball(150.0f, 180.0f, &metaballs);
 
 
     //// Loop all the pixels
@@ -37,8 +37,10 @@ int main() {
         for (int x = 0; x < IMAGE_WIDTH; x++) {
             float d = 0, sum = 0;
             
-            float h = 100;
-            float r = 1000;
+            // float h = 100;
+            // float r = 1000;
+
+            float R = 50;
             for (auto & m :metaballs) {
                 d = Distance(m.x, m.y, x, y);
                 // sum += 100.0f * std::exp(-1.f * 0.00003 * d * d);
@@ -54,9 +56,15 @@ int main() {
 
 
                 //// Test (new)
-                sum += h * std::exp(-1 * 1/r*d*d);
+                // sum += h * std::exp(-1 * 1/r*d*d);
+
+                //// paper meijo daigaku
+                sum += 1 / (1 + std::pow((d/R),4));
             }
-            sum -= h/2;
+            // sum -= h/2;
+            sum -= 0.5;
+
+
             // if(sum > 50) std::cout << sum << std::endl;
             
             // if (sum >= 50) sum = 255;   
@@ -64,7 +72,8 @@ int main() {
             // else sum = 0;   
             // if (sum < 20) sum = 0;
             // if(sum > 50)
-            if (sum >= 0) image.at<unsigned char>(y, x) =  sum;
+            if (sum >= 0) image.at<unsigned char>(y, x) =  sum * 255;
+            // if (sum >= 0) image.at<unsigned char>(y, x) =  200;
         }
     }
     
