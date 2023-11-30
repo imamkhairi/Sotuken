@@ -27,7 +27,7 @@ int main() {
     cv::Mat image = cv::Mat::zeros(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC1);
     
     //// Add metaball
-    addMetaball(50.0f, 50.0f, &metaballs);
+    addMetaball(50.0f, 130.0f, &metaballs);
     addMetaball(150.0f, 80.0f, &metaballs);
     addMetaball(150.0f, 180.0f, &metaballs);
 
@@ -72,9 +72,11 @@ int main() {
             // else sum = 0;   
             // if (sum < 20) sum = 0;
             // if(sum > 50)
-            if (sum >= 0) image.at<unsigned char>(y, x) =  sum * 255;
-            // if (sum >= 0) image.at<unsigned char>(y, x) =  200;
-        }
+            if (sum >= 0)  sum =  sum * 255;
+            // if (sum > 255) sum = 255;
+            image.at<unsigned char>(y, x) = sum;
+            
+            }
     }
     
     cv::imwrite("../test.png", image);
