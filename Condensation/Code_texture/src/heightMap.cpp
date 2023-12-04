@@ -6,23 +6,42 @@ heightMap::heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth
     this->generateHeightMap(ParticleSystem);
 }
 
-void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
-    for (int i = start; i < end; i++) {
-        // starting point
-        int x = PS[i].position.x - (int)PS[i].radius - 2;
-        int y = PS[i].position.y - (int)PS[i].radius - 2;
-        // end point
-        int x1 = PS[i].position.x + (int)PS[i].radius + 2;
-        int y1 = PS[i].position.y + (int)PS[i].radius + 2;
+float heightMap::distance(float x1, float y1, float x2, float y2) {
+    return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1-y2,2));
+}
 
-        for (int y0 = y; y0 <= y1; y0++) {
-            for (int x0 = x; x0 <= x1; x0++) {
-                float h = calcHeight(PS[i], x0, y0);
-                if ( h > 0 ) {
-                    if (dst.at<unsigned char>(y0, x0) < h*8)
-                    dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
-                }
+
+void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
+    // for (int i = start; i < end; i++) {
+    //     // starting point
+    //     int x = PS[i].position.x - (int)PS[i].radius - 2;
+    //     int y = PS[i].position.y - (int)PS[i].radius - 2;
+    //     // end point
+    //     int x1 = PS[i].position.x + (int)PS[i].radius + 2;
+    //     int y1 = PS[i].position.y + (int)PS[i].radius + 2;
+
+    //     for (int y0 = y; y0 <= y1; y0++) {
+    //         for (int x0 = x; x0 <= x1; x0++) {
+    //             float h = calcHeight(PS[i], x0, y0);
+    //             if ( h > 0 ) {
+    //                 if (dst.at<unsigned char>(y0, x0) < h*8)
+    //                 dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
+    //             }
+    //         }
+    //     }
+    // }
+
+    for (int y = 0; y < this->mapHeight; y++) {
+        for (int x = 0; x < this->mapWidth; x++) {
+            float d = 0, sum = 0;
+
+            for (auto & particle : PS) {
+                d = this->distance(particle.position.x, particle.position.y, x, y);
+                sum += 1 / (1 + std::pow((d/particle.radius), 2.8));
             }
+            sum -= 0.5;
+            if (sum > 0) sum *= 255;
+            dst.at<unsigned char>(y, x) = sum;
         }
     }
 }

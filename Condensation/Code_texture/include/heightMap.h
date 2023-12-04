@@ -30,6 +30,7 @@ class heightMap {
         void checkCoordinate(int *x, int *y);
         int heightThreshold(float *value);
         void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
+        float distance(float x1, float y1, float x2, float y2);
 
 };
 
