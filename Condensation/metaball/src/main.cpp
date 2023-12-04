@@ -27,9 +27,9 @@ int main() {
     cv::Mat image = cv::Mat::zeros(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC1);
     
     //// Add metaball
-    addMetaball(50.0f, 130.0f, &metaballs);
-    addMetaball(150.0f, 80.0f, &metaballs);
-    addMetaball(150.0f, 180.0f, &metaballs);
+    addMetaball(50.0f, 50.0f, &metaballs);
+    addMetaball(150.0f, 50.0f, &metaballs);
+    // addMetaball(75.0f, 100.0f, &metaballs);
 
 
     //// Loop all the pixels
@@ -59,7 +59,7 @@ int main() {
                 // sum += h * std::exp(-1 * 1/r*d*d);
 
                 //// paper meijo daigaku
-                sum += 1 / (1 + std::pow((d/R), 2.8));
+                sum += 1 / (1 + std::pow((d/R), 2.8));;
             }
             // sum -= h/2;
             sum -= 0.5;
@@ -72,7 +72,7 @@ int main() {
             // else sum = 0;   
             // if (sum < 20) sum = 0;
             // if(sum > 50)
-            if (sum >= 0)  sum =  sum * 255;
+            if(sum > 0) sum =  sum * 100;
             // if (sum > 255) sum = 255;
             image.at<unsigned char>(y, x) = sum;
             
