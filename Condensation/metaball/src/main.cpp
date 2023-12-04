@@ -59,7 +59,7 @@ int main() {
                 // sum += h * std::exp(-1 * 1/r*d*d);
 
                 //// paper meijo daigaku
-                sum += 1 / (1 + std::pow((d/R), 2.4));
+                sum += 1 / (1 + std::pow((d/R), 2.8));
             }
             // sum -= h/2;
             sum -= 0.5;

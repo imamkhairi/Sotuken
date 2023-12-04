@@ -7,7 +7,7 @@ const unsigned int texHeight = 40;
 
 int main() {
     clock_t tStart = clock();
-    particleSystem ParticleSystem(4, texHeight, texWidth);
+    particleSystem ParticleSystem(2, texHeight, texWidth);
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
