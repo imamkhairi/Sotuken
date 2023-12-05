@@ -23,12 +23,22 @@ void checkSum(float sum) {
     else if(sum > 255) std::cout << "kelebihan dr 255" << std::endl;
 }
 
+float max(float a, float b) {
+    return (a > b ? a : b);
+}
+
+float density(float r, float d) {
+    float volume = 2*M_PI*49*std::pow(r,38/5)/228;
+    float value = max(0, std::pow(r, 2.8) - std::pow(d, 2.8));
+    return std::pow(value, 2) / volume;
+}
+
 int main() {
     cv::Mat image = cv::Mat::zeros(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC1);
     
     //// Add metaball
     addMetaball(50.0f, 50.0f, &metaballs);
-    addMetaball(150.0f, 50.0f, &metaballs);
+    // addMetaball(150.0f, 50.0f, &metaballs);
     // addMetaball(75.0f, 100.0f, &metaballs);
 
 
@@ -59,10 +69,14 @@ int main() {
                 // sum += h * std::exp(-1 * 1/r*d*d);
 
                 //// paper meijo daigaku
-                sum += 1 / (1 + std::pow((d/R), 2.8));;
+                // sum += 1 / (1 + std::pow((d/R), 2.8));
+
+                //// fluid simulation sebastian lague
+                // sum += density(R, d);
+                if (density(R, d) > 0) std::cout << density(R, d) << std::endl;
             }
             // sum -= h/2;
-            sum -= 0.5;
+            // sum -= 0.5;
 
 
             // if(sum > 50) std::cout << sum << std::endl;
