@@ -11,39 +11,39 @@ float heightMap::distance(float x1, float y1, float x2, float y2) {
 }
 
 void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
-    // for (int i = start; i < end; i++) {
-    //     // starting point
-    //     int x = PS[i].position.x - (int)PS[i].radius - 1;
-    //     int y = PS[i].position.y - (int)PS[i].radius - 1;
-    //     // end point
-    //     int x1 = PS[i].position.x + (int)PS[i].radius + 1;
-    //     int y1 = PS[i].position.y + (int)PS[i].radius + 1;
+    for (int i = start; i < end; i++) {
+        // starting point
+        int x = PS[i].position.x - (int)PS[i].radius - 1;
+        int y = PS[i].position.y - (int)PS[i].radius - 1;
+        // end point
+        int x1 = PS[i].position.x + (int)PS[i].radius + 1;
+        int y1 = PS[i].position.y + (int)PS[i].radius + 1;
 
-    //     for (int y0 = y; y0 <= y1; y0++) {
-    //         for (int x0 = x; x0 <= x1; x0++) {
-    //             float h = calcHeight(PS[i], x0, y0);
-    //             if ( h > 0.01 ) {
-    //                 // if (dst.at<unsigned char>(y0, x0) < h*10)
-    //                 dst.at<unsigned char>(y0, x0) += h * 8; // 50 konstansta
-    //             }
-    //         }
-    //     }
-    // }
-
-    //// Metaball
-    for (int y = 0; y < this->mapHeight; y++) {
-        for (int x = 0; x < this->mapWidth; x++) {
-            float d = 0, sum = 0;
-
-            for (auto & particle : PS) {
-                d = this->distance(particle.position.x, particle.position.y, x, y);
-                sum += 1 / (1 + std::pow((d/particle.radius), 2.8));
+        for (int y0 = y; y0 <= y1; y0++) {
+            for (int x0 = x; x0 <= x1; x0++) {
+                float h = calcHeight(PS[i], x0, y0);
+                if ( h > 0.01 ) {
+                    if (dst.at<unsigned char>(y0, x0) < h * 20)
+                    dst.at<unsigned char>(y0, x0) = h * 20; // 50 konstansta
+                }
             }
-            sum -= 0.5;
-            if (sum > 0) sum *= 255;
-            dst.at<unsigned char>(y, x) = sum;
         }
     }
+
+    //// Metaball
+    // for (int y = 0; y < this->mapHeight; y++) {
+    //     for (int x = 0; x < this->mapWidth; x++) {
+    //         float d = 0, sum = 0;
+
+    //         for (auto & particle : PS) {
+    //             d = this->distance(particle.position.x, particle.position.y, x, y);
+    //             sum += 1 / (1 + std::pow((d/particle.radius), 2.8));
+    //         }
+    //         sum -= 0.5;
+    //         if (sum > 0) sum *= 255;
+    //         dst.at<unsigned char>(y, x) = sum;
+    //     }
+    // }
 }
 
 // need optimization
@@ -91,51 +91,51 @@ void heightMap::smoothingHeightMap(particleSystem *PS) {
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
-    // for (auto & p : particle) {
-    //     // starting point
-    //     int x = p.position.x - (int)p.radius - 2;
-    //     int y = p.position.y - (int)p.radius - 2;
-    //     // end point
-    //     int x1 = p.position.x + (int)p.radius + 2;
-    //     int y1 = p.position.y + (int)p.radius + 2;
+    for (auto & p : particle) {
+        // starting point
+        int x = p.position.x - (int)p.radius - 2;
+        int y = p.position.y - (int)p.radius - 2;
+        // end point
+        int x1 = p.position.x + (int)p.radius + 2;
+        int y1 = p.position.y + (int)p.radius + 2;
 
 
-    //     for (int y0 = y; y0 <= y1; y0++) {
-    //         for (int x0 = x; x0 <= x1; x0++) {
-    //             float value = 0;
-    //             for (int i = 0; i < 3; i++) {
-    //                 for (int j = 0; j < 3; j++) {
-    //                     int y_i = y0 - 1 + i;
-    //                     int x_i = x0 - 1 + j;
-    //                     checkCoordinate(&x_i, &y_i);
-    //                     value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
-    //                     // value += heightMap.at<unsigned char>(y_i,x_i);
-    //                 }
-    //             }
-    //             value = value/9;
-    //             heightThreshold(&value);
-    //             smoothed.at<unsigned char>(y0,x0) = value;
-    //         }
-    //     }
-    // }
-
-    // Old Method
-    for (int y = 0; y < this->mapHeight; y++) {
-        for (int x = 0; x < this->mapWidth; x++) {
-            float value = 0;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    int y_i = y-1+i;
-                    int x_i = x-1+j;
-                    checkCoordinate(&x_i, &y_i);
-                    value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+        for (int y0 = y; y0 <= y1; y0++) {
+            for (int x0 = x; x0 <= x1; x0++) {
+                float value = 0;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        int y_i = y0 - 1 + i;
+                        int x_i = x0 - 1 + j;
+                        checkCoordinate(&x_i, &y_i);
+                        value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                        // value += heightMap.at<unsigned char>(y_i,x_i);
+                    }
                 }
+                value = value/9;
+                heightThreshold(&value);
+                smoothed.at<unsigned char>(y0,x0) = value;
             }
-            value = value/9;
-            heightThreshold(&value);
-            smoothed.at<unsigned char>(y,x) = value;
         }
     }
+
+    // Old Method
+    // for (int y = 0; y < this->mapHeight; y++) {
+    //     for (int x = 0; x < this->mapWidth; x++) {
+    //         float value = 0;
+    //         for (int i = 0; i < 3; i++) {
+    //             for (int j = 0; j < 3; j++) {
+    //                 int y_i = y-1+i;
+    //                 int x_i = x-1+j;
+    //                 checkCoordinate(&x_i, &y_i);
+    //                 value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+    //             }
+    //         }
+    //         value = value/9;
+    //         heightThreshold(&value);
+    //         smoothed.at<unsigned char>(y,x) = value;
+    //     }
+    // }
 
     cv::imwrite("heightMap.png", smoothed);
 }
