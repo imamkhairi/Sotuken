@@ -1,12 +1,12 @@
 #include <Model.h>
 #include <heightMap.h>
+#include <time.h>
 
 // constanta ini sepertinya bisa disimpat di header file
-
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 512;
-const unsigned int texHeight = 512;
+const unsigned int texWidth = 1024;
+const unsigned int texHeight = 1024;
 
 //  =========================  Not Used (old plane vertices)
 // // Plane Vertices
@@ -85,8 +85,6 @@ std::vector<GLuint> indices =
 	0, 2, 3
 };
 
-unsigned int samples = 8;
-
 float rectangleVertices[] =
 {
 	//  Coords   // texCoords
@@ -120,8 +118,18 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(150, texHeight, texWidth);
-	heightMap HeightMap(ParticleSystem.getParticleSystem(), texHeight, texWidth);
+	particleSystem ParticleSystem(900, texHeight, texWidth);
+	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
+	IDMap idMap(texWidth, texHeight);
+
+    clock_t tStart = clock();
+	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+    printf("Smoothing Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
+    // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
@@ -281,7 +289,11 @@ int main()
 
 			prevTime = crntTime;
 			counter = 0;
+			// ParticleSystem.addParticle(1);
 		}
+
+		// HeightMap.updateHeightMap(&ParticleSystem);
+		// Texture heightTex("../Textures/heightMap.png", "height", 2);
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);

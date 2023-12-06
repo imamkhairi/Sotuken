@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <particleSystem.h>
+#include <IDMap.h>
 
 
 const int avg[3][3] = {
@@ -14,18 +15,22 @@ const int avg[3][3] = {
 
 class heightMap {
     public:
-        heightMap(std::vector <Droplet> ParticleSystem, int mapHeight, int mapWidth);
-
+        heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth);
+    
+        void smoothingHeightMap(IDMap idMap, particleSystem *PS);
+        void updateHeightMap(particleSystem *PS);
 
     private:
         int mapHeight;
         int mapWidth;
 
         float calcHeight(Droplet a, int x_i, int y_i);
-        void generateHeightMap(std::vector <Droplet> particleSystem);
-        void smoothingHeightMap(cv::Mat heightMap);
+        void generateHeightMap(particleSystem *ParticleSystem);
+        // void smoothingHeightMap(cv::Mat heightMap);
         void checkCoordinate(int *x, int *y);
-        void heightThreshold(float *value);
+        int heightThreshold(float *value);
+        void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
+        float distance(float x1, float y1, float x2, float y2);
 
 };
 

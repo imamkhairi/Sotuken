@@ -24,12 +24,19 @@ class particleSystem {
         particleSystem(int particleAmmount, int mapHeight, int mapWidth);
         static void print();
 
+        void addParticle(int ammount);
+
+        void setDrewAmmount(int value);
+
         std::vector <Droplet> getParticleSystem();
+        int getParticleAmmount();
+        int getDrewAmmount();
 
     private:
         int particleAmmount;
         int mapHeigth;
         int mapWidth;
+        int drewAmmount;
         std::vector <Droplet> Particles;
 
         void initiateParticleSystem(std::vector <Droplet> *Particles);
