@@ -118,7 +118,7 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(900, texHeight, texWidth);
+	particleSystem ParticleSystem(250, texHeight, texWidth);
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
