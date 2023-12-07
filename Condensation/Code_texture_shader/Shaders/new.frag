@@ -76,11 +76,9 @@ vec3 generateNormalMap() {
 void main()
 {
 	// vec3 heightMap = vec3(1.0f, 1.0f, 1.0f);
-	vec2 point = vec2(0.5f, 0.5f);
-	float d = distance(vec2(texCoord.x, -texCoord.y), point);
 
 	// generate normal map
-	vec3 normalMap = generateNormalMap();
+	// vec3 normalMap = generateNormalMap();
 	
 	// threshold for discarding 
 	// if (texture(height0, vec2(texCoord.x, texCoord.y)).r > 0.005)
@@ -92,5 +90,18 @@ void main()
 	
 	// }
 	// else discard;
-	FragColor = vec4(vec3(d), 1.0f);
+
+	//// Worked
+	vec2 point = vec2(0.5f, 0.5f);
+	float d = distance(vec2(texCoord.x, -texCoord.y), point);
+	float r = 0.2;
+	float value = r*r - d*d;
+	float height = 0.0;
+	if (value > 0.0) 
+		height = sqrt(value); 
+	// d = 1/(1 + d) - 0.5;
+	if (height > 0.005) {
+		FragColor = vec4(vec3(height), 1.0f);
+	} else discard;
+
 }
