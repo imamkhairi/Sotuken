@@ -105,8 +105,10 @@ int main()
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
 	// Tell GLFW we are using the CORE profile (modern functions)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
 	// Create a GLFWwindow object of 800 by 800 pixels
 	GLFWwindow* window = glfwCreateWindow(width, height, "Condensation", NULL, NULL);
 
@@ -214,7 +216,6 @@ int main()
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
@@ -261,7 +262,7 @@ int main()
 
 	// new Plane
 	std::vector<Texture> textures = {
-		Texture("../Textures/brickwall.jpg", "diffuse", 0)
+		// Texture("../Textures/brickwall.jpg", "diffuse", 0) 
 	};
 	Mesh plane(vertices, indices, textures);
 	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);

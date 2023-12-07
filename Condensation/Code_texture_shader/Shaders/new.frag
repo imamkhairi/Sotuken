@@ -77,21 +77,20 @@ void main()
 {
 	// vec3 heightMap = vec3(1.0f, 1.0f, 1.0f);
 	vec2 point = vec2(0.5f, 0.5f);
+	float d = distance(vec2(texCoord.x, -texCoord.y), point);
 
 	// generate normal map
 	vec3 normalMap = generateNormalMap();
 	
-	// threshold to discard 
-	if (texture(height0, vec2(texCoord.x, texCoord.y)).r > 0.005)
-	{
-		// float ratio = 1.00 / 1.52;
-		// vec3 I = normalize(crntPos - camPos);
-		// vec3 R = refract(I, normalize(normalMap), ratio);
-		// FragColor = vec4(texture(skybox, vec3(R.xy, -R.z)).rgb, 1.0);
+	// threshold for discarding 
+	// if (texture(height0, vec2(texCoord.x, texCoord.y)).r > 0.005)
+	// {
+	// 	// float ratio = 1.00 / 1.52;
+	// 	// vec3 I = normalize(crntPos - camPos);
+	// 	// vec3 R = refract(I, normalize(normalMap), ratio);
+	// 	// FragColor = vec4(texture(skybox, vec3(R.xy, -R.z)).rgb, 1.0);
 	
-		FragColor = vec4(texture(height0, vec2(texCoord.x, texCoord.y)).rgb, 1.0f);
-	}
-	else discard;
-
-
+	// }
+	// else discard;
+	FragColor = vec4(vec3(d), 1.0f);
 }
