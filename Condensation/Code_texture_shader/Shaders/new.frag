@@ -35,8 +35,8 @@ float sobel_x[9] = float[]
 float sobel_y[9] = float[]
 (
     -1, -2, -1,
-    0, 0, 0,
-    1, 2, 1
+     0,  0,  0,
+     1,  2,  1
 );
 
 const float offset_x = 1.0f / 1024.0f; 
@@ -92,16 +92,42 @@ void main()
 	// else discard;
 
 	//// Worked
-	vec2 point = vec2(0.5f, 0.5f);
-	float d = distance(vec2(texCoord.x, -texCoord.y), point);
-	float r = 0.2;
-	float value = r*r - d*d;
-	float height = 0.0;
-	if (value > 0.0) 
-		height = sqrt(value); 
-	// d = 1/(1 + d) - 0.5;
-	if (height > 0.005) {
-		FragColor = vec4(vec3(height), 1.0f);
-	} else discard;
+	// vec2 point = vec2(0.5f, 0.5f);
+	// float d = distance(vec2(texCoord.x, -texCoord.y), point);
+	// float r = 0.2;
+	// float value = r*r - d*d;
+	// float height = 0.0;
+	// if (value > 0.0) height = sqrt(value); 
 
+	// if (height > 0.005) {
+	// 	FragColor = vec4(vec3(height), 1.0f);
+	// } else discard;
+
+	vec2 point = vec2(0.5);
+	float height[9];
+	for (int i = 0; i < 9; i++) {
+		float d = distance(vec2(texCoord.x + offsets[i].x, - texCoord.y - offsets[i].y), point);
+		float r = 0.2;
+		float value = r*r - d*d;
+		if (value > 0.0) height[i] = sqrt(value);
+		else height[i] = 0.0;
+	}
+
+	// FragColor = vec4(vec3(height[3]), 1.0f);
+
+	vec3 normalMap = vec3(0.0f);
+
+	float r = 0.0f;
+	float g = 0.0f;
+	float b = 1.0f;
+	for (int i = 0; i < 9; i++) {
+		r += height[i] * sobel_x[i]; // salah sini
+		g += height[i] * sobel_y[i];
+	}
+	r = offsetAndClamp(r);
+	g = offsetAndClamp(g);
+
+	normalMap = vec3(r, g, b);
+
+	FragColor = vec4(normalMap, 1.0f);
 }
