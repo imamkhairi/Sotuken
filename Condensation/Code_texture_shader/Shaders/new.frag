@@ -107,13 +107,13 @@ void main()
 	float height[9];
 	for (int i = 0; i < 9; i++) {
 		float d = distance(vec2(texCoord.x + offsets[i].x, - texCoord.y - offsets[i].y), point);
-		float r = 0.2;
+		float r = 0.1;
 		float value = r*r - d*d;
-		if (value > 0.0) height[i] = sqrt(value);
+		if (value > 0.0) height[i] = sqrt(value) * 10;
 		else height[i] = 0.0;
 	}
 
-	// FragColor = vec4(vec3(height[3]), 1.0f);
+	// FragColor = vec4(vec3(height[4]), 1.0f);
 
 	vec3 normalMap = vec3(0.0f);
 
@@ -130,4 +130,12 @@ void main()
 	normalMap = vec3(r, g, b);
 
 	FragColor = vec4(normalMap, 1.0f);
+	// if (height[4] > 0.005) {
+	// 	float ratio = 1.00 / 1.52;
+	// 	vec3 I = normalize(crntPos - camPos);
+	// 	vec3 R = refract(I, normalize(normalMap), ratio);
+	// 	FragColor = vec4(texture(skybox, vec3(R.xy, -R.z)).rgb, 1.0);
+	// } else {
+	// 	discard;
+	// }
 }
