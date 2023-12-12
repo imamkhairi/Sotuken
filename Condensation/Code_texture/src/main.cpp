@@ -29,15 +29,16 @@ const unsigned int texHeight = 1024;
 float skyboxVertices[] =
 {
 	//   Coordinates
-	-1.0f, -1.0f,  1.0f,//        7--------6
-	 1.0f, -1.0f,  1.0f,//       /|       /|
-	 1.0f, -1.0f, -1.0f,//      4--------5 |
-	-1.0f, -1.0f, -1.0f,//      | |      | |
-	-1.0f,  1.0f,  1.0f,//      | 3------|-2
-	 1.0f,  1.0f,  1.0f,//      |/       |/
-	 1.0f,  1.0f, -1.0f,//      0--------1
-	-1.0f,  1.0f, -1.0f
+	-1.0f, -1.0f,  1.0f, // 0       7--------6
+	 1.0f, -1.0f,  1.0f, // 1      /|       /|
+	 1.0f, -1.0f, -1.0f, // 2     4--------5 |
+	-1.0f, -1.0f, -1.0f, // 3     | |      | |
+	-1.0f,  1.0f,  1.0f, // 4     | 3------|-2
+	 1.0f,  1.0f,  1.0f, // 5     |/       |/
+	 1.0f,  1.0f, -1.0f, // 6     0--------1
+	-1.0f,  1.0f, -1.0f  // 7
 };
+
 
 unsigned int skyboxIndices[] =
 {
@@ -61,6 +62,14 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
+// float backGroundVertices[] = {
+// 	//   Coordinates
+// 	-1.0f, -1.0f, -1.0f, // 0  
+// 	-1.0f,  1.0f, -1.0f, // 1
+// 	 1.0f,  1.0f, -1.0f, // 2  
+// 	 1.0f, -1.0f, -1.0f  // 3  
+// };
+
 // Test TBN Mat
 // std::vector<Vertex> vertices =
 // {
@@ -83,18 +92,6 @@ std::vector<GLuint> indices =
 {
 	0, 1, 2,
 	0, 2, 3
-};
-
-float rectangleVertices[] =
-{
-	//  Coords   // texCoords
-	 1.0f, -1.0f,  1.0f, 0.0f,
-	-1.0f, -1.0f,  0.0f, 0.0f,
-	-1.0f,  1.0f,  0.0f, 1.0f,
-
-	 1.0f,  1.0f,  1.0f, 1.0f,
-	 1.0f, -1.0f,  1.0f, 0.0f,
-	-1.0f,  1.0f,  0.0f, 1.0f
 };
 
 // https://gist.github.com/zhangzhensong/03f67947c22acb5ee922
