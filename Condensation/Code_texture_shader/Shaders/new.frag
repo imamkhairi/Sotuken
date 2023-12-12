@@ -92,44 +92,55 @@ void main()
 	// else discard;
 
 	//// Worked
-	// vec2 point = vec2(0.5f, 0.5f);
-	// float d = distance(vec2(texCoord.x, -texCoord.y), point);
-	// float r = 0.2;
-	// float value = r*r - d*d;
-	// float height = 0.0;
-	// if (value > 0.0) height = sqrt(value); 
+	vec2 point = vec2(0.5f, 0.5f);
+	float d = distance(vec2(texCoord.x, -texCoord.y), point);
+	float r = 0.2;
+	float value = r*r - d*d;
+	float height = 0.0;
+	if (value > 0.0) height = sqrt(value)/r; 
 
 	// if (height > 0.005) {
-	// 	FragColor = vec4(vec3(height), 1.0f);
 	// } else discard;
+	FragColor = vec4(vec3(height), 1.0f);
 
-	vec2 point = vec2(0.5);
-	float height[9];
-	for (int i = 0; i < 9; i++) {
-		float d = distance(vec2(texCoord.x + offsets[i].x, - texCoord.y - offsets[i].y), point);
-		float r = 0.1;
-		float value = r*r - d*d;
-		if (value > 0.0) height[i] = sqrt(value) * 10;
-		else height[i] = 0.0;
-	}
+
+	//// Example
+	// vec2 st = gl_FragCoord.xy/1024.f;
+	// float pct = 0.0;
+	// pct = distance(st, vec2(0.5));
+	// vec3 color = vec3(pct);
+	// FragColor = vec4(color, 1.0);
+
+
+
+	///// New
+	// vec2 point = vec2(0.5);
+	// float height[9];
+	// for (int i = 0; i < 9; i++) {
+	// 	float d = distance(vec2(texCoord.x + offsets[i].x, - texCoord.y - offsets[i].y), point);
+	// 	float r = 0.1;
+	// 	float value = r*r - d*d;
+	// 	if (value > 0.0) height[i] = sqrt(value)/r;
+	// 	else height[i] = 0.0;
+	// }
 
 	// FragColor = vec4(vec3(height[4]), 1.0f);
 
-	vec3 normalMap = vec3(0.0f);
+	// vec3 normalMap = vec3(0.0f);
 
-	float r = 0.0f;
-	float g = 0.0f;
-	float b = 1.0f;
-	for (int i = 0; i < 9; i++) {
-		r += height[i] * sobel_x[i]; // salah sini
-		g += height[i] * sobel_y[i];
-	}
-	r = offsetAndClamp(r);
-	g = offsetAndClamp(g);
+	// float r = 0.0f;
+	// float g = 0.0f;
+	// float b = 1.0f;
+	// for (int i = 0; i < 9; i++) {
+	// 	r += height[i] * sobel_x[i]; // salah sini
+	// 	g += height[i] * sobel_y[i];
+	// }
+	// r = offsetAndClamp(r);
+	// g = offsetAndClamp(g);
 
-	normalMap = vec3(r, g, b);
+	// normalMap = vec3(r, g, b);
 
-	FragColor = vec4(normalMap, 1.0f);
+	// FragColor = vec4(normalMap, 1.0f);
 	// if (height[4] > 0.005) {
 	// 	float ratio = 1.00 / 1.52;
 	// 	vec3 I = normalize(crntPos - camPos);
