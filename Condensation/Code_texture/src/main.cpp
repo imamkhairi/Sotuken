@@ -102,6 +102,9 @@ float rectangleVertices[] =
 //  Remove FrameBuffer
 int main()
 {	
+	clock_t timer = clock();
+
+
 	// Initialize GLFW
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -183,7 +186,7 @@ int main()
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	// Load in a model
-	Model treeModel("../Models/statue/scene.gltf");
+	// Model treeModel("../Models/statue/scene.gltf");
 
 	//  =========================  Not Used (Initiate Plane old)
 	// Plane
@@ -263,7 +266,7 @@ int main()
 		// Texture("../Textures/brickwall.jpg", "diffuse", 0)
 	};
 	Mesh plane(vertices, indices, textures);
-	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
+	// Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
 	Texture heightTex("../Textures/heightMap.png", "height", 2);
 
 
@@ -272,6 +275,9 @@ int main()
 	double crntTime = 0.0;
 	double timeDiff;
 	unsigned int counter = 0;
+
+    printf("Prep Time : %.5f ms\n", (double)(clock() - timer)/(CLOCKS_PER_SEC/1000));
+
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -310,8 +316,8 @@ int main()
 
 		// Draw 
 		shaderProgram.Activate();
-		normalMap.Bind();
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
+		// normalMap.Bind();
+		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
 		heightTex.Bind();
 		glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
 		glActiveTexture(GL_TEXTURE0);
