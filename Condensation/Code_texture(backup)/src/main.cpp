@@ -118,16 +118,16 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(900, texHeight, texWidth);
+	particleSystem ParticleSystem(250, texHeight, texWidth);
+    clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
+    printf("Smoothing Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	IDMap idMap(texWidth, texHeight);
 
-    clock_t tStart = clock();
 	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
 	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
 	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
 	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
-    printf("Smoothing Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
     // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
