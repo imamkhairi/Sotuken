@@ -24,6 +24,8 @@ class heightMap {
         int mapHeight;
         int mapWidth;
 
+        cv::Mat heightMapMat;
+
         float calcHeight(Droplet a, int x_i, int y_i);
         void generateHeightMap(particleSystem *ParticleSystem);
         // void smoothingHeightMap(cv::Mat heightMap);

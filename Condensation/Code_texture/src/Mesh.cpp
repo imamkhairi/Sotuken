@@ -39,6 +39,7 @@ void Mesh::Draw
 	// Keep track of how many of each type of textures we have
 	unsigned int numDiffuse = 0;
 	unsigned int numSpecular = 0;
+	unsigned int numHeight = 0;
 
 	for (unsigned int i = 0; i < textures.size(); i++)
 	{
@@ -52,9 +53,17 @@ void Mesh::Draw
 		{
 			num = std::to_string(numSpecular++);
 		}
-		textures[i].texUnit(shader, (type + num).c_str(), i);
+		else if (type == "height") 
+		{
+			// std::cout << "normal" << std::endl;
+			num = std::to_string(numHeight++);
+		}
+		// textures[i].texUnit(shader, (type + num).c_str(), i);
+		textures[i].texUnit(shader, (type + num).c_str(), textures[i].unit);
+		// std::cout << (type + num) << "," << i << std::endl;
 		textures[i].Bind();
 	}
+
 	// Take care of the camera Matrix
 	glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 	camera.Matrix(shader, "camMatrix");

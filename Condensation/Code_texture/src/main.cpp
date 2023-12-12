@@ -101,7 +101,6 @@ int main()
 {	
 	clock_t timer = clock();
 
-
 	// Initialize GLFW
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -261,10 +260,11 @@ int main()
 	// new Plane
 	std::vector<Texture> textures = {
 		// Texture("../Textures/brickwall.jpg", "diffuse", 0)
+		Texture("../Textures/heightMap.png", "height", 2) // belum tau bisa update per frame
 	};
 	Mesh plane(vertices, indices, textures);
 	// Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
-	Texture heightTex("../Textures/heightMap.png", "height", 2);
+	// Texture heightTex("../Textures/heightMap.png", "height", 2);
 
 
 	// FPS
@@ -315,8 +315,8 @@ int main()
 		shaderProgram.Activate();
 		// normalMap.Bind();
 		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
-		heightTex.Bind();
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
+		// heightTex.Bind();
+		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		// treeModel.Draw(shaderProgram, camera);
