@@ -121,13 +121,11 @@ int main()
 	particleSystem ParticleSystem(250, texHeight, texWidth);
     clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-    printf("Smoothing Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+    printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	IDMap idMap(texWidth, texHeight);
 
 	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
-	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
-	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
-	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
     // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
@@ -261,7 +259,7 @@ int main()
 
 	// new Plane
 	std::vector<Texture> textures = {
-		Texture("../Textures/brickwall.jpg", "diffuse", 0)
+		// Texture("../Textures/brickwall.jpg", "diffuse", 0)
 	};
 	Mesh plane(vertices, indices, textures);
 	Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);

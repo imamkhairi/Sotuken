@@ -1,4 +1,5 @@
 #include <heightMap.h>
+#include <time.h>
 
 heightMap::heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth) {
     this->mapHeight = mapHeight;
@@ -57,7 +58,9 @@ void heightMap::generateHeightMap(particleSystem *PS) {
     PS->setDrewAmmount(PS->getParticleAmmount());
 
     // this->smoothingHeightMap(heightMap);
+    clock_t tStart = clock();
     cv::imwrite("../Textures/heightMap.png", heightMap);
+    printf("Output Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
@@ -71,7 +74,9 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
 }
 
 void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
+    clock_t tStart = clock();
     cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
+    printf("Load Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
