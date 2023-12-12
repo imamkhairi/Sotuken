@@ -48,18 +48,19 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
 }
 
 void heightMap::generateHeightMap(particleSystem *PS) {
-    cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
+    this->heightMapMat = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1); 
+    // cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
     int start = PS->getDrewAmmount();
     int end = PS->getParticleAmmount();
-    this->drawHeightMap(heightMap, particle, start, end);
+    this->drawHeightMap(this->heightMapMat, particle, start, end);
 
     PS->setDrewAmmount(PS->getParticleAmmount());
 
     // this->smoothingHeightMap(heightMap);
     clock_t tStart = clock();
-    cv::imwrite("../Textures/heightMap.png", heightMap);
+    // cv::imwrite("../Textures/heightMap.png", this->heightMapMat);
     printf("Output Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
 
@@ -75,7 +76,7 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
 
 void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
     clock_t tStart = clock();
-    cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
+    // cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
     printf("Load Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
@@ -97,7 +98,7 @@ void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
                         int y_i = y0 - 1 + i;
                         int x_i = x0 - 1 + j;
                         checkCoordinate(&x_i, &y_i);
-                        value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+                        value += avg[i][j] * this->heightMapMat.at<unsigned char>(y_i,x_i);
                         // value += heightMap.at<unsigned char>(y_i,x_i);
                     }
                 }
@@ -158,4 +159,8 @@ int heightMap::heightThreshold(float *value) {
         return 0;
     } 
     else return 1;
+}
+
+cv::Mat heightMap::getHeightMap() {
+    return this->heightMapMat;
 }

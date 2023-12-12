@@ -260,7 +260,8 @@ int main()
 	// new Plane
 	std::vector<Texture> textures = {
 		// Texture("../Textures/brickwall.jpg", "diffuse", 0)
-		Texture("../Textures/heightMap.png", "height", 2) // belum tau bisa update per frame
+		// Texture("../Textures/heightMap.png", "height", 2) // belum tau bisa update per frame
+		Texture(HeightMap.getHeightMap(), "height", 2) 
 	};
 	Mesh plane(vertices, indices, textures);
 	// Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);

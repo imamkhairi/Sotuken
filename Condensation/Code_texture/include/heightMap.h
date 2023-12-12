@@ -19,6 +19,7 @@ class heightMap {
     
         void smoothingHeightMap(IDMap idMap, particleSystem *PS);
         void updateHeightMap(particleSystem *PS);
+        cv::Mat getHeightMap();
 
     private:
         int mapHeight;
