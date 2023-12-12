@@ -77,7 +77,6 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
 void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
     clock_t tStart = clock();
     // cv::Mat heightMap = cv::imread("../Textures/heightMap.png", cv::IMREAD_GRAYSCALE);
-    printf("Load Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
@@ -109,7 +108,9 @@ void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
         }
     }
 
-    cv::imwrite("../Textures/heightMap.png", smoothed);
+    this->heightMapMat = smoothed;
+    printf("Smoothing Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+    // cv::imwrite("../Textures/heightMap.png", smoothed);
 }
 
 void heightMap::updateHeightMap(particleSystem *PS)
