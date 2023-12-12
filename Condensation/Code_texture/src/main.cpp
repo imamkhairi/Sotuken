@@ -97,6 +97,7 @@ float rectangleVertices[] =
 	-1.0f,  1.0f,  0.0f, 1.0f
 };
 
+// https://gist.github.com/zhangzhensong/03f67947c22acb5ee922
 
 //  Remove FrameBuffer
 int main()
