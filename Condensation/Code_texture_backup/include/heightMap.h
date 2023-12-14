@@ -19,10 +19,13 @@ class heightMap {
     
         void smoothingHeightMap(IDMap idMap, particleSystem *PS);
         void updateHeightMap(particleSystem *PS);
+        cv::Mat getHeightMap();
 
     private:
         int mapHeight;
         int mapWidth;
+
+        cv::Mat heightMapMat;
 
         float calcHeight(Droplet a, int x_i, int y_i);
         void generateHeightMap(particleSystem *ParticleSystem);

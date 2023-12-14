@@ -42,6 +42,8 @@ class particleSystem {
         void initiateParticleSystem(std::vector <Droplet> *Particles);
         void initiateDroplet(Droplet *a);
         void calcRadius(Droplet *a);
+        void updateParticleSystem();
+
 };
 
 #endif

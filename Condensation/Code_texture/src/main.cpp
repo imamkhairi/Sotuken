@@ -94,8 +94,6 @@ std::vector<GLuint> indices =
 	0, 2, 3
 };
 
-// https://gist.github.com/zhangzhensong/03f67947c22acb5ee922
-
 //  Remove FrameBuffer
 int main()
 {	
@@ -118,7 +116,7 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(250, texHeight, texWidth);
+	particleSystem ParticleSystem(50, texHeight, texWidth);
     clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
     printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));

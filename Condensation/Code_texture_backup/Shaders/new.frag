@@ -181,7 +181,8 @@ void main()
 		FragColor = vec4(texture(skybox, vec3(R.xy, -R.z)).rgb, 1.0);
 		
 		// FragColor = vec4(normalMap, 1.0f);
-		// FragColor = vec4(texture(height0, texCoord).r);
 	}
 	else discard;
+
+	// FragColor = vec4(texture(height0, texCoord).r);
 }
