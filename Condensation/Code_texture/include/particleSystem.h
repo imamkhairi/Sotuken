@@ -25,12 +25,13 @@ class particleSystem {
         static void print();
 
         void addParticle(int ammount);
-
         void setDrewAmmount(int value);
+        void updateParticleSystem();
 
         std::vector <Droplet> getParticleSystem();
         int getParticleAmmount();
         int getDrewAmmount();
+
 
     private:
         int particleAmmount;
@@ -42,7 +43,6 @@ class particleSystem {
         void initiateParticleSystem(std::vector <Droplet> *Particles);
         void initiateDroplet(Droplet *a);
         void calcRadius(Droplet *a);
-        void updateParticleSystem();
 
 };
 

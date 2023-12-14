@@ -4,6 +4,7 @@
 heightMap::heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth) {
     this->mapHeight = mapHeight;
     this->mapWidth = mapWidth;
+    this->initiated = false;
     this->generateHeightMap(ParticleSystem);
 }
 
@@ -48,20 +49,22 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
 }
 
 void heightMap::generateHeightMap(particleSystem *PS) {
-    this->heightMapMat = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1); 
-    // cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
+    if (!this->initiated) {
+        this->heightMapMat = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1); 
+        this->initiated = true;
+    }
 
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
-    int start = PS->getDrewAmmount();
-    int end = PS->getParticleAmmount();
-    this->drawHeightMap(this->heightMapMat, particle, start, end);
+    // int start = PS->getDrewAmmount();
+    // int end = PS->getParticleAmmount();
+    this->drawHeightMap(this->heightMapMat, particle, 0, PS->getParticleAmmount());
 
-    PS->setDrewAmmount(PS->getParticleAmmount());
+    // PS->setDrewAmmount(PS->getParticleAmmount());
 
-    // this->smoothingHeightMap(heightMap);
-    clock_t tStart = clock();
+    // this->smoothingHeightMap();
+    // clock_t tStart = clock();
     // cv::imwrite("../Textures/heightMap.png", this->heightMapMat);
-    printf("Output Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+    // printf("Output Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i) {

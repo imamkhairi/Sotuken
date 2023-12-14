@@ -46,9 +46,12 @@ void particleSystem::addParticle(int ammount)
 
 void particleSystem::updateParticleSystem() {
     for (int i = 0; i < this->particleAmmount; i++) {
-        this->Particles[i].position.x += 2;
-        this->Particles[i].position.y += 2;
+        // this->Particles[i].position.x += 2;
+        if (this->Particles[i].position.y < this->mapHeigth/2)
+        this->Particles[i].position.y += 1;
     }
+
+    // std::cout << this->Particles[1].position.y << std::endl;
 }
 
 void particleSystem::setDrewAmmount(int value)

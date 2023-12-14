@@ -116,13 +116,13 @@ int main()
 		return -1;
 	}
 	
-	particleSystem ParticleSystem(50, texHeight, texWidth);
+	particleSystem ParticleSystem(250, texHeight, texWidth);
     clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
     printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 	IDMap idMap(texWidth, texHeight);
 
-	HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
+	// HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
 
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
     // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
@@ -261,9 +261,10 @@ int main()
 		// Texture("../Textures/heightMap.png", "height", 2) // belum tau bisa update per frame
 		Texture(HeightMap.getHeightMap(), "height", 2) 
 	};
+
 	Mesh plane(vertices, indices, textures);
 	// Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
-	// Texture heightTex("../Textures/heightMap.png", "height", 2);
+	// Texture heightTex(HeightMap.getHeightMap(), "height", 2);
 
 
 	// FPS
@@ -273,7 +274,6 @@ int main()
 	unsigned int counter = 0;
 
     printf("Prep Time : %.5f ms\n", (double)(clock() - timer)/(CLOCKS_PER_SEC/1000));
-
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -290,11 +290,17 @@ int main()
 
 			prevTime = crntTime;
 			counter = 0;
-			// ParticleSystem.addParticle(1);
-		}
 
-		// HeightMap.updateHeightMap(&ParticleSystem);
-		// Texture heightTex("../Textures/heightMap.png", "height", 2);
+			// ParticleSystem.addParticle(1);
+			ParticleSystem.updateParticleSystem();
+			HeightMap.generateHeightMap(&ParticleSystem);	// ini bikin buram (somehow)
+
+			textures[0].Update();
+			textures.clear();
+			textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
+
+
+		}
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -316,7 +322,7 @@ int main()
 		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
 		// heightTex.Bind();
 		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
-		glActiveTexture(GL_TEXTURE0);
+		// glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		// treeModel.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
