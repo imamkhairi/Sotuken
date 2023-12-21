@@ -18,7 +18,7 @@ int main()
     printf("Gaussian blur Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
     tStart = clock();
     cv::blur(image, blurImageBox, cv::Size(3, 3));
-    cv::threshold(blurImageBox, blurImageBox, 0.05, 255, cv::THRESH_TOZERO);
+    cv::threshold(blurImageBox, blurImageBox, 50, 255, cv::THRESH_TOZERO);
     printf("box Height Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
     // cv::imshow("Image", image);

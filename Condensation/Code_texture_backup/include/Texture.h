@@ -28,5 +28,7 @@ public:
 	void Unbind();
 	// Deletes a texture
 	void Delete();
+
+	void Update();
 };
 #endif

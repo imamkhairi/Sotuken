@@ -21,14 +21,16 @@ class heightMap {
         void updateHeightMap(particleSystem *PS);
         cv::Mat getHeightMap();
 
+        void generateHeightMap(particleSystem *ParticleSystem);
+
     private:
         int mapHeight;
         int mapWidth;
+        bool initiated;
 
         cv::Mat heightMapMat;
 
         float calcHeight(Droplet a, int x_i, int y_i);
-        void generateHeightMap(particleSystem *ParticleSystem);
         // void smoothingHeightMap(cv::Mat heightMap);
         void checkCoordinate(int *x, int *y);
         int heightThreshold(float *value);

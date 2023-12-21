@@ -10,9 +10,9 @@ const unsigned int texHeight = 1024;
 
 //  =========================  Not Used (old plane vertices)
 // // Plane Vertices
-// float vertices[] = 
+// float vertices[] =
 // {
-// 	// Coordinates      	/ Normals 
+// 	// Coordinates      	/ Normals
 // 	-1.0f, -1.0f, -0.5f,  	0.0f, 0.0f, 1.0f,
 // 	-1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
 // 	 1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
@@ -27,47 +27,45 @@ const unsigned int texHeight = 1024;
 // };
 
 float skyboxVertices[] =
-{
-	//   Coordinates
-	-1.0f, -1.0f,  1.0f, // 0       7--------6
-	 1.0f, -1.0f,  1.0f, // 1      /|       /|
-	 1.0f, -1.0f, -1.0f, // 2     4--------5 |
-	-1.0f, -1.0f, -1.0f, // 3     | |      | |
-	-1.0f,  1.0f,  1.0f, // 4     | 3------|-2
-	 1.0f,  1.0f,  1.0f, // 5     |/       |/
-	 1.0f,  1.0f, -1.0f, // 6     0--------1
-	-1.0f,  1.0f, -1.0f  // 7
+	{
+		//   Coordinates
+		-1.0f, -1.0f, 1.0f,	 // 0       7--------6
+		1.0f, -1.0f, 1.0f,	 // 1      /|       /|
+		1.0f, -1.0f, -1.0f,	 // 2     4--------5 |
+		-1.0f, -1.0f, -1.0f, // 3     | |      | |
+		-1.0f, 1.0f, 1.0f,	 // 4     | 3------|-2
+		1.0f, 1.0f, 1.0f,	 // 5     |/       |/
+		1.0f, 1.0f, -1.0f,	 // 6     0--------1
+		-1.0f, 1.0f, -1.0f	 // 7
 };
-
 
 unsigned int skyboxIndices[] =
-{
-	// Right
-	1, 2, 6,
-	6, 5, 1,
-	// Left
-	0, 4, 7,
-	7, 3, 0,
-	// Top
-	4, 5, 6,
-	6, 7, 4,
-	// Bottom
-	0, 3, 2,
-	2, 1, 0,
-	// Back
-	0, 1, 5,
-	5, 4, 0,
-	// Front
-	3, 7, 6,
-	6, 2, 3
-};
+	{
+		// Right
+		1, 2, 6,
+		6, 5, 1,
+		// Left
+		0, 4, 7,
+		7, 3, 0,
+		// Top
+		4, 5, 6,
+		6, 7, 4,
+		// Bottom
+		0, 3, 2,
+		2, 1, 0,
+		// Back
+		0, 1, 5,
+		5, 4, 0,
+		// Front
+		3, 7, 6,
+		6, 2, 3};
 
 // float backGroundVertices[] = {
 // 	//   Coordinates
-// 	-1.0f, -1.0f, -1.0f, // 0  
+// 	-1.0f, -1.0f, -1.0f, // 0
 // 	-1.0f,  1.0f, -1.0f, // 1
-// 	 1.0f,  1.0f, -1.0f, // 2  
-// 	 1.0f, -1.0f, -1.0f  // 3  
+// 	 1.0f,  1.0f, -1.0f, // 2
+// 	 1.0f, -1.0f, -1.0f  // 3
 // };
 
 // Test TBN Mat
@@ -80,23 +78,21 @@ unsigned int skyboxIndices[] =
 // };
 
 std::vector<Vertex> vertices =
-{
-	Vertex{glm::vec3(-1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}, 
-	Vertex{glm::vec3(-1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3( 1.0f,  1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3( 1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}
-};
+	{
+		Vertex{glm::vec3(-1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+		Vertex{glm::vec3(-1.0f, 1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+		Vertex{glm::vec3(1.0f, 1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+		Vertex{glm::vec3(1.0f, -1.0f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)}};
 
 // Indices for plane with texture
 std::vector<GLuint> indices =
-{
-	0, 1, 2,
-	0, 2, 3
-};
+	{
+		0, 1, 2,
+		0, 2, 3};
 
 //  Remove FrameBuffer
 int main()
-{	
+{
 	clock_t timer = clock();
 
 	// Initialize GLFW
@@ -106,7 +102,7 @@ int main()
 	// Tell GLFW we are using the CORE profile (modern functions)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Create a GLFWwindow object of 800 by 800 pixels
-	GLFWwindow* window = glfwCreateWindow(width, height, "Condensation", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(width, height, "Condensation", NULL, NULL);
 
 	// Error check if the window fails to create
 	if (window == NULL)
@@ -115,22 +111,20 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
-	
+
 	particleSystem ParticleSystem(250, texHeight, texWidth);
-    clock_t tStart = clock();
+	clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-    printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+	printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 	IDMap idMap(texWidth, texHeight);
 
-	// HeightMap.smoothingHeightMap(idMap, &ParticleSystem);
-
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
-    // std::cout << ParticleSystem.getDrewAmmount() << std::endl;
+	// std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
 
-	//Load GLAD so it configures OpenGL
+	// Load GLAD so it configures OpenGL
 	gladLoadGL();
 
 	// Specify the viewport of OpenGL in the Window. From x = 0, y = 0, to x = width, y = height
@@ -139,8 +133,7 @@ int main()
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.5f);
 
-	glm::mat4 planeModel = glm::mat4(1.0f); //scale
-
+	glm::mat4 planeModel = glm::mat4(1.0f); // scale
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -157,7 +150,7 @@ int main()
 	// Generates Shader
 	Shader shaderProgram("../Shaders/new.vert", "../Shaders/new.frag", "../Shaders/new.geom");
 	Shader skyboxShader("../Shaders/skybox.vert", "../Shaders/skybox.frag");
-	
+
 	//  =========================  Not Used (old plane Shader)
 	// Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
 
@@ -192,7 +185,7 @@ int main()
 	// pVAO.LinkAttrib(pVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 	// pVAO.Unbind();
 	// pVBO.Unbind();
-	// pEBO.Unbind();	
+	// pEBO.Unbind();
 
 	// Sky box
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
@@ -204,23 +197,21 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(skyboxIndices), &skyboxIndices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
-	{
-		"../skybox2/right1.jpg",
-		"../skybox2/left.jpg",
-		"../skybox2/top.jpg",
-		"../skybox2/bottom.jpg",
-		"../skybox2/front.jpg",
-		"../skybox2/back.jpg"
-	};
+		{
+			"../skybox2/right1.jpg",
+			"../skybox2/left.jpg",
+			"../skybox2/top.jpg",
+			"../skybox2/bottom.jpg",
+			"../skybox2/front.jpg",
+			"../skybox2/back.jpg"};
 
 	// Creates the cubemap texture object
 	unsigned int cubemapTexture;
@@ -239,12 +230,11 @@ int main()
 	for (unsigned int i = 0; i < 6; i++)
 	{
 		int width, height, nrChannels;
-		unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
+		unsigned char *data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
 		if (data)
 		{
 			stbi_set_flip_vertically_on_load(false);
-			glTexImage2D
-			(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
 		}
 		else
@@ -254,17 +244,19 @@ int main()
 		}
 	}
 
-
 	// new Plane
 	std::vector<Texture> textures = {
-		// Texture("../Textures/brickwall.jpg", "diffuse", 0)
-		// Texture("../Textures/heightMap.png", "height", 2) // belum tau bisa update per frame
-		Texture(HeightMap.getHeightMap(), "height", 2) 
+		Texture(HeightMap.getHeightMap(), "height", 2)
 	};
 
 	Mesh plane(vertices, indices, textures);
-	// Texture normalMap("../Textures/brickwall_normal.jpg", "normal", 1);
-	// Texture heightTex(HeightMap.getHeightMap(), "height", 2);
+	// plane.textures.clear();
+	// textures[0].Unbind();
+	// textures[0].Delete();
+	textures.clear();
+	std::cout << "tex : " << textures.size() << std::endl;
+	std::cout << "mesh : " << plane.textures.size() << std::endl;
+	// textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
 
 
 	// FPS
@@ -273,7 +265,7 @@ int main()
 	double timeDiff;
 	unsigned int counter = 0;
 
-    printf("Prep Time : %.5f ms\n", (double)(clock() - timer)/(CLOCKS_PER_SEC/1000));
+	printf("Prep Time : %.5f ms\n", (double)(clock() - timer) / (CLOCKS_PER_SEC / 1000));
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -282,7 +274,8 @@ int main()
 		timeDiff = crntTime - prevTime;
 		counter++;
 
-		if (timeDiff >= 1.0 / 30.0) {
+		if (timeDiff >= 1.0 / 30.0)
+		{
 			std::string FPS = std::to_string((1.0 / timeDiff) * counter);
 			std::string ms = std::to_string((timeDiff / counter) * 1000);
 			std::string newTitle = "Condensation - " + FPS + "FPS / " + ms + "ms";
@@ -292,14 +285,13 @@ int main()
 			counter = 0;
 
 			// ParticleSystem.addParticle(1);
-			ParticleSystem.updateParticleSystem();
-			HeightMap.generateHeightMap(&ParticleSystem);	// ini bikin buram (somehow)
+			// ParticleSystem.updateParticleSystem();
+			// HeightMap.generateHeightMap(&ParticleSystem);
 
-			textures[0].Update();
-			textures.clear();
-			textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
-
-
+			// textures[0].Unbind();
+			// textures[0].Delete();
+			// textures.clear();
+			// textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
 		}
 
 		// Specify the color of the background
@@ -309,14 +301,13 @@ int main()
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
-
 		// Handles camera inputs
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex Shader
 		camera.updateMatrix(45.0f, 0.1f, 1000.0f);
 		// setting cam
 
-		// Draw 
+		// Draw
 		shaderProgram.Activate();
 		// normalMap.Bind();
 		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
@@ -324,7 +315,6 @@ int main()
 		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
 		// glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		// treeModel.Draw(shaderProgram, camera);
 		plane.Draw(shaderProgram, camera);
 
 		//  =========================  Not Used (draw plane old)
@@ -334,7 +324,7 @@ int main()
 		// camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
 		// pVAO.Bind();
 		// glActiveTexture(GL_TEXTURE0);
-        // glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		// glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// sky box draw
@@ -373,7 +363,6 @@ int main()
 
 	shaderProgram.Delete();
 	skyboxShader.Delete();
-	// planeProgram.Delete();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

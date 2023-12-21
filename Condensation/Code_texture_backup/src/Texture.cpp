@@ -18,7 +18,7 @@ Texture::Texture(cv::Mat image, const char* texType, GLuint slot) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	// cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
-	cv::flip(image, image, 0);
+	// cv::flip(image, image, 0);
 
 	int numColCh = image.channels();
 
@@ -203,4 +203,9 @@ void Texture::Unbind()
 void Texture::Delete()
 {
 	glDeleteTextures(1, &ID);
+}
+
+void Texture::Update() {
+	this->Unbind();
+	this->Delete();
 }
