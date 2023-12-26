@@ -1,16 +1,17 @@
 #include <heightMap.h>
 
-heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMap, int mapHeight, int mapWidth) {
+heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth) {
     this->mapHeight = mapHeight;
     this->mapWidth = mapWidth;
-    this->generateHeightMap(ParticleSystem, idMap);
+    this->idMapPtr = idMapPtr;
+    this->generateHeightMap(ParticleSystem);
 }
 
 float heightMap::distance(float x1, float y1, float x2, float y2) {
     return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1-y2,2));
 }
 
-void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, IDMap *idMap, int start, int end) {
+void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
     for (int i = start; i < end; i++) {
         // starting point
         int x = PS[i].position.x - (int)PS[i].radius - 1;
@@ -26,7 +27,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, IDMap *idMa
                     if (dst.at<unsigned char>(y0, x0) < h * 20)
                     {
                         dst.at<unsigned char>(y0, x0) = h * 20; // 50 konstansta
-                        idMap->setToValue(y0, x0, i);
+                        this->idMapPtr->setToValue(y0, x0, i);
                     }
                 }
             }
@@ -50,7 +51,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, IDMap *idMa
 }
 
 // need optimization
-void heightMap::generateHeightMap(particleSystem *PS, IDMap *idMap) {
+void heightMap::generateHeightMap(particleSystem *PS) {
     cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
 
     // Old method
@@ -71,7 +72,7 @@ void heightMap::generateHeightMap(particleSystem *PS, IDMap *idMap) {
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
     int start = PS->getDrewAmmount();
     int end = PS->getParticleAmmount();
-    this->drawHeightMap(heightMap, particle, idMap, start, end);
+    this->drawHeightMap(heightMap, particle, start, end);
 
     PS->setDrewAmmount(PS->getParticleAmmount());
 

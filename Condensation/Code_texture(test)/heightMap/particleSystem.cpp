@@ -24,7 +24,7 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     std::vector <glm::vec2> position;
     position.push_back(glm::vec2(10, 10));
     position.push_back(glm::vec2(16, 10));
-    position.push_back(glm::vec2(13, 16));
+    position.push_back(glm::vec2(15, 30));
     // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     10);
