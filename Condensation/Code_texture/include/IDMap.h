@@ -7,7 +7,7 @@ class IDMap {
     public:
         IDMap(int mapHeight, int mapWidth);
         
-        void setToOne(int y, int x);
+        void setToValue(int y, int x, int value);
         void print();
         void Delete();
 

@@ -113,10 +113,12 @@ int main()
 	}
 
 	particleSystem ParticleSystem(250, texHeight, texWidth);
-	clock_t tStart = clock();
-	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
-	printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 	IDMap idMap(texWidth, texHeight);
+
+	clock_t tStart = clock();
+	heightMap HeightMap(&ParticleSystem, &idMap, texHeight, texWidth);
+	printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
+
 
 	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
 	// std::cout << ParticleSystem.getDrewAmmount() << std::endl;
@@ -124,7 +126,6 @@ int main()
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
 
-	// Load GLAD so it configures OpenGL
 	gladLoadGL();
 
 	// Specify the viewport of OpenGL in the Window. From x = 0, y = 0, to x = width, y = height
@@ -135,16 +136,14 @@ int main()
 
 	glm::mat4 planeModel = glm::mat4(1.0f); // scale
 
-	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS); // there are several options
+	glDepthFunc(GL_LESS);
 
-	// face culling
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 	glFrontFace(GL_CCW);
 
-	// 1 Enable vsync // 0 disable
+	// 1 Enable vsync / 0 disable
 	glfwSwapInterval(1);
 
 	// Generates Shader
@@ -295,7 +294,6 @@ int main()
 			// plane.textures.clear();
 			plane.textures[0] = Texture(HeightMap.getHeightMap(), "height", 2);
 		}
-
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
