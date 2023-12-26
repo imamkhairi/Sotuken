@@ -244,18 +244,20 @@ int main()
 		}
 	}
 
-	// new Plane
-	std::vector<Texture> textures = {
-		Texture(HeightMap.getHeightMap(), "height", 2)
-	};
+	//// new Plane
+	Mesh plane(vertices, indices, HeightMap.getHeightMap());
+	// std::vector<Texture> textures = {
+	// 	Texture(HeightMap.getHeightMap(), "height", 2)
+	// };
 
-	Mesh plane(vertices, indices, textures);
+	// Mesh plane(vertices, indices, textures);
+
 	// plane.textures.clear();
 	// textures[0].Unbind();
 	// textures[0].Delete();
-	textures.clear();
-	std::cout << "tex : " << textures.size() << std::endl;
-	std::cout << "mesh : " << plane.textures.size() << std::endl;
+	// textures.clear();
+	// std::cout << "tex : " << textures.size() << std::endl;
+	// std::cout << "mesh : " << plane.textures.size() << std::endl;
 	// textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
 
 
@@ -274,7 +276,7 @@ int main()
 		timeDiff = crntTime - prevTime;
 		counter++;
 
-		if (timeDiff >= 1.0 / 30.0)
+		if (timeDiff >= 1.0 / 20.0) // 
 		{
 			std::string FPS = std::to_string((1.0 / timeDiff) * counter);
 			std::string ms = std::to_string((timeDiff / counter) * 1000);
@@ -285,14 +287,15 @@ int main()
 			counter = 0;
 
 			// ParticleSystem.addParticle(1);
-			// ParticleSystem.updateParticleSystem();
-			// HeightMap.generateHeightMap(&ParticleSystem);
+			ParticleSystem.updateParticleSystem();
+			HeightMap.generateHeightMap(&ParticleSystem);
 
-			// textures[0].Unbind();
-			// textures[0].Delete();
-			// textures.clear();
-			// textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
+			plane.textures[0].Unbind();
+			plane.textures[0].Delete();
+			plane.textures.clear();
+			plane.textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
 		}
+
 
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);

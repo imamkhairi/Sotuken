@@ -19,6 +19,7 @@ public:
 
 	// Initializes the mesh
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures);
+	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, cv::Mat heightMapMat);
 
 	// Draws the mesh
 	void Draw
