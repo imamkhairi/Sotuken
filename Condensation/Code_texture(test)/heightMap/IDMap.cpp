@@ -1,5 +1,6 @@
 #include <IDMap.h>
 #include <iostream>
+#include <iomanip>
 
 IDMap::IDMap(int mapWidth, int mapHeight) {
     this->mapWidth = mapWidth;
@@ -27,7 +28,7 @@ void IDMap::print() {
     int *p = this->idMap;
     for (int y = 0; y < this->mapHeight; y++) {
         for (int x = 0; x < this->mapWidth; x++) {
-            std::cout << *p << " ";
+            std::cout << std::setw(2) << *p << " ";
             p++;
         }
         std::cout << std::endl;

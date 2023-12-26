@@ -1,16 +1,16 @@
 #include <heightMap.h>
 
-heightMap::heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth) {
+heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMap, int mapHeight, int mapWidth) {
     this->mapHeight = mapHeight;
     this->mapWidth = mapWidth;
-    this->generateHeightMap(ParticleSystem);
+    this->generateHeightMap(ParticleSystem, idMap);
 }
 
 float heightMap::distance(float x1, float y1, float x2, float y2) {
     return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1-y2,2));
 }
 
-void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) {
+void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, IDMap *idMap, int start, int end) {
     for (int i = start; i < end; i++) {
         // starting point
         int x = PS[i].position.x - (int)PS[i].radius - 1;
@@ -24,7 +24,10 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
                 float h = calcHeight(PS[i], x0, y0);
                 if ( h > 0.01 ) {
                     if (dst.at<unsigned char>(y0, x0) < h * 20)
-                    dst.at<unsigned char>(y0, x0) = h * 20; // 50 konstansta
+                    {
+                        dst.at<unsigned char>(y0, x0) = h * 20; // 50 konstansta
+                        idMap->setToValue(y0, x0, i);
+                    }
                 }
             }
         }
@@ -47,7 +50,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
 }
 
 // need optimization
-void heightMap::generateHeightMap(particleSystem *PS) {
+void heightMap::generateHeightMap(particleSystem *PS, IDMap *idMap) {
     cv::Mat heightMap = cv::Mat::zeros(this->mapWidth, this->mapHeight, CV_8UC1);
 
     // Old method
@@ -68,7 +71,7 @@ void heightMap::generateHeightMap(particleSystem *PS) {
     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
     int start = PS->getDrewAmmount();
     int end = PS->getParticleAmmount();
-    this->drawHeightMap(heightMap, particle, start, end);
+    this->drawHeightMap(heightMap, particle, idMap, start, end);
 
     PS->setDrewAmmount(PS->getParticleAmmount());
 
@@ -140,59 +143,59 @@ void heightMap::smoothingHeightMap(particleSystem *PS) {
     cv::imwrite("heightMap.png", smoothed);
 }
 
-void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
-    cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
-    cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
+// void heightMap::smoothingHeightMap(IDMap idMap, particleSystem *PS) {
+//     cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
+//     cv::Mat smoothed  = cv::Mat::zeros(this->mapHeight, this->mapHeight, CV_8UC1);
 
-    std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
-    for (auto & p : particle) {
-        // starting point
-        int x = p.position.x - (int)p.radius - 2;
-        int y = p.position.y - (int)p.radius - 2;
-        // end point
-        int x1 = p.position.x + (int)p.radius + 2;
-        int y1 = p.position.y + (int)p.radius + 2;
+//     std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
+//     for (auto & p : particle) {
+//         // starting point
+//         int x = p.position.x - (int)p.radius - 2;
+//         int y = p.position.y - (int)p.radius - 2;
+//         // end point
+//         int x1 = p.position.x + (int)p.radius + 2;
+//         int y1 = p.position.y + (int)p.radius + 2;
 
 
-        for (int y0 = y; y0 <= y1; y0++) {
-            for (int x0 = x; x0 <= x1; x0++) {
-                float value = 0;
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        int y_i = y0 - 1 + i;
-                        int x_i = x0 - 1 + j;
-                        checkCoordinate(&x_i, &y_i);
-                        // value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
-                        value += heightMap.at<unsigned char>(y_i,x_i);
-                    }
-                }
-                value = value/9;
-                if(heightThreshold(&value)) idMap.setToOne(y0, x0);
-                smoothed.at<unsigned char>(y0,x0) = value;
-            }
-        }
-    }
+//         for (int y0 = y; y0 <= y1; y0++) {
+//             for (int x0 = x; x0 <= x1; x0++) {
+//                 float value = 0;
+//                 for (int i = 0; i < 3; i++) {
+//                     for (int j = 0; j < 3; j++) {
+//                         int y_i = y0 - 1 + i;
+//                         int x_i = x0 - 1 + j;
+//                         checkCoordinate(&x_i, &y_i);
+//                         // value += avg[i][j] * heightMap.at<unsigned char>(y_i,x_i);
+//                         value += heightMap.at<unsigned char>(y_i,x_i);
+//                     }
+//                 }
+//                 value = value/9;
+//                 if(heightThreshold(&value)) idMap.setToOne(y0, x0);
+//                 smoothed.at<unsigned char>(y0,x0) = value;
+//             }
+//         }
+//     }
 
-    cv::imwrite("heightMap.png", smoothed);
-}
+//     cv::imwrite("heightMap.png", smoothed);
+// }
 
-void heightMap::updateHeightMap(particleSystem *PS)
-{
-    int last = PS->getDrewAmmount();
-    int ammount = PS->getParticleAmmount();
-    cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
+// void heightMap::updateHeightMap(particleSystem *PS)
+// {
+//     int last = PS->getDrewAmmount();
+//     int ammount = PS->getParticleAmmount();
+//     cv::Mat heightMap = cv::imread("heightMap.png", cv::IMREAD_GRAYSCALE);
 
-    if (last < ammount) {
-        int dif = ammount - last;
-        std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
-        this->drawHeightMap(heightMap, particle, last, ammount);
-    }
+//     if (last < ammount) {
+//         int dif = ammount - last;
+//         std::vector <Droplet> particle =  PS->getParticleSystem(); // bisa pake auto
+//         this->drawHeightMap(heightMap, particle, last, ammount);
+//     }
     
-    PS->setDrewAmmount(PS->getParticleAmmount());
+//     PS->setDrewAmmount(PS->getParticleAmmount());
 
-    cv::imwrite("heightMap.png", heightMap);
-    // this->smoothingHeightMap(heightMap);
-}
+//     cv::imwrite("heightMap.png", heightMap);
+//     // this->smoothingHeightMap(heightMap);
+// }
 
 void heightMap::checkCoordinate(int *x, int *y) {
     int dif;

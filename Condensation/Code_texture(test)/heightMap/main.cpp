@@ -11,7 +11,7 @@ int main() {
     // printf("Particle System: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
     IDMap idMap(texWidth, texHeight);
-	heightMap HeightMap(&ParticleSystem, texHeight, texWidth);
+	heightMap HeightMap(&ParticleSystem, &idMap, texHeight, texWidth);
 
     idMap.print();
 
