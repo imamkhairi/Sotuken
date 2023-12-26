@@ -13,14 +13,14 @@ void IDMap::initiateIDMap() {
     int *p = this->idMap;
     for (int y = 0; y < this->mapHeight; y++) {
         for (int x = 0; x < this->mapWidth; x++) {
-            *p = 0;
+            *p = -1;
             p++;
         }
     }
 }
 
-void IDMap::setToOne(int y, int x) {
-    this->idMap[y*mapWidth + x] = 1;
+void IDMap::setToValue(int y, int x, int value) {
+    this->idMap[y*mapWidth + x] = value;
 }
 
 void IDMap::print() {
@@ -36,4 +36,9 @@ void IDMap::print() {
 
 void IDMap::Delete() {
     free(this->idMap);
+}
+
+int *IDMap::getIDMap() 
+{
+    return this->idMap;
 }

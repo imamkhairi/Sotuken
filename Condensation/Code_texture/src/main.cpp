@@ -292,8 +292,8 @@ int main()
 
 			plane.textures[0].Unbind();
 			plane.textures[0].Delete();
-			plane.textures.clear();
-			plane.textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
+			// plane.textures.clear();
+			plane.textures[0] = Texture(HeightMap.getHeightMap(), "height", 2);
 		}
 
 
