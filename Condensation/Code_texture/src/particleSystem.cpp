@@ -6,24 +6,32 @@ particleSystem::particleSystem(int particleAmmount, int mapHeight, int mapWidth)
     this->particleAmmount = particleAmmount;
     this->mapHeigth = mapHeight;
     this->mapWidth = mapWidth;
-    this->initiateParticleSystem(&this->Particles); 
-    this->drewAmmount = 0;
+    this->initiateParticleSystem(); 
+    this->initiateUpdatedParticles();
 };
 
-void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
+void particleSystem::initiateParticleSystem() 
+{
     for (int i = 0; i < this->particleAmmount; i++) {
         Droplet a;
         this->initiateDroplet(&a);
-        Particles->push_back(a);
+        this->Particles.push_back(a);
     }
 }
 
-void particleSystem::initiateDroplet(Droplet *a) {    
+void particleSystem::initiateDroplet(Droplet *a) 
+{    
     a->mass = 50.0f;
     calcRadius(a);
-    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        10);
+    a->position =  glm::vec2((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2));
+}
+
+void particleSystem::initiateUpdatedParticles() 
+{
+    for (int i = 0; i < this->particleAmmount; i++) {
+        this->updatedParticles.push_back(i);
+    }
 }
 
 void particleSystem::calcRadius(Droplet *a) {
@@ -45,21 +53,17 @@ void particleSystem::addParticle(int ammount)
 }
 
 void particleSystem::updateParticleSystem() {
+    //// gerakan cuma untuk yg lewat threshold
     for (int i = 0; i < this->particleAmmount; i++) {
-        // this->Particles[i].position.x += 2;
-        if (this->Particles[i].position.y < this->mapHeigth/2)
-        this->Particles[i].position.y += 1;
+        if (this->Particles[i].position.y < this->mapHeigth/2) {
+            this->Particles[i].position.y += 1;
+            this->updatedParticles.push_back(i);
+        }
     }
-
-    // std::cout << this->Particles[1].position.y << std::endl;
 }
 
-void particleSystem::setDrewAmmount(int value)
+std::vector <Droplet> &particleSystem::getParticleSystem() 
 {
-    this->drewAmmount = value;
-}
-
-std::vector <Droplet> particleSystem::getParticleSystem() {
     return this->Particles;
 }
 
@@ -68,7 +72,7 @@ int particleSystem::getParticleAmmount()
     return this->particleAmmount;
 }
 
-int particleSystem::getDrewAmmount() 
+std::vector <int> &particleSystem::getUpdatedParticles()
 {
-    return this->drewAmmount;
+    return this->updatedParticles;
 }

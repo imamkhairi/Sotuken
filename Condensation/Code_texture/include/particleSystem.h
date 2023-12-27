@@ -13,7 +13,7 @@
 
 // Particle
 struct Droplet {
-	glm::vec3 position;
+	glm::vec2 position;
 	float mass; 
 	float radius;
 	const float density = 1;
@@ -25,23 +25,24 @@ class particleSystem {
         static void print();
 
         void addParticle(int ammount);
-        void setDrewAmmount(int value);
         void updateParticleSystem();
 
-        std::vector <Droplet> getParticleSystem();
+        std::vector <Droplet> &getParticleSystem();
+        std::vector <int> &getUpdatedParticles();
         int getParticleAmmount();
-        int getDrewAmmount();
+    
 
 
     private:
         int particleAmmount;
         int mapHeigth;
         int mapWidth;
-        int drewAmmount;
         std::vector <Droplet> Particles;
+        std::vector <int> updatedParticles;
 
-        void initiateParticleSystem(std::vector <Droplet> *Particles);
+        void initiateParticleSystem();
         void initiateDroplet(Droplet *a);
+        void initiateUpdatedParticles();
         void calcRadius(Droplet *a);
 
 };
