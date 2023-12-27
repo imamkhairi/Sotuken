@@ -286,17 +286,17 @@ int main()
 			counter = 0;
 
 			// ParticleSystem.addParticle(1);
-			// ParticleSystem.updateParticleSystem();
+			ParticleSystem.updateParticleSystem();
 		
-			// tStart = clock();
-			// HeightMap.generateHeightMap(&ParticleSystem);
-			// printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
+			tStart = clock();
+			HeightMap.generateHeightMap();
+			printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 
 
-			// plane.textures[0].Unbind();
-			// plane.textures[0].Delete();
-			// // plane.textures.clear();
-			// plane.textures[0] = Texture(HeightMap.getHeightMap(), "height", 2);
+			plane.textures[0].Unbind();
+			plane.textures[0].Delete();
+			// plane.textures.clear();
+			plane.textures[0] = Texture(HeightMap.getHeightMap(), "height", 2);
 		}
 
 		// Specify the color of the background
