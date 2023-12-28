@@ -21,7 +21,7 @@ struct Droplet {
 
 class particleSystem {
     public:
-        particleSystem(int particleAmmount, int mapHeight, int mapWidth);
+        particleSystem(int particleAmmount, int maxParticle, int mapHeight, int mapWidth);
         static void print();
 
         void addParticle(int ammount);
@@ -35,6 +35,7 @@ class particleSystem {
 
     private:
         int particleAmmount;
+        int maxParticle;
         int mapHeigth;
         int mapWidth;
         std::vector <Droplet> Particles;

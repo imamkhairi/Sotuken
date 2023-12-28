@@ -112,15 +112,13 @@ int main()
 		return -1;
 	}
 
-	particleSystem ParticleSystem(250, texHeight, texWidth);
+	particleSystem ParticleSystem(250, 1000, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
 	clock_t tStart = clock();
 	heightMap HeightMap(&ParticleSystem, &idMap, texHeight, texWidth);
 	printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 
-
-	// std::cout << ParticleSystem.getParticleAmmount() << std::endl;
 	// std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
 	// Introduce the window into the current context
@@ -204,13 +202,14 @@ int main()
 
 	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
-		{
-			"../skybox2/right1.jpg",
-			"../skybox2/left.jpg",
-			"../skybox2/top.jpg",
-			"../skybox2/bottom.jpg",
-			"../skybox2/front.jpg",
-			"../skybox2/back.jpg"};
+	{
+		"../skybox2/right1.jpg",
+		"../skybox2/left.jpg",
+		"../skybox2/top.jpg",
+		"../skybox2/bottom.jpg",
+		"../skybox2/front.jpg",
+		"../skybox2/back.jpg"
+	};
 
 	// Creates the cubemap texture object
 	unsigned int cubemapTexture;
@@ -287,11 +286,10 @@ int main()
 
 			// ParticleSystem.addParticle(1);
 			ParticleSystem.updateParticleSystem();
-		
-			tStart = clock();
+			
+			// tStart = clock();
 			HeightMap.generateHeightMap();
-			printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
-
+			// printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 
 			plane.textures[0].Unbind();
 			plane.textures[0].Delete();

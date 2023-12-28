@@ -43,7 +43,6 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector
         }
     }
 
-    std::cout << "updated vector size : " << (*updatedParticlesPtr).size() << std::endl;
     (*updatedParticlesPtr).clear();
 
     // for (int y = 0; y < this->mapHeight; y++) {
