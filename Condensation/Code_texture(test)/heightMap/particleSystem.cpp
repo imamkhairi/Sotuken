@@ -19,7 +19,7 @@ void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
 }
 
 void particleSystem::initiateDroplet(Droplet *a, int i) {    
-    a->mass = 100.0f;
+    a->mass = 30.0f;
     calcRadius(a);
     std::vector <glm::vec2> position;
     position.push_back(glm::vec2(10, 10));
