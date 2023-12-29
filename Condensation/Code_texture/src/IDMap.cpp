@@ -35,6 +35,12 @@ void IDMap::print() {
     }
 }
 
-void IDMap::Delete() {
+void IDMap::Delete() 
+{
     free(this->idMap);
+}
+
+int IDMap::getIDvalue(int y, int x)
+{
+    return this->idMap[y*this->mapWidth + x];
 }

@@ -40,25 +40,26 @@ float skyboxVertices[] =
 };
 
 unsigned int skyboxIndices[] =
-	{
-		// Right
-		1, 2, 6,
-		6, 5, 1,
-		// Left
-		0, 4, 7,
-		7, 3, 0,
-		// Top
-		4, 5, 6,
-		6, 7, 4,
-		// Bottom
-		0, 3, 2,
-		2, 1, 0,
-		// Back
-		0, 1, 5,
-		5, 4, 0,
-		// Front
-		3, 7, 6,
-		6, 2, 3};
+{
+	// Right
+	1, 2, 6,
+	6, 5, 1,
+	// Left
+	0, 4, 7,
+	7, 3, 0,
+	// Top
+	4, 5, 6,
+	6, 7, 4,
+	// Bottom
+	0, 3, 2,
+	2, 1, 0,
+	// Back
+	0, 1, 5,
+	5, 4, 0,
+	// Front
+	3, 7, 6,
+	6, 2, 3
+};
 
 // float backGroundVertices[] = {
 // 	//   Coordinates
@@ -112,7 +113,7 @@ int main()
 		return -1;
 	}
 
-	particleSystem ParticleSystem(250, 10000, texHeight, texWidth);
+	particleSystem ParticleSystem(250, 300, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
 	clock_t tStart = clock();
@@ -295,6 +296,7 @@ int main()
 			plane.textures[0].Delete();
 			// plane.textures.clear();
 			plane.textures[0] = Texture(HeightMap.getHeightMap(), "height", 2);
+
 		}
 
 		// Specify the color of the background

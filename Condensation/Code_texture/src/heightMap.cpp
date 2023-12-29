@@ -36,13 +36,16 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector
                 {
                     if (dst.at<unsigned char>(y0, x0) < h * 8) {
                         dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
+                        if (this->idMapPtr->getIDvalue(y0, x0) >= 0) {
+                            std::cout << "merging " << this->idMapPtr->getIDvalue(y0, x0) << ", " << i << std::endl ;
+                        }
                         this->idMapPtr->setToValue(y0, x0, i);
                     }
                 }
             }
         }
     }
-
+    
     (*updatedParticlesPtr).clear();
 
     // for (int y = 0; y < this->mapHeight; y++) {

@@ -12,6 +12,7 @@ class IDMap {
         void Delete();
 
         int *getIDMap();
+        int getIDMapValue(int y, int x);
 
     private:
         int *idMap;

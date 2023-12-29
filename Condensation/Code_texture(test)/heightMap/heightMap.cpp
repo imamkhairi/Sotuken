@@ -29,6 +29,8 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
                     {
                         dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
                         // std::cout << h * 20 << std::endl;
+                        if(this->idMapPtr->getIDMapValue(y0, x0) >= 0 && this->idMapPtr->getIDMapValue(y0, x0) != i)
+                            std::cout << "Merging (" << i << "," << this->idMapPtr->getIDMapValue(y0,x0) << ")" << std::endl;
                         this->idMapPtr->setToValue(y0, x0, i);
                     }
                 }

@@ -10,6 +10,7 @@ class IDMap {
         void setToValue(int y, int x, int value);
         void print();
         void Delete();
+        int getIDvalue(int y, int x);
 
     private:
         int *idMap;

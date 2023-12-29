@@ -46,10 +46,10 @@ void particleSystem::calcRadius(Droplet *a)
 
 void particleSystem::addParticle(int ammount)
 {   
-    if(this->particleAmmount < this->maxParticle) {
-        this->particleAmmount += ammount;
-        std::cout << this->particleAmmount << std::endl;
-        for (int i = 0; i < ammount; i++) {
+    for (int i = 0; i < ammount; i++) {
+        // std::cout << this->particleAmmount << std::endl;
+        if(this->particleAmmount < this->maxParticle) {
+            this->particleAmmount += 1;
             this->updatedParticles.push_back(this->particleAmmount-1);
             Droplet a;
             this->initiateDroplet(&a);

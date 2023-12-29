@@ -43,3 +43,8 @@ int *IDMap::getIDMap()
 {
     return this->idMap;
 }
+
+int IDMap::getIDMapValue(int y, int x) 
+{
+    return this->idMap[y*this->mapWidth + x];
+}
