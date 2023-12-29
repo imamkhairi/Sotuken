@@ -1,9 +1,10 @@
 #include <heightMap.h>
 
-heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth) {
+heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth, int smCount) {
     this->mapHeight = mapHeight;
     this->mapWidth = mapWidth;
     this->idMapPtr = idMapPtr;
+    this->smCount = smCount;
     this->generateHeightMap(ParticleSystem);
 }
 
@@ -27,6 +28,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
                     if (dst.at<unsigned char>(y0, x0) < h * 20)
                     {
                         dst.at<unsigned char>(y0, x0) = h * 20; // 50 konstansta
+                        // std::cout << h * 20 << std::endl;
                         this->idMapPtr->setToValue(y0, x0, i);
                     }
                 }
@@ -77,6 +79,11 @@ void heightMap::generateHeightMap(particleSystem *PS) {
     PS->setDrewAmmount(PS->getParticleAmmount());
 
     // this->smoothingHeightMap(heightMap);
+    for (int i = 0; i < this->smCount; i++) {
+        cv::blur(heightMap, heightMap, cv::Size(5, 5));
+        cv::threshold(heightMap, heightMap, 20, 255, cv::THRESH_TOZERO);
+    }
+
     cv::imwrite("heightMap.png", heightMap);
 }
 

@@ -15,7 +15,7 @@ const int avg[3][3] = {
 
 class heightMap {
     public:
-        heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth);
+        heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth, int smCount);
 
         void updateHeightMap(particleSystem *PS);
         void smoothingHeightMap(particleSystem *PS);
@@ -26,7 +26,7 @@ class heightMap {
     private:
         int mapHeight;
         int mapWidth;
-
+        int smCount;
         IDMap *idMapPtr;
 
         float calcHeight(Droplet a, int x_i, int y_i);

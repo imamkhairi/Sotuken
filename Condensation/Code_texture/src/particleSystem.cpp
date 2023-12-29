@@ -24,7 +24,6 @@ void particleSystem::initiateDroplet(Droplet *a)
 {    
     // a->mass = 20.0f;
     float r = (float) ((rand() % 32) + 12);
-    std::cout << "r = " << r << std::endl;
     a->mass = r;
     calcRadius(a);
     a->position =  glm::vec2((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
@@ -48,8 +47,8 @@ void particleSystem::calcRadius(Droplet *a)
 void particleSystem::addParticle(int ammount)
 {   
     if(this->particleAmmount < this->maxParticle) {
-        // std::cout << this->particleAmmount << std::endl;
         this->particleAmmount += ammount;
+        std::cout << this->particleAmmount << std::endl;
         for (int i = 0; i < ammount; i++) {
             this->updatedParticles.push_back(this->particleAmmount-1);
             Droplet a;
@@ -62,7 +61,7 @@ void particleSystem::addParticle(int ammount)
 void particleSystem::updateParticleSystem() 
 {
     //// gerakan cuma untuk yg lewat threshold
-    this->addParticle(1);
+    this->addParticle(5);
     // for (int i = 0; i < this->particleAmmount; i++) {
     //     if (this->Particles[i].position.y < this->mapHeigth/2) {
     //         this->Particles[i].position.y += 1;
