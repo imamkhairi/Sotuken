@@ -23,8 +23,8 @@ void particleSystem::initiateParticleSystem()
 void particleSystem::initiateDroplet(Droplet *a) 
 {    
     // a->mass = 20.0f;
-    float r = (float) ((rand() % 32) + 12);
-    a->mass = r;
+    float m = (float) ((rand() % 32) + 12);
+    a->mass = m;
     calcRadius(a);
     a->position =  glm::vec2((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
         (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2));
@@ -84,3 +84,4 @@ std::vector <int> &particleSystem::getUpdatedParticles()
 {
     return this->updatedParticles;
 }
+

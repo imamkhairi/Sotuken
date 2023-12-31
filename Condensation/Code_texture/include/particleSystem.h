@@ -45,7 +45,7 @@ class particleSystem {
         void initiateDroplet(Droplet *a);
         void initiateUpdatedParticles();
         void calcRadius(Droplet *a);
-
+        
 };
 
 #endif

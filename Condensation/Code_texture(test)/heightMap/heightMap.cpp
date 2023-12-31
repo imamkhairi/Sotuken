@@ -86,6 +86,11 @@ void heightMap::generateHeightMap(particleSystem *PS) {
         cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
     }
 
+    cv::Size roiSize(20, 20);
+    cv::Rect ROI(cv::Point(10, 10), roiSize);
+    cv::Mat slicedImg = heightMap(ROI);
+    cv::Mat ROI2 = cv::Mat::zeros(roiSize, CV_8UC1);
+    ROI2.copyTo(slicedImg);
     cv::imwrite("heightMap.png", heightMap);
 }
 
