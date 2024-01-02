@@ -23,8 +23,9 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     calcRadius(a);
     std::vector <glm::vec2> position;
     position.push_back(glm::vec2(10, 10));
-    position.push_back(glm::vec2(20, 10));
-    position.push_back(glm::vec2(15, 15));
+    position.push_back(glm::vec2(15, 13));
+    position.push_back(glm::vec2(13, 8));
+    position.push_back(glm::vec2(13, 15));
     // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     10);
@@ -63,4 +64,44 @@ int particleSystem::getParticleAmmount()
 int particleSystem::getDrewAmmount() 
 {
     return this->drewAmmount;
+}
+
+int particleSystem::getBelow() 
+{
+    int maxValue = this->Particles[this->mergingIndex[0]].position.y;
+    int index = this->mergingIndex[0];
+    for (int i = 1; i < this->mergingIndex.size(); i++) 
+    {
+        if (this->Particles[this->mergingIndex[i]].position.y > maxValue) 
+        {
+            maxValue = this->Particles[this->mergingIndex[i]].position.y;
+            index = this->mergingIndex[i];
+        }
+    }
+    return index;
+}
+
+int particleSystem::checkMergingIndex(int valueToFind)
+{
+    if (std::find(this->mergingIndex.begin(), this->mergingIndex.end(), valueToFind) != this->mergingIndex.end()) 
+    {
+        return 0;
+    } 
+    else 
+    {
+        return 1;
+    }
+}
+
+void particleSystem::printMergingIndex() 
+{   
+    if (this->mergingIndex.size() > 0) 
+    {
+        std::cout << "merging: ";
+        for (int index : this->mergingIndex) {
+            std::cout << index << ", ";
+        }
+        std::cout << std::endl;
+        std::cout << "below = " << this->getBelow() << std::endl;
+    }
 }

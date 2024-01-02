@@ -85,3 +85,7 @@ std::vector <int> &particleSystem::getUpdatedParticles()
     return this->updatedParticles;
 }
 
+int particleSystem::getBelow(int i, int j) 
+{   
+    return this->Particles[i].position.y >= this->Particles[j].position.y ? i : j; 
+}

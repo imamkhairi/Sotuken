@@ -1,6 +1,7 @@
 #ifndef particleSystem_CLASS_H
 #define particleSystem_CLASS_H
 
+#include <algorithm>
 #include <vector>
 #include <math.h>
 #include <iostream>
@@ -24,11 +25,17 @@ class particleSystem {
         particleSystem(int particleAmmount, int mapHeight, int mapWidth);
         static void print();
 
+        std::vector<int> mergingIndex;
         std::vector <Droplet> getParticleSystem();
+
         void addParticle(int ammount);
         void setDrewAmmount(int value);
         int getParticleAmmount();
         int getDrewAmmount();
+        int getBelow();
+        int checkMergingIndex(int valueToFind);
+
+        void printMergingIndex();
 
     private:
         int particleAmmount;

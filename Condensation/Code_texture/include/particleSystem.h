@@ -30,6 +30,7 @@ class particleSystem {
         std::vector <Droplet> &getParticleSystem();
         std::vector <int> &getUpdatedParticles();
         int getParticleAmmount();
+        int getBelow(int i, int j);
     
 
 

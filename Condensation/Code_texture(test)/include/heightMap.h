@@ -17,24 +17,19 @@ class heightMap {
     public:
         heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth, int smCount);
 
-        void updateHeightMap(particleSystem *PS);
-        void smoothingHeightMap(particleSystem *PS);
-        void smoothingHeightMap(IDMap idMap, particleSystem *PS);
-
-        void generateHeightMap(particleSystem *ParticleSystem);
+        void generateHeightMap();
 
     private:
         int mapHeight;
         int mapWidth;
         int smCount;
         IDMap *idMapPtr;
+        particleSystem *PSptr;
 
         float calcHeight(Droplet a, int x_i, int y_i);
-        void checkCoordinate(int *x, int *y);
-        void checkXY(int *x, int *y);
-        int heightThreshold(float *value);
         void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
         float distance(float x1, float y1, float x2, float y2);
+        void clearHeight(int i);
 
 };
 
