@@ -36,6 +36,7 @@ class particleSystem {
         int checkMergingIndex(int valueToFind);
 
         void printMergingIndex();
+        void updateMergingMass();
 
     private:
         int particleAmmount;

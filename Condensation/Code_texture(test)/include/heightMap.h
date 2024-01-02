@@ -29,7 +29,8 @@ class heightMap {
         float calcHeight(Droplet a, int x_i, int y_i);
         void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
         float distance(float x1, float y1, float x2, float y2);
-        void clearHeight(int i);
+        void clearHeight(int i, cv::Mat *heightMap);
+        void drawMerging(cv::Mat dst);
 
 };
 

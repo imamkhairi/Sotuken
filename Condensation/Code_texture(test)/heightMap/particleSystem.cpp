@@ -24,8 +24,8 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     std::vector <glm::vec2> position;
     position.push_back(glm::vec2(10, 10));
     position.push_back(glm::vec2(15, 13));
-    position.push_back(glm::vec2(13, 8));
-    position.push_back(glm::vec2(13, 15));
+    position.push_back(glm::vec2(15, 8));
+    position.push_back(glm::vec2(13, 20));
     // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     10);
@@ -66,20 +66,6 @@ int particleSystem::getDrewAmmount()
     return this->drewAmmount;
 }
 
-int particleSystem::getBelow() 
-{
-    int maxValue = this->Particles[this->mergingIndex[0]].position.y;
-    int index = this->mergingIndex[0];
-    for (int i = 1; i < this->mergingIndex.size(); i++) 
-    {
-        if (this->Particles[this->mergingIndex[i]].position.y > maxValue) 
-        {
-            maxValue = this->Particles[this->mergingIndex[i]].position.y;
-            index = this->mergingIndex[i];
-        }
-    }
-    return index;
-}
 
 int particleSystem::checkMergingIndex(int valueToFind)
 {
@@ -104,4 +90,41 @@ void particleSystem::printMergingIndex()
         std::cout << std::endl;
         std::cout << "below = " << this->getBelow() << std::endl;
     }
+}
+
+int particleSystem::getBelow() 
+{
+    int maxValue = this->Particles[this->mergingIndex[0]].position.y;
+    int index = this->mergingIndex[0];
+    for (int i = 1; i < this->mergingIndex.size(); i++) 
+    {
+        if (this->Particles[this->mergingIndex[i]].position.y > maxValue) 
+        {
+            maxValue = this->Particles[this->mergingIndex[i]].position.y;
+            index = this->mergingIndex[i];
+        }
+    }
+    return index;
+}
+
+void particleSystem::updateMergingMass()
+{
+    int lowIndex = this->getBelow();
+    float difMass = 0;
+    for (int i : this->mergingIndex) 
+    {
+        if (i == lowIndex) continue;
+        else 
+        {
+            if (this->Particles[i].mass > 10) {
+                difMass += this->Particles[i].mass * 0.6;
+                this->Particles[i].mass -= this->Particles[i].mass * 0.6;
+                // std::cout << "after = " << this->Particles[i].mass << std::endl;
+                this->calcRadius(&this->Particles[i]);
+            }
+        }
+    }
+    
+    this->Particles[lowIndex].mass += difMass;
+    this->calcRadius(&this->Particles[lowIndex]);
 }

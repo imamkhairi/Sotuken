@@ -7,13 +7,41 @@ heightMap::heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHei
     this->PSptr = ParticleSystem;
     this->smCount = smCount;
     
-    clock_t tStart = clock();
+    // clock_t tStart = clock();
     this->generateHeightMap();
-    printf("Raw: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+    // printf("Raw: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
 
 float heightMap::distance(float x1, float y1, float x2, float y2) {
     return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1-y2,2));
+}
+
+void heightMap::drawMerging(cv::Mat dst) 
+{
+    for (int i : this->PSptr->mergingIndex) 
+    {
+        // starting point
+        int x = PSptr->getParticleSystem()[i].position.x - (int)PSptr->getParticleSystem()[i].radius - 1;
+        int y = PSptr->getParticleSystem()[i].position.y - (int)PSptr->getParticleSystem()[i].radius - 1;
+        // end point
+        int x1 = PSptr->getParticleSystem()[i].position.x + (int)PSptr->getParticleSystem()[i].radius + 1;
+        int y1 = PSptr->getParticleSystem()[i].position.y + (int)PSptr->getParticleSystem()[i].radius + 1;
+
+        for (int y0 = y; y0 <= y1; y0++) 
+        {
+            for (int x0 = x; x0 <= x1; x0++) 
+            {
+                float h = calcHeight(PSptr->getParticleSystem()[i], x0, y0);
+                if ( h > 0.01 ) 
+                {
+                    if (dst.at<unsigned char>(y0, x0) < h * 8)
+                    {
+                        dst.at<unsigned char>(y0, x0) = h * 8;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, int end) 
@@ -51,25 +79,18 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
                 }
             }
         }
-        if (mergingFlag) this->PSptr->mergingIndex.push_back(i);
-        this->PSptr->printMergingIndex();
-        this->PSptr->mergingIndex.clear();
+        if (mergingFlag) 
+        {
+            this->PSptr->mergingIndex.push_back(i);
+            for (int index : this->PSptr->mergingIndex) {
+                this->clearHeight(index, &dst);
+            }
+            this->PSptr->updateMergingMass();
+            this->drawMerging(dst);
+            this->PSptr->printMergingIndex();
+            this->PSptr->mergingIndex.clear();
+        }
     }
-
-    //// Metaball
-    // for (int y = 0; y < this->mapHeight; y++) {
-    //     for (int x = 0; x < this->mapWidth; x++) {
-    //         float d = 0, sum = 0;
-
-    //         for (auto & particle : PS) {
-    //             d = this->distance(particle.position.x, particle.position.y, x, y);
-    //             sum += 1 / (1 + std::pow((d/particle.radius), 2.8));
-    //         }
-    //         sum -= 0.5;
-    //         if (sum > 0) sum *= 255;
-    //         dst.at<unsigned char>(y, x) = sum;
-    //     }
-    // }
 }
 
 // need optimization
@@ -121,4 +142,16 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
         height = std::sqrt(value);
         return height;
     } else return 0;
+}
+
+void heightMap::clearHeight(int i, cv::Mat *heightMap) 
+{
+    int r = (int)this->PSptr->getParticleSystem()[i].radius;
+    cv::Point startingPoint(this->PSptr->getParticleSystem()[i].position.x - r - 1, this->PSptr->getParticleSystem()[i].position.y - r - 1);
+    cv::Size roiSize((r+1)*2, (r+1)*2);
+    
+    cv::Rect ROI(startingPoint, roiSize);
+    cv::Mat slicedImg = (*heightMap)(ROI);
+    cv::Mat ROI2 = cv::Mat::zeros(roiSize, CV_8UC1);
+    ROI2.copyTo(slicedImg);
 }
