@@ -126,16 +126,19 @@ void heightMap::generateHeightMap() {
         // cv::blur(heightMap, heightMap, cv::Size(3, 3));
         // cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
 
-        cv::Mat mask = cv::Mat::zeros(heightMap.size(), CV_8UC1);
-        cv::Point circleCenter(mask.cols/2, mask.rows/2);
-        int radius = circleCenter.x;
-        cv::circle(mask, circleCenter, radius, cv::Scalar(2), -1);
-        
-        cv::Mat result = cv::Mat::zeros(heightMap.size(), heightMap.type());
-        heightMap.copyTo(result, mask);
-        // result = result.mul(cv::Scalar(2));
-        result.copyTo(heightMap, mask);
-        cv::imwrite("test.png", result);
+        cv::Mat combMask = cv::Mat::zeros(heightMap.size(), heightMap.type());
+        for (auto &p : this->PSptr->getParticleSystem())
+        {
+            cv::Mat mask = cv::Mat::zeros(heightMap.size(), heightMap.type());
+            cv::circle(mask, cv::Point(p.position.x, p.position.y), p.radius, cv::Scalar(255), -1);
+            cv::bitwise_or(mask, combMask, combMask);
+        }
+
+        cv::imwrite("test.png", combMask);
+        cv::Mat result;
+        heightMap.copyTo(result, combMask);
+        result = result.mul(cv::Scalar(2));
+        result.copyTo(heightMap, combMask);
     }
 
     // cv::Size roiSize(20, 20);
