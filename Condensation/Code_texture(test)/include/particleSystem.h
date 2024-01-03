@@ -1,6 +1,9 @@
 #ifndef particleSystem_CLASS_H
 #define particleSystem_CLASS_H
 
+#define MINVALUE 0
+#define MAXVALUE 1
+
 #include <algorithm>
 #include <vector>
 #include <math.h>
@@ -43,7 +46,7 @@ class particleSystem {
 
         int getParicleY(int index);
 
-        int getMergingMaxOrMinCoordinate(int (particleSystem::*getValue)(int));
+        int getMergingCooridnate(int (particleSystem::*getValue)(int), bool flag);
 
         void printMergingIndex();
         void updateMergingMass();

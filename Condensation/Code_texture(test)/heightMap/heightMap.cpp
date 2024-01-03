@@ -123,8 +123,8 @@ void heightMap::generateHeightMap() {
 
     // this->smoothingHeightMap(heightMap);
     for (int i = 0; i < this->smCount; i++) {
-        // cv::blur(heightMap, heightMap, cv::Size(3, 3));
-        // cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
+        cv::blur(heightMap, heightMap, cv::Size(3, 3));
+        cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
 
         //// Combine Mask From Iterating through Particle System 
         // cv::Mat combMask = cv::Mat::zeros(heightMap.size(), heightMap.type());

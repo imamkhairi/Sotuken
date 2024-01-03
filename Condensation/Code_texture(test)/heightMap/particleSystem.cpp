@@ -22,7 +22,7 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     a->mass = 30.0f;
     calcRadius(a);
     std::vector <glm::vec2> position;
-    position.push_back(glm::vec2(7, 7));
+    position.push_back(glm::vec2(6, 7));
     position.push_back(glm::vec2(12, 11));
     position.push_back(glm::vec2(15, 8));
     position.push_back(glm::vec2(13, 20));
@@ -70,13 +70,9 @@ int particleSystem::getDrewAmmount()
 int particleSystem::checkMergingIndex(int valueToFind)
 {
     if (std::find(this->mergingIndex.begin(), this->mergingIndex.end(), valueToFind) != this->mergingIndex.end()) 
-    {
         return 0;
-    } 
     else 
-    {
         return 1;
-    }
 }
 
 // not used (debug only)
@@ -90,6 +86,8 @@ void particleSystem::printMergingIndex()
         }
         std::cout << std::endl;
         std::cout << "below = " << this->getMergingBottomIndex() << std::endl;
+        std::cout << "min = " << this->getMergingCooridnate(&particleSystem::getParicleY, MINVALUE) << std::endl;    
+        std::cout << "max = " << this->getMergingCooridnate(&particleSystem::getParicleY, MAXVALUE) << std::endl;    
     }
 }
 
@@ -156,19 +154,17 @@ int particleSystem::getParicleY(int index)
     return this->Particles[index].position.y;
 }
 
-int particleSystem::getMergingMaxOrMinCoordinate(int (particleSystem::*getValue)(int))
+int particleSystem::getMergingCooridnate(int (particleSystem::*getValue)(int), bool flag)
 {
-    // int maxValue = this->Particles[this->mergingIndex[0]].position.y;
     int value = (this->*getValue)(this->mergingIndex[0]);
-    int index = this->mergingIndex[0];
     for (int i = 1; i < this->mergingIndex.size(); i++) 
-    {
-        if ((this->*getValue)(i) > value) 
-        {
-            value = (this->*getValue)(i);
-            index = i;
-        }
+    {   
+        if (flag == MAXVALUE) 
+            if ((this->*getValue)(i) > value) 
+                value = (this->*getValue)(i);
+        else 
+            if ((this->*getValue)(i) < value) 
+                value = (this->*getValue)(i);
     }
-
-    return index;
+    return value;
 }
