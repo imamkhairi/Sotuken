@@ -123,8 +123,19 @@ void heightMap::generateHeightMap() {
 
     // this->smoothingHeightMap(heightMap);
     for (int i = 0; i < this->smCount; i++) {
-        cv::blur(heightMap, heightMap, cv::Size(3, 3));
-        cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
+        // cv::blur(heightMap, heightMap, cv::Size(3, 3));
+        // cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
+
+        cv::Mat mask = cv::Mat::zeros(heightMap.size(), CV_8UC1);
+        cv::Point circleCenter(mask.cols/2, mask.rows/2);
+        int radius = circleCenter.x;
+        cv::circle(mask, circleCenter, radius, cv::Scalar(2), -1);
+        
+        cv::Mat result = cv::Mat::zeros(heightMap.size(), heightMap.type());
+        heightMap.copyTo(result, mask);
+        // result = result.mul(cv::Scalar(2));
+        result.copyTo(heightMap, mask);
+        cv::imwrite("test.png", result);
     }
 
     // cv::Size roiSize(20, 20);
