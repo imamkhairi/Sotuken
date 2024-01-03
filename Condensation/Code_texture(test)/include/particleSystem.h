@@ -6,6 +6,7 @@
 #include <math.h>
 #include <iostream>
 #include <time.h>
+#include <functional>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -32,8 +33,17 @@ class particleSystem {
         void setDrewAmmount(int value);
         int getParticleAmmount();
         int getDrewAmmount();
-        int getBelow();
+        int getMergingBottomIndex();
         int checkMergingIndex(int valueToFind);
+
+        int getParticleTop(int index);
+        int getParticleRight(int index);
+        int getParticleBottom(int index);
+        int getParticleLeft(int index);
+
+        int getParicleY(int index);
+
+        int getMergingMaxOrMinCoordinate(int (particleSystem::*getValue)(int));
 
         void printMergingIndex();
         void updateMergingMass();

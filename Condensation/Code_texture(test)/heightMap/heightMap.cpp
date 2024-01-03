@@ -126,19 +126,19 @@ void heightMap::generateHeightMap() {
         // cv::blur(heightMap, heightMap, cv::Size(3, 3));
         // cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
 
-        cv::Mat combMask = cv::Mat::zeros(heightMap.size(), heightMap.type());
-        for (auto &p : this->PSptr->getParticleSystem())
-        {
-            cv::Mat mask = cv::Mat::zeros(heightMap.size(), heightMap.type());
-            cv::circle(mask, cv::Point(p.position.x, p.position.y), p.radius, cv::Scalar(255), -1);
-            cv::bitwise_or(mask, combMask, combMask);
-        }
-
-        cv::imwrite("test.png", combMask);
-        cv::Mat result;
-        heightMap.copyTo(result, combMask);
-        result = result.mul(cv::Scalar(2));
-        result.copyTo(heightMap, combMask);
+        //// Combine Mask From Iterating through Particle System 
+        // cv::Mat combMask = cv::Mat::zeros(heightMap.size(), heightMap.type());
+        // for (auto &p : this->PSptr->getParticleSystem())
+        // {
+        //     cv::Mat mask = cv::Mat::zeros(heightMap.size(), heightMap.type());
+        //     cv::circle(mask, cv::Point(p.position.x, p.position.y), p.radius, cv::Scalar(255), -1);
+        //     cv::bitwise_or(mask, combMask, combMask);
+        // }
+        // cv::imwrite("test.png", combMask);
+        // cv::Mat result;
+        // heightMap.copyTo(result, combMask);
+        // result = result.mul(cv::Scalar(2));
+        // result.copyTo(heightMap, combMask);
     }
 
     // cv::Size roiSize(20, 20);

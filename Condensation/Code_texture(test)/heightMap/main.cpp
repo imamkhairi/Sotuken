@@ -16,5 +16,5 @@ int main(int argc, char **argv) {
     IDMap idMap(texWidth, texHeight);
 	heightMap HeightMap(&ParticleSystem, &idMap, texHeight, texWidth, std::atoi(argv[1]));
 
-    idMap.print();
+    // idMap.print();
 }

@@ -79,6 +79,7 @@ int particleSystem::checkMergingIndex(int valueToFind)
     }
 }
 
+// not used (debug only)
 void particleSystem::printMergingIndex() 
 {   
     if (this->mergingIndex.size() > 0) 
@@ -88,11 +89,11 @@ void particleSystem::printMergingIndex()
             std::cout << index << ", ";
         }
         std::cout << std::endl;
-        std::cout << "below = " << this->getBelow() << std::endl;
+        std::cout << "below = " << this->getMergingBottomIndex() << std::endl;
     }
 }
 
-int particleSystem::getBelow() 
+int particleSystem::getMergingBottomIndex() 
 {
     int maxValue = this->Particles[this->mergingIndex[0]].position.y;
     int index = this->mergingIndex[0];
@@ -109,11 +110,12 @@ int particleSystem::getBelow()
 
 void particleSystem::updateMergingMass()
 {
-    int lowIndex = this->getBelow();
+    int lowIndex = this->getMergingBottomIndex();
     float difMass = 0;
     for (int i : this->mergingIndex) 
     {
-        if (i == lowIndex) continue;
+        if (i == lowIndex) 
+            continue;
         else 
         {
             if (this->Particles[i].mass > 10) {
@@ -127,4 +129,46 @@ void particleSystem::updateMergingMass()
     
     this->Particles[lowIndex].mass += difMass;
     this->calcRadius(&this->Particles[lowIndex]);
+}
+
+int particleSystem::getParticleTop(int index)
+{
+    return this->Particles[index].position.y - this->Particles[index].radius;
+}
+
+int particleSystem::getParticleBottom(int index)
+{
+    return this->Particles[index].position.y + this->Particles[index].radius;
+}
+
+int particleSystem::getParticleRight(int index)
+{
+    return this->Particles[index].position.x + this->Particles[index].radius;
+}
+
+int particleSystem::getParticleLeft(int index)
+{
+    return this->Particles[index].position.x - this->Particles[index].radius;
+}
+
+int particleSystem::getParicleY(int index) 
+{
+    return this->Particles[index].position.y;
+}
+
+int particleSystem::getMergingMaxOrMinCoordinate(int (particleSystem::*getValue)(int))
+{
+    // int maxValue = this->Particles[this->mergingIndex[0]].position.y;
+    int value = (this->*getValue)(this->mergingIndex[0]);
+    int index = this->mergingIndex[0];
+    for (int i = 1; i < this->mergingIndex.size(); i++) 
+    {
+        if ((this->*getValue)(i) > value) 
+        {
+            value = (this->*getValue)(i);
+            index = i;
+        }
+    }
+
+    return index;
 }
