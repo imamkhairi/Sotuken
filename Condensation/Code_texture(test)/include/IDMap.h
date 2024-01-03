@@ -13,6 +13,7 @@ class IDMap {
 
         int *getIDMap();
         int getIDMapValue(int y, int x);
+        void clearSection(int y0, int x0, int y1, int x1);
 
     private:
         int *idMap;

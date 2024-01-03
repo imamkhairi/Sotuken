@@ -37,6 +37,7 @@ void heightMap::drawMerging(cv::Mat dst)
                     if (dst.at<unsigned char>(y0, x0) < h * 8)
                     {
                         dst.at<unsigned char>(y0, x0) = h * 8;
+                        this->idMapPtr->setToValue(y0, x0, i);
                     }
                 }
             }
@@ -79,6 +80,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
                 }
             }
         }
+
         if (mergingFlag) 
         {
             this->PSptr->mergingIndex.push_back(i);
@@ -149,6 +151,8 @@ void heightMap::clearHeight(int i, cv::Mat *heightMap)
     int r = (int)this->PSptr->getParticleSystem()[i].radius;
     cv::Point startingPoint(this->PSptr->getParticleSystem()[i].position.x - r - 1, this->PSptr->getParticleSystem()[i].position.y - r - 1);
     cv::Size roiSize((r+1)*2, (r+1)*2);
+
+    this->idMapPtr->clearSection(startingPoint.y, startingPoint.x, startingPoint.y + roiSize.height, startingPoint.x + roiSize.width);
     
     cv::Rect ROI(startingPoint, roiSize);
     cv::Mat slicedImg = (*heightMap)(ROI);

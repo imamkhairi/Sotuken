@@ -48,3 +48,14 @@ int IDMap::getIDMapValue(int y, int x)
 {
     return this->idMap[y*this->mapWidth + x];
 }
+
+void IDMap::clearSection(int y0, int x0, int y1, int x1) 
+{
+    for (int y = y0; y < y1; y++) 
+    {
+        for (int x = x0; x < x1; x++) 
+        {
+            this->setToValue(y, x, -1);
+        }
+    }
+}
