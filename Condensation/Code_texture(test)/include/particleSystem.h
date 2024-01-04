@@ -38,7 +38,7 @@ class particleSystem {
         int getParticleAmmount();
         int getDrewAmmount();
         int getMergingBottomIndex();
-        int checkMergingIndex(int valueToFind);
+        int checkIndex(int valueToFind, std::vector<int> vectorIndex);
 
         int getParticleTop(int index);
         int getParticleRight(int index);

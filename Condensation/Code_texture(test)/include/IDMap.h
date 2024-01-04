@@ -16,6 +16,8 @@ class IDMap {
         int getIDMapValue(int y, int x);
         void clearSection(int y0, int x0, int y1, int x1);
 
+        int checkAdjacent(int y, int x);
+
     private:
         int *idMap;
         int mapHeight;

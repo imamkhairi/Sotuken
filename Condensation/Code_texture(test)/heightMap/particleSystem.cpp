@@ -39,17 +39,17 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// bleeding problem
-    position.push_back(glm::vec2(9, 24));
-    position.push_back(glm::vec2(12, 22));
-    position.push_back(glm::vec2(23, 18));
-    position.push_back(glm::vec2(9, 30));
-    a->position = glm::vec3(position[i].x, position[i].y, 10);
+    // position.push_back(glm::vec2(23, 16));
+    // position.push_back(glm::vec2(19, 22));
+    // position.push_back(glm::vec2(19, 25));
+    // position.push_back(glm::vec2(26, 29));
+    // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
-    // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-    //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-    //     10);
+    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
+        (rand() % (int)(this->mapHeigth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
+        10);
     
-    // std::cout << a->position.x << ", " << a->position.y << std::endl;
+    std::cout << a->position.x << ", " << a->position.y << std::endl;
 }
 
 void particleSystem::calcRadius(Droplet *a) {
@@ -87,9 +87,9 @@ int particleSystem::getDrewAmmount()
 }
 
 
-int particleSystem::checkMergingIndex(int valueToFind)
+int particleSystem::checkIndex(int valueToFind, std::vector<int> vectorIndex)
 {
-    if (std::find(this->mergingIndex.begin(), this->mergingIndex.end(), valueToFind) != this->mergingIndex.end()) 
+    if (std::find(vectorIndex.begin(), vectorIndex.end(), valueToFind) != vectorIndex.end()) 
     {
         return 0;
     }
@@ -155,7 +155,7 @@ void particleSystem::updateMergingMass()
         }
     }
     
-    this->Particles[lowIndex].mass += difMass;
+    this->Particles[lowIndex].mass += difMass * 0.9;
     this->calcRadius(&this->Particles[lowIndex]);
 }
 
