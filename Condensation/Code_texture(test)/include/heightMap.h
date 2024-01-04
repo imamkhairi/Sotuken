@@ -33,6 +33,8 @@ class heightMap {
         void drawMerging(cv::Mat dst);
         void smoothingMerging(cv::Mat *heightMap);
 
+        cv::Mat generateMergingMask(int x0, int y0, int x1, int y1);
+
 };
 
 #endif

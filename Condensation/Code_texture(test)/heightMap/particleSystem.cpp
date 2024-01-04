@@ -14,6 +14,7 @@ void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
     for (int i = 0; i < this->particleAmmount; i++) {
         Droplet a;
         this->initiateDroplet(&a, i);
+        // std::cout << i << " :" << a.position.x << ", " << a.position.y << std::endl;
         Particles->push_back(a);
     }
 }
@@ -22,14 +23,16 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     a->mass = 30.0f;
     calcRadius(a);
     std::vector <glm::vec2> position;
-    position.push_back(glm::vec2(15, 15));
-    position.push_back(glm::vec2(23, 15));
-    position.push_back(glm::vec2(19, 20));
-    position.push_back(glm::vec2(13, 20));
+    
+    position.push_back(glm::vec2(27, 21));
+    position.push_back(glm::vec2(9, 7));
+    position.push_back(glm::vec2(13, 11));
+    position.push_back(glm::vec2(22, 19));
+    a->position = glm::vec3(position[i].x, position[i].y, 10);
+
     // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
     //     10);
-    a->position = glm::vec3(position[i].x, position[i].y, 10);
 }
 
 void particleSystem::calcRadius(Droplet *a) {
@@ -70,25 +73,35 @@ int particleSystem::getDrewAmmount()
 int particleSystem::checkMergingIndex(int valueToFind)
 {
     if (std::find(this->mergingIndex.begin(), this->mergingIndex.end(), valueToFind) != this->mergingIndex.end()) 
+    {
         return 0;
+    }
     else 
+    {
         return 1;
+    }
 }
 
 // not used (debug only)
 void particleSystem::printMergingIndex() 
 {   
-    if (this->mergingIndex.size() > 0) 
+    std::cout << "merging: ";
+    for (int &index: this->mergingIndex) 
     {
-        std::cout << "merging: ";
-        for (int index : this->mergingIndex) {
-            std::cout << index << ", ";
-        }
-        std::cout << std::endl;
-        std::cout << "below = " << this->getMergingBottomIndex() << std::endl;
-        // std::cout << "min = " << this->getMergingCooridnate(&particleSystem::getParicleY, MINVALUE) << std::endl;    
-        // std::cout << "max = " << this->getMergingCooridnate(&particleSystem::getParicleY, MAXVALUE) << std::endl;    
+        std::cout << index << ", ";
     }
+    std::cout << std::endl;
+    // std::cout << "below = " << this->getMergingBottomIndex() << std::endl;
+
+    // std::cout << "DEBUGGING X0 : " << std::endl;
+    // for (int index : this->mergingIndex) {
+    //     std::cout << index << ": " << this->getParticleLeft(index) - 1 << std::endl;
+    // }
+
+    // std::cout << "DEBUGGING Y0 : " << std::endl;
+    // for (int index : this->mergingIndex) {
+    //     std::cout << index << ": " << this->getParticleTop(index) - 1 << std::endl;
+    // }
 }
 
 int particleSystem::getMergingBottomIndex() 
@@ -156,24 +169,23 @@ int particleSystem::getParicleY(int index)
 
 int particleSystem::getMergingCooridnate(int (particleSystem::*getValue)(int), bool flag)
 {
+    // this->printMergingIndex();
+
     int value = (this->*getValue)(this->mergingIndex[0]);
     for (int i = 1; i < this->mergingIndex.size(); i++) 
     {   
         if (flag == MAXVALUE) 
         {
-            // std::cout << "MAX value " << std::endl;
-            if ((this->*getValue)(i) > value) 
+            if ((this->*getValue)(this->mergingIndex[i]) > value) 
             {
-                value = (this->*getValue)(i);
+                value = (this->*getValue)(this->mergingIndex[i]);
             }
         }
         else 
         {
-            // std::cout << "MIN value " << std::endl;
-            if ((this->*getValue)(i) < value) 
+            if ((this->*getValue)(this->mergingIndex[i]) < value) 
             {
-                // std::cout << "sini" << std::endl;
-                value = (this->*getValue)(i);
+                value = (this->*getValue)(this->mergingIndex[i]);
             }
 
         }

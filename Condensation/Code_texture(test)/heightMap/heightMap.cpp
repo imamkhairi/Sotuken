@@ -87,6 +87,8 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             for (int index : this->PSptr->mergingIndex) {
                 this->clearHeight(index, &dst);
             }
+            // this->PSptr->printMergingIndex(); // debug
+
             this->PSptr->updateMergingMass();
             this->drawMerging(dst);
 
@@ -94,7 +96,6 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             // clock_t tStart = clock();
             // printf("smoothing merging: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
             
-            this->PSptr->printMergingIndex(); // debug
             this->PSptr->mergingIndex.clear();
         }
     }
@@ -163,37 +164,48 @@ void heightMap::clearHeight(int i, cv::Mat *heightMap)
 
 void heightMap::smoothingMerging(cv::Mat *heightMap) 
 {
+    this->PSptr->printMergingIndex();
     int x0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleLeft, MINVALUE) - 1;
     int y0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleTop, MINVALUE) - 1;
     int x1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleRight, MAXVALUE) + 2;
     int y1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
 
-    // std::cout << "start: " << "(" << x0 << ", " << y0 << ")" << std::endl;
-    // std::cout << "end  : " << "(" << x1 << ", " << y1 << ")" << std::endl;
+    std::cout << "start: " << "(" << x0 << ", " << y0 << ")" << std::endl;
+    std::cout << "end  : " << "(" << x1 << ", " << y1 << ")" << std::endl;
 
-    // std::cout << "DEBUGGING X0" << std::endl;
-    // std::cout << "0: " << (int)this->PSptr->getParticleSystem()[0].position.x - (int)this->PSptr->getParticleSystem()[0].radius << std::endl;
-    // std::cout << "1: " << (int)this->PSptr->getParticleSystem()[1].position.x - (int)this->PSptr->getParticleSystem()[1].radius << std::endl;
+
+    std::cout << std::endl;
 
     cv::Size roiSize(x1-x0, y1-y0);
-    cv::Mat mask = cv::Mat::zeros(roiSize, CV_8UC1);
+    
+    cv::Mat mask = this->generateMergingMask(x0, y0, x1, y1);
+
+    cv::Mat slicedImg = (*heightMap)(cv::Rect(cv::Point(x0, y0), roiSize));
+    cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
+    slicedImg.copyTo(smoothingTarget);
+    cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3));
+    smoothingTarget.copyTo(slicedImg, mask);
+    cv::imwrite("test.png", slicedImg);
+    cv::imwrite("mask.png", mask);
+
+    mask.release();
+    slicedImg.release();
+    smoothingTarget.release();
+}
+
+cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1)
+{
+    cv::Mat mask = cv::Mat::zeros(cv::Size(x1-x0, y1-y0), CV_8UC1);
     for (int y = y0; y < y1; y++) 
     {
         for (int x = x0; x < x1; x++)
         {
-            if (this->idMapPtr->getIDMapValue(y, x) >= 0)
+            // if (this->idMapPtr->getIDMapValue(y, x) >= 0)
+            if (!this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y, x)))
             {
                 mask.at<unsigned char>(y - y0, x - x0) = 100;
             }
         }
     }
-
-    cv::Rect roi(cv::Point(x0, y0), roiSize);
-    cv::Mat slicedImg = (*heightMap)(roi);
-    cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
-    slicedImg.copyTo(smoothingTarget, mask);
-    cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3));
-    smoothingTarget.copyTo(slicedImg, mask);
-    cv::imwrite("test.png", slicedImg);
-    cv::imwrite("mask.png", mask);
+    return mask;
 }
