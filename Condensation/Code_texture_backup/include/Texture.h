@@ -29,6 +29,5 @@ public:
 	// Deletes a texture
 	void Delete();
 
-	void Update();
 };
 #endif

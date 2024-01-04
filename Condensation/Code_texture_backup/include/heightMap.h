@@ -15,26 +15,27 @@ const int avg[3][3] = {
 
 class heightMap {
     public:
-        heightMap(particleSystem *ParticleSystem, int mapHeight, int mapWidth);
+        heightMap(particleSystem *ParticleSystem, IDMap *idMapPtr, int mapHeight, int mapWidth);
     
         void smoothingHeightMap(IDMap idMap, particleSystem *PS);
         void updateHeightMap(particleSystem *PS);
         cv::Mat getHeightMap();
 
-        void generateHeightMap(particleSystem *ParticleSystem);
+        void generateHeightMap();
 
     private:
         int mapHeight;
         int mapWidth;
         bool initiated;
-
         cv::Mat heightMapMat;
+        IDMap *idMapPtr;
+        particleSystem *PSptr;
 
         float calcHeight(Droplet a, int x_i, int y_i);
         // void smoothingHeightMap(cv::Mat heightMap);
         void checkCoordinate(int *x, int *y);
         int heightThreshold(float *value);
-        void drawHeightMap(cv::Mat dst, std::vector <Droplet> particle, int start, int end);
+        void drawHeightMap(cv::Mat dst, std::vector <Droplet> *particlePtr, std::vector <int> *updatedParticlesPtr);
         float distance(float x1, float y1, float x2, float y2);
 
 };

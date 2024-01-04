@@ -1,42 +1,56 @@
 #include <particleSystem.h>
 
-particleSystem::particleSystem(int particleAmmount, int mapHeight, int mapWidth) {
+particleSystem::particleSystem(int particleAmmount, int maxParticle, int mapHeight, int mapWidth) 
+{
 	srand(time(0));
-    
     this->particleAmmount = particleAmmount;
+    this->maxParticle = maxParticle;
     this->mapHeigth = mapHeight;
     this->mapWidth = mapWidth;
-    this->initiateParticleSystem(&this->Particles); 
-    this->drewAmmount = 0;
+    this->initiateParticleSystem(); 
+    this->initiateUpdatedParticles();
 };
 
-void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
+void particleSystem::initiateParticleSystem() 
+{
     for (int i = 0; i < this->particleAmmount; i++) {
         Droplet a;
         this->initiateDroplet(&a);
-        Particles->push_back(a);
+        this->Particles.push_back(a);
     }
 }
 
-void particleSystem::initiateDroplet(Droplet *a) {    
-    a->mass = 50.0f;
+void particleSystem::initiateDroplet(Droplet *a) 
+{    
+    // a->mass = 20.0f;
+    float m = (float) ((rand() % 32) + 12);
+    a->mass = m;
     calcRadius(a);
-    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        10);
+    a->position =  glm::vec2((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2));
 }
 
-void particleSystem::calcRadius(Droplet *a) {
+void particleSystem::initiateUpdatedParticles() 
+{
+    for (int i = 0; i < this->particleAmmount; i++) 
+    {
+        this->updatedParticles.push_back(i);
+    }
+}
+
+void particleSystem::calcRadius(Droplet *a) 
+{
     a->radius = std::cbrt((double)(3*a->mass)/(double)(2*a->density*M_1_PI));
 }
 
 
 void particleSystem::addParticle(int ammount)
 {   
-    if(this->particleAmmount < 400) {
+    for (int i = 0; i < ammount; i++) {
         // std::cout << this->particleAmmount << std::endl;
-        this->particleAmmount += ammount;
-        for (int i = 0; i < ammount; i++) {
+        if(this->particleAmmount < this->maxParticle) {
+            this->particleAmmount += 1;
+            this->updatedParticles.push_back(this->particleAmmount-1);
             Droplet a;
             this->initiateDroplet(&a);
             this->Particles.push_back(a);
@@ -44,22 +58,20 @@ void particleSystem::addParticle(int ammount)
     }
 }
 
-void particleSystem::updateParticleSystem() {
-    for (int i = 0; i < this->particleAmmount; i++) {
-        // this->Particles[i].position.x += 2;
-        if (this->Particles[i].position.y < this->mapHeigth/2)
-        this->Particles[i].position.y += 1;
-    }
-
-    // std::cout << this->Particles[1].position.y << std::endl;
-}
-
-void particleSystem::setDrewAmmount(int value)
+void particleSystem::updateParticleSystem() 
 {
-    this->drewAmmount = value;
+    //// gerakan cuma untuk yg lewat threshold
+    this->addParticle(1);
+    // for (int i = 0; i < this->particleAmmount; i++) {
+    //     if (this->Particles[i].position.y < this->mapHeigth/2) {
+    //         this->Particles[i].position.y += 1;
+    //         this->updatedParticles.push_back(i);
+    //     }
+    // }
 }
 
-std::vector <Droplet> particleSystem::getParticleSystem() {
+std::vector <Droplet> &particleSystem::getParticleSystem() 
+{
     return this->Particles;
 }
 
@@ -68,7 +80,12 @@ int particleSystem::getParticleAmmount()
     return this->particleAmmount;
 }
 
-int particleSystem::getDrewAmmount() 
+std::vector <int> &particleSystem::getUpdatedParticles()
 {
-    return this->drewAmmount;
+    return this->updatedParticles;
+}
+
+int particleSystem::getBelow(int i, int j) 
+{   
+    return this->Particles[i].position.y >= this->Particles[j].position.y ? i : j; 
 }

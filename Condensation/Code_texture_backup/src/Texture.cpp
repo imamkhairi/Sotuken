@@ -204,8 +204,3 @@ void Texture::Delete()
 {
 	glDeleteTextures(1, &ID);
 }
-
-void Texture::Update() {
-	this->Unbind();
-	this->Delete();
-}
