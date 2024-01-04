@@ -155,7 +155,7 @@ void particleSystem::updateMergingMass()
         }
     }
     
-    this->Particles[lowIndex].mass += difMass * 0.9;
+    this->Particles[lowIndex].mass += difMass * 0.8;
     this->calcRadius(&this->Particles[lowIndex]);
 }
 
