@@ -31,6 +31,7 @@ class heightMap {
         float distance(float x1, float y1, float x2, float y2);
         void clearHeight(int i, cv::Mat *heightMap);
         void drawMerging(cv::Mat dst);
+        void smoothingMerging(cv::Mat *heightMap);
 
 };
 

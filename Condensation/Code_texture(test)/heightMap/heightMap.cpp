@@ -89,7 +89,12 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector <Droplet> PS, int start, 
             }
             this->PSptr->updateMergingMass();
             this->drawMerging(dst);
-            this->PSptr->printMergingIndex();
+
+            this->smoothingMerging(&dst);
+            // clock_t tStart = clock();
+            // printf("smoothing merging: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
+            
+            this->PSptr->printMergingIndex(); // debug
             this->PSptr->mergingIndex.clear();
         }
     }
@@ -122,30 +127,11 @@ void heightMap::generateHeightMap() {
     this->PSptr->setDrewAmmount(this->PSptr->getParticleAmmount());
 
     // this->smoothingHeightMap(heightMap);
-    for (int i = 0; i < this->smCount; i++) {
+    for (int i = 0; i < this->smCount; i++) 
+    {
         cv::blur(heightMap, heightMap, cv::Size(3, 3));
         cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
-
-        //// Combine Mask From Iterating through Particle System 
-        // cv::Mat combMask = cv::Mat::zeros(heightMap.size(), heightMap.type());
-        // for (auto &p : this->PSptr->getParticleSystem())
-        // {
-        //     cv::Mat mask = cv::Mat::zeros(heightMap.size(), heightMap.type());
-        //     cv::circle(mask, cv::Point(p.position.x, p.position.y), p.radius, cv::Scalar(255), -1);
-        //     cv::bitwise_or(mask, combMask, combMask);
-        // }
-        // cv::imwrite("test.png", combMask);
-        // cv::Mat result;
-        // heightMap.copyTo(result, combMask);
-        // result = result.mul(cv::Scalar(2));
-        // result.copyTo(heightMap, combMask);
     }
-
-    // cv::Size roiSize(20, 20);
-    // cv::Rect ROI(cv::Point(10, 10), roiSize);
-    // cv::Mat slicedImg = heightMap(ROI);
-    // cv::Mat ROI2 = cv::Mat::zeros(roiSize, CV_8UC1);
-    // ROI2.copyTo(slicedImg);
 
     cv::imwrite("heightMap.png", heightMap);
 }
@@ -154,7 +140,8 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
     glm::vec2 dp(a.position.x - x_i, a.position.y - y_i);
     float value = a.radius*a.radius - glm::length(dp)*glm::length(dp);
     float height;
-    if (value > 0) {
+    if (value > 0) 
+    {
         height = std::sqrt(value);
         return height;
     } else return 0;
@@ -172,4 +159,41 @@ void heightMap::clearHeight(int i, cv::Mat *heightMap)
     cv::Mat slicedImg = (*heightMap)(ROI);
     cv::Mat ROI2 = cv::Mat::zeros(roiSize, CV_8UC1);
     ROI2.copyTo(slicedImg);
+}
+
+void heightMap::smoothingMerging(cv::Mat *heightMap) 
+{
+    int x0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleLeft, MINVALUE) - 1;
+    int y0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleTop, MINVALUE) - 1;
+    int x1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleRight, MAXVALUE) + 2;
+    int y1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
+
+    // std::cout << "start: " << "(" << x0 << ", " << y0 << ")" << std::endl;
+    // std::cout << "end  : " << "(" << x1 << ", " << y1 << ")" << std::endl;
+
+    // std::cout << "DEBUGGING X0" << std::endl;
+    // std::cout << "0: " << (int)this->PSptr->getParticleSystem()[0].position.x - (int)this->PSptr->getParticleSystem()[0].radius << std::endl;
+    // std::cout << "1: " << (int)this->PSptr->getParticleSystem()[1].position.x - (int)this->PSptr->getParticleSystem()[1].radius << std::endl;
+
+    cv::Size roiSize(x1-x0, y1-y0);
+    cv::Mat mask = cv::Mat::zeros(roiSize, CV_8UC1);
+    for (int y = y0; y < y1; y++) 
+    {
+        for (int x = x0; x < x1; x++)
+        {
+            if (this->idMapPtr->getIDMapValue(y, x) >= 0)
+            {
+                mask.at<unsigned char>(y - y0, x - x0) = 100;
+            }
+        }
+    }
+
+    cv::Rect roi(cv::Point(x0, y0), roiSize);
+    cv::Mat slicedImg = (*heightMap)(roi);
+    cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
+    slicedImg.copyTo(smoothingTarget, mask);
+    cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3));
+    smoothingTarget.copyTo(slicedImg, mask);
+    cv::imwrite("test.png", slicedImg);
+    cv::imwrite("mask.png", mask);
 }
