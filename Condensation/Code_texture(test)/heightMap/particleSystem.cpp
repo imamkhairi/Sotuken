@@ -24,15 +24,30 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     calcRadius(a);
     std::vector <glm::vec2> position;
     
-    // position.push_back(glm::vec2(14, 18));
-    // position.push_back(glm::vec2(7, 17));
-    // position.push_back(glm::vec2(13, 30));
-    // position.push_back(glm::vec2(16, 23));
+    //// for patching problem
+    // position.push_back(glm::vec2(23, 9));
+    // position.push_back(glm::vec2(31, 7));
+    // position.push_back(glm::vec2(9, 25));
+    // position.push_back(glm::vec2(21, 10));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
-    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-        10);
+    //// smoothing problem
+    // position.push_back(glm::vec2(19, 22));
+    // position.push_back(glm::vec2(12, 14));
+    // position.push_back(glm::vec2(20, 10));
+    // position.push_back(glm::vec2(31, 24));
+    // a->position = glm::vec3(position[i].x, position[i].y, 10);
+
+    //// bleeding problem
+    position.push_back(glm::vec2(9, 24));
+    position.push_back(glm::vec2(12, 22));
+    position.push_back(glm::vec2(23, 18));
+    position.push_back(glm::vec2(9, 30));
+    a->position = glm::vec3(position[i].x, position[i].y, 10);
+
+    // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+    //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+    //     10);
     
     // std::cout << a->position.x << ", " << a->position.y << std::endl;
 }
@@ -164,10 +179,10 @@ int particleSystem::getParticleLeft(int index)
     return (int)this->Particles[index].position.x - (int)this->Particles[index].radius;
 }
 
-int particleSystem::getParicleY(int index) 
-{
-    return (int)this->Particles[index].position.y;
-}
+// int particleSystem::getParicleY(int index) 
+// {
+//     return (int)this->Particles[index].position.y;
+// }
 
 int particleSystem::getMergingCooridnate(int (particleSystem::*getValue)(int), bool flag)
 {

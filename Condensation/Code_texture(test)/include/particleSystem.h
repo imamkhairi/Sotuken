@@ -30,6 +30,7 @@ class particleSystem {
         static void print();
 
         std::vector<int> mergingIndex;
+        std::vector<int> patchingIndex;
         std::vector <Droplet> getParticleSystem();
 
         void addParticle(int ammount);
@@ -44,7 +45,7 @@ class particleSystem {
         int getParticleBottom(int index);
         int getParticleLeft(int index);
 
-        int getParicleY(int index);
+        // int getParicleY(int index);
 
         int getMergingCooridnate(int (particleSystem::*getValue)(int), bool flag);
 

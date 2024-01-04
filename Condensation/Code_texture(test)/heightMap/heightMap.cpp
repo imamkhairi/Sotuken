@@ -167,8 +167,8 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     int x1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleRight, MAXVALUE) + 2;
     int y1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
 
-    std::cout << "start: " << "(" << x0 << ", " << y0 << ")" << std::endl;
-    std::cout << "end  : " << "(" << x1 << ", " << y1 << ")" << std::endl;
+    // std::cout << "start: " << "(" << x0 << ", " << y0 << ")" << std::endl;
+    // std::cout << "end  : " << "(" << x1 << ", " << y1 << ")" << std::endl;
 
 
     std::cout << std::endl;
@@ -180,9 +180,43 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     cv::Mat slicedImg = (*heightMap)(cv::Rect(cv::Point(x0, y0), roiSize));
     cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
     slicedImg.copyTo(smoothingTarget);
-    cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3));
-    smoothingTarget.copyTo(slicedImg, mask);
-    cv::imwrite("test.png", slicedImg);
+    cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3), cv::Point(-1,-1), 0);
+    cv::threshold(smoothingTarget, smoothingTarget, 8, 255, cv::THRESH_TOZERO);
+
+    
+    for (int y = 0; y < roiSize.height; y++) 
+    {
+        for (int x = 0; x < roiSize.width; x++)
+        {
+            int idX = x + x0;
+            int idY = x + x0;
+            // if (smoothingTarget.at<unsigned char>(y, x) > 0 && this->idMapPtr->getIDMapValue(y, x) == -1) 
+            // if (this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y,x))) 
+            if (smoothingTarget.at<unsigned char>(y, x)> 0)
+            // && this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y+y0, x+x0)))
+            {
+                // if (mask.at<unsigned char>(y, x) > 0 && !this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(idY, idX)))
+                if (mask.at<unsigned char>(y, x) >= 0)
+                {
+                    slicedImg.at<unsigned char>(y, x) = smoothingTarget.at<unsigned char>(y, x); 
+                    // slicedImg.at<unsigned char>(y, x) = 250; 
+                    // if (mask.at<unsigned char>(y, x) == 0)
+                    // {
+                    //     this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY, idX));
+                    // }
+                }
+            }
+        }
+    }
+
+    this->idMapPtr->printInRange(x0, y0, x1, y1);
+
+    // this->idMapPtr->print();
+    
+    // smoothingTarget.copyTo(slicedImg, mask);
+
+
+    cv::imwrite("test.png", smoothingTarget);
     cv::imwrite("mask.png", mask);
 
     mask.release();

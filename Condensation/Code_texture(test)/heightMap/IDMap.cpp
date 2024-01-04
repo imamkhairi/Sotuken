@@ -35,6 +35,18 @@ void IDMap::print() {
     }
 }
 
+void IDMap::printInRange(int x0, int y0, int x1, int y1) 
+{
+    for (int y = y0; y < y1; y++) 
+    {
+        for (int x = x0; x < x1; x++)
+        {
+            std::cout << std::setw(2) << this->getIDMapValue(y, x) << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 void IDMap::Delete() {
     free(this->idMap);
 }
