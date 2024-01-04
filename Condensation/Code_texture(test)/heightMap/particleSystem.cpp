@@ -24,15 +24,17 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     calcRadius(a);
     std::vector <glm::vec2> position;
     
-    position.push_back(glm::vec2(27, 21));
-    position.push_back(glm::vec2(9, 7));
-    position.push_back(glm::vec2(13, 11));
-    position.push_back(glm::vec2(22, 19));
-    a->position = glm::vec3(position[i].x, position[i].y, 10);
+    // position.push_back(glm::vec2(14, 18));
+    // position.push_back(glm::vec2(7, 17));
+    // position.push_back(glm::vec2(13, 30));
+    // position.push_back(glm::vec2(16, 23));
+    // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
-    // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-    //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
-    //     10);
+    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+        (rand() % (int)(this->mapHeigth - 2*(a->radius + 2))) + (int)(a->radius + 2), 
+        10);
+    
+    // std::cout << a->position.x << ", " << a->position.y << std::endl;
 }
 
 void particleSystem::calcRadius(Droplet *a) {
