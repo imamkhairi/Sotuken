@@ -19,17 +19,28 @@ void particleSystem::initiateParticleSystem(std::vector <Droplet> *Particles) {
     }
 }
 
+void particleSystem::initiateDroplet(Droplet *a, int i, int lowIndex, int mass) 
+{
+    a->mass = mass;
+    calcRadius(a);
+    int midX = this->calcMidX(i, lowIndex);
+    int midY = this->calcMidY(i, lowIndex);
+
+    a->position = glm::vec3(midX, midY, 10);
+
+}
+
 void particleSystem::initiateDroplet(Droplet *a, int i) {    
     a->mass = 30.0f;
     calcRadius(a);
     std::vector <glm::vec2> position;
     
     //// for patching problem
-    position.push_back(glm::vec2(17, 8));
-    position.push_back(glm::vec2(14, 21));
-    position.push_back(glm::vec2(21, 25));
-    position.push_back(glm::vec2(23, 15));
-    a->position = glm::vec3(position[i].x, position[i].y, 10);
+    // position.push_back(glm::vec2(23, 27));
+    // position.push_back(glm::vec2(23, 25));
+    // position.push_back(glm::vec2(18, 17));
+    // position.push_back(glm::vec2(17, 21));
+    // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// smoothing problem
     // position.push_back(glm::vec2(15, 8));
@@ -57,14 +68,15 @@ void particleSystem::calcRadius(Droplet *a) {
 }
 
 
-void particleSystem::addParticle(int ammount)
+void particleSystem::addParticle(int i, int bottomIndex, float mass)
 {
-    this->particleAmmount += ammount;
-    for (int i = 0; i < ammount; i++) {
-        Droplet a;
-        this->initiateDroplet(&a, i);
-        this->Particles.push_back(a);
-    }
+    this->particleAmmount++;
+    
+
+    Droplet a;
+    this->initiateDroplet(&a, i, bottomIndex, mass);
+    this->Particles.push_back(a);
+
 }
 
 void particleSystem::setDrewAmmount(int value)
@@ -108,17 +120,6 @@ void particleSystem::printMergingIndex()
         std::cout << index << ", ";
     }
     std::cout << std::endl;
-    // std::cout << "below = " << this->getMergingBottomIndex() << std::endl;
-
-    // std::cout << "DEBUGGING X0 : " << std::endl;
-    // for (int index : this->mergingIndex) {
-    //     std::cout << index << ": " << this->getParticleLeft(index) - 1 << std::endl;
-    // }
-
-    // std::cout << "DEBUGGING Y0 : " << std::endl;
-    // for (int index : this->mergingIndex) {
-    //     std::cout << index << ": " << this->getParticleTop(index) - 1 << std::endl;
-    // }
 }
 
 int particleSystem::getMergingBottomIndex() 
@@ -140,6 +141,7 @@ void particleSystem::updateMergingMass()
 {
     int lowIndex = this->getMergingBottomIndex();
     float difMass = 0;
+    std::vector<int> midParticle;
     for (int i : this->mergingIndex) 
     {
         if (i == lowIndex) 
@@ -147,15 +149,24 @@ void particleSystem::updateMergingMass()
         else 
         {
             if (this->Particles[i].mass > 5) {
-                difMass += this->Particles[i].mass * 0.6;
-                this->Particles[i].mass -= this->Particles[i].mass * 0.6;
-                // std::cout << "after = " << this->Particles[i].mass << std::endl;
+                float currentMass = this->Particles[i].mass;
+                this->Particles[i].mass -= currentMass * 0.8; 
                 this->calcRadius(&this->Particles[i]);
+                
+                difMass += currentMass * 0.2;
+                
+                midParticle.push_back(this->Particles.size());
+                this->addParticle(i, lowIndex, currentMass * 0.5);
             }
         }
     }
     
-    this->Particles[lowIndex].mass += difMass * 0.8;
+    for (auto &i : midParticle)
+    {
+        this->mergingIndex.push_back(i);
+    }
+
+    this->Particles[lowIndex].mass += difMass;
     this->calcRadius(&this->Particles[lowIndex]);
 }
 
@@ -208,4 +219,18 @@ int particleSystem::getMergingCooridnate(int (particleSystem::*getValue)(int), b
         }
     }
     return value;
+}
+
+int particleSystem::calcMidX(int i, int bottomIndex) 
+{
+    int x0 = this->Particles[i].position.x;
+    int x1 = this->Particles[bottomIndex].position.x;
+    return (int)(x0+x1)/2;
+}
+
+int particleSystem::calcMidY(int i, int bottomIndex) 
+{
+    int y0 = this->Particles[i].position.y;
+    int y1 = this->Particles[bottomIndex].position.y;
+    return (int)(y0+y1)/2;
 }

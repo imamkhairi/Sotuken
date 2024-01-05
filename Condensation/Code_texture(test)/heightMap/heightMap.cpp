@@ -152,7 +152,7 @@ void heightMap::generateHeightMap() {
     // this->smoothingHeightMap(heightMap);
     for (int i = 0; i < this->smCount; i++) 
     {
-        cv::blur(heightMap, heightMap, cv::Size(3, 3));
+        cv::blur(heightMap, heightMap, cv::Size(3, 3), cv::Point(-1, -1), 0);
         cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
     }
 
@@ -211,20 +211,6 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     // slicedImg.copyTo(smoothingTarget);
     slicedImg.copyTo(smoothingTarget, mask);
 
-    // for (int y = 0; y < roiSize.height; y++) 
-    // {
-    //     for (int x = 0; x < roiSize.width; x++)
-    //     {
-    //         if(mask.at<unsigned char>(y, x) > 0)
-    //         {
-    //             smoothingTarget.at<unsigned char>(y, x) = slicedImg.at<unsigned char>(y, x);
-    //         }
-    //     }
-    // }
-
-
-
-
     cv::imwrite("before.png", slicedImg);
     cv::imwrite("after.png", smoothingTarget);
     cv::imwrite("mask.png", mask);
@@ -241,26 +227,7 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
             int idX = x + x0;
             int idY = y + y0;
             int idValue = this->idMapPtr->getIDMapValue(idY, idX);
-            // if (smoothingTarget.at<unsigned char>(y, x)> 0)
-            // if (this->idMapPtr->getIDMapValue(idY, idX) >= 0)
-            // // && this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y+y0, x+x0)))
-            // {
-            //     // if (mask.at<unsigned char>(y, x) > 0 && !this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(idY, idX)))
-            //     if (mask.at<unsigned char>(y, x) > 0 || idMapPtr->getIDMapValue(idY, idX) == -1)
-            //     {
-            //         slicedImg.at<unsigned char>(y, x) = smoothingTarget.at<unsigned char>(y, x); 
-            //         // slicedImg.at<unsigned char>(y, x) = 250; 
-            //         // if (mask.at<unsigned char>(y, x) == 0)
-            //         // {
-            //         //     this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY, idX));
-            //         // }
-            //     }
-            //     else 
-            //     {
-            //         if(this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(idY, idX), this->PSptr->patchingIndex))
-            //             this->PSptr->patchingIndex.push_back(this->idMapPtr->getIDMapValue(idY, idX));
-            //     }
-            // }
+
             if (idValue >= 0 && this->PSptr->checkIndex(idValue, this->PSptr->mergingIndex))
             {   
                 if (this->PSptr->checkIndex(idValue, this->PSptr->patchingIndex))
@@ -297,10 +264,10 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     slicedImg.release();
     smoothingTarget.release();
 
-    std::cout << "patching: ";
-    for (int &i: this->PSptr->patchingIndex)
-        std::cout << i << ", ";
-    std::cout << std::endl;    
+    // std::cout << "patching: ";
+    // for (int &i: this->PSptr->patchingIndex)
+    //     std::cout << i << ", ";
+    // std::cout << std::endl;    
      
     this->drawPatching(heightMap);
     this->PSptr->patchingIndex.clear();

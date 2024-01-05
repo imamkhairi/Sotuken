@@ -33,7 +33,7 @@ class particleSystem {
         std::vector<int> patchingIndex;
         std::vector <Droplet> getParticleSystem();
 
-        void addParticle(int ammount);
+        void addParticle(int ammount, int bottomIndex, float mass);
         void setDrewAmmount(int value);
         int getParticleAmmount();
         int getDrewAmmount();
@@ -62,7 +62,12 @@ class particleSystem {
         void initiateParticleSystem(std::vector <Droplet> *Particles);
         // void initiateDroplet(Droplet *a);
         void initiateDroplet(Droplet *a, int i);
+        void initiateDroplet(Droplet *a, int x, int y, int mass);
         void calcRadius(Droplet *a);
+
+        int calcMidY(int i, int bottomIndex);
+        int calcMidX(int i, int bottomIndex);
+
 };
 
 #endif
