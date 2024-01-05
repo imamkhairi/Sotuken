@@ -57,7 +57,7 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector
 
         if (mergingFlag)
         {
-            std::cout << "merging nih boss " << std::endl;
+            // std::cout << "merging nih boss " << std::endl;
             this->psPtr->getMergingIndex().push_back(i);
             this->clearHeight();
             this->psPtr->updateMergingMass();
@@ -83,6 +83,7 @@ void heightMap::generateHeightMap()
 
     // clock_t tStart = clock();
     cv::blur(this->heightMapMat, this->smoothedHeightMapMat, cv::Size(5, 5), cv::Point(-1,-1), 0);
+    // cv::blur(this->heightMapMat, this->smoothedHeightMapMat, cv::Size(5, 5), cv::Point(-1,-1), 0);
     cv::threshold(this->smoothedHeightMapMat, this->smoothedHeightMapMat, 8, 255, cv::THRESH_TOZERO);
     // printf("Smoothing and tresholding: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
