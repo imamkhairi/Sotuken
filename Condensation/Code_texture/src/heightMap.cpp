@@ -75,10 +75,13 @@ void heightMap::generateHeightMap()
     // int end = PS->getParticleAmmount();
     this->drawHeightMap(this->heightMapMat, particle, &this->PSptr->getUpdatedParticles());
 
-    // cv::blur(this->heightMapMat, this->heightMapMat, cv::Size(3,3));
-    // cv::threshold(this->heightMapMat, this->heightMapMat, 0.05, 255, cv::THRESH_TOZERO);
+    clock_t tStart = clock();
+    cv::blur(this->heightMapMat, this->smoothedHeightMapMat, cv::Size(5, 5), cv::Point(-1,-1), 0);
+    cv::threshold(this->smoothedHeightMapMat, this->smoothedHeightMapMat, 8, 255, cv::THRESH_TOZERO);
+    printf("Smoothing and tresholding: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 
     // cv::imwrite("../Textures/heightMap.png", this->heightMapMat);
+    // cv::imwrite("../Textures/heightMapS.png", this->smoothedHeightMapMat);
 }
 
 float heightMap::calcHeight(Droplet a, int x_i, int y_i)
@@ -194,5 +197,5 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i)
 
 cv::Mat heightMap::getHeightMap()
 {
-    return this->heightMapMat;
+    return this->smoothedHeightMapMat;
 }

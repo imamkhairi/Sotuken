@@ -28,6 +28,7 @@ class heightMap {
         int mapWidth;
         bool initiated;
         cv::Mat heightMapMat;
+        cv::Mat smoothedHeightMapMat;
         IDMap *idMapPtr;
         particleSystem *PSptr;
 
