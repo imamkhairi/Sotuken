@@ -25,24 +25,24 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     std::vector <glm::vec2> position;
     
     //// for patching problem
-    // position.push_back(glm::vec2(23, 9));
-    // position.push_back(glm::vec2(31, 7));
-    // position.push_back(glm::vec2(9, 25));
-    // position.push_back(glm::vec2(21, 10));
+    // position.push_back(glm::vec2(23, 28));
+    // position.push_back(glm::vec2(24, 22));
+    // position.push_back(glm::vec2(20, 27));
+    // position.push_back(glm::vec2(17, 27));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// smoothing problem
-    // position.push_back(glm::vec2(19, 22));
-    // position.push_back(glm::vec2(12, 14));
-    // position.push_back(glm::vec2(20, 10));
-    // position.push_back(glm::vec2(31, 24));
+    // position.push_back(glm::vec2(15, 8));
+    // position.push_back(glm::vec2(19, 13));
+    // position.push_back(glm::vec2(22, 22));
+    // position.push_back(glm::vec2(14, 15));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// bleeding problem
-    // position.push_back(glm::vec2(23, 16));
-    // position.push_back(glm::vec2(19, 22));
-    // position.push_back(glm::vec2(19, 25));
-    // position.push_back(glm::vec2(26, 29));
+    // position.push_back(glm::vec2(26, 23));
+    // position.push_back(glm::vec2(22, 22));
+    // position.push_back(glm::vec2(20, 26));
+    // position.push_back(glm::vec2(27, 23));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 3))) + (int)(a->radius + 3), 

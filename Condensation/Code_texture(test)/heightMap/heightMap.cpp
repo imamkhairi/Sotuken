@@ -178,6 +178,8 @@ void heightMap::clearHeight(cv::Mat *heightMap)
     int y1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
     
     cv::Size roiSize(x1-x0, y1-y0);
+    // this->idMapPtr->printInRange(x0, y0, x1, y1);
+
     cv::Mat mask = this->generateMergingMask(x0, y0, x1, y1, true);
     cv::Mat slicedImg = (*heightMap)(cv::Rect(cv::Point(x0, y0), roiSize));
     cv::Mat black = cv::Mat::zeros(slicedImg.size(), slicedImg.type());
@@ -207,8 +209,15 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     cv::Mat slicedImg = (*heightMap)(cv::Rect(cv::Point(x0, y0), roiSize));
     cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
     slicedImg.copyTo(smoothingTarget);
+    // slicedImg.copyTo(smoothingTarget, mask);
+
+    cv::imwrite("before.png", slicedImg);
+    cv::imwrite("mask.png", mask);
+
     cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3), cv::Point(-1,-1), 0);
     cv::threshold(smoothingTarget, smoothingTarget, 8, 255, cv::THRESH_TOZERO);
+
+    cv::imwrite("after.png", smoothingTarget);
 
     //// MASK SEPERTINYA BISA DIHAPUS
     for (int y = 0; y < roiSize.height; y++) 
@@ -217,55 +226,66 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
         {
             int idX = x + x0;
             int idY = y + y0;
+            int idValue = this->idMapPtr->getIDMapValue(idY, idX);
             // if (smoothingTarget.at<unsigned char>(y, x)> 0)
-            if (this->idMapPtr->getIDMapValue(idY, idX) >= 0)
-            // && this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y+y0, x+x0)))
+            // if (this->idMapPtr->getIDMapValue(idY, idX) >= 0)
+            // // && this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(y+y0, x+x0)))
+            // {
+            //     // if (mask.at<unsigned char>(y, x) > 0 && !this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(idY, idX)))
+            //     if (mask.at<unsigned char>(y, x) > 0 || idMapPtr->getIDMapValue(idY, idX) == -1)
+            //     {
+            //         slicedImg.at<unsigned char>(y, x) = smoothingTarget.at<unsigned char>(y, x); 
+            //         // slicedImg.at<unsigned char>(y, x) = 250; 
+            //         // if (mask.at<unsigned char>(y, x) == 0)
+            //         // {
+            //         //     this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY, idX));
+            //         // }
+            //     }
+            //     else 
+            //     {
+            //         if(this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(idY, idX), this->PSptr->patchingIndex))
+            //             this->PSptr->patchingIndex.push_back(this->idMapPtr->getIDMapValue(idY, idX));
+            //     }
+            // }
+            if (idValue >= 0 && this->PSptr->checkIndex(idValue, this->PSptr->mergingIndex))
+            {   
+                this->PSptr->patchingIndex.push_back(idValue);
+                continue;
+            }
+            if (smoothingTarget.at<unsigned char>(y, x) > 0) 
             {
-                // if (mask.at<unsigned char>(y, x) > 0 && !this->PSptr->checkMergingIndex(this->idMapPtr->getIDMapValue(idY, idX)))
-                if (mask.at<unsigned char>(y, x) > 0 || idMapPtr->getIDMapValue(idY, idX) == -1)
+                slicedImg.at<unsigned char>(y, x) = smoothingTarget.at<unsigned char>(y, x); 
+                if (idValue < 0)
                 {
-                    slicedImg.at<unsigned char>(y, x) = smoothingTarget.at<unsigned char>(y, x); 
-                    // slicedImg.at<unsigned char>(y, x) = 250; 
-                    // if (mask.at<unsigned char>(y, x) == 0)
-                    // {
-                    //     this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY, idX));
-                    // }
-                }
-                else 
-                {
-                    if(this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(idY, idX), this->PSptr->patchingIndex))
-                        this->PSptr->patchingIndex.push_back(this->idMapPtr->getIDMapValue(idY, idX));
+                    if (this->idMapPtr->getIDMapValue(idY+1, idX) >= 0) 
+                    {
+                        this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY+1, idX));
+                    } 
+                    else if (this->idMapPtr->getIDMapValue(idY-1, idX) >= 0) 
+                    {
+                        this->idMapPtr->setToValue(idY, idX, this->idMapPtr->getIDMapValue(idY-1, idX));
+                    }
                 }
             }
-            // if(this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(idY, idX), this->PSptr->patchingIndex))
-            // {
-            //     this->PSptr->patchingIndex.push_back(this->idMapPtr->getIDMapValue(idY, idX));
-            // }
+
         }
     }
 
-    // this->idMapPtr->printInRange(x0, y0, x1, y1);
 
     // this->idMapPtr->print();
     
     // smoothingTarget.copyTo(slicedImg, mask);
 
 
-    cv::imwrite("test.png", smoothingTarget);
-    cv::imwrite("mask.png", mask);
 
     mask.release();
     slicedImg.release();
     smoothingTarget.release();
 
-
-    for (int &i: this->PSptr->patchingIndex)
-        std::cout << "patching : "<< i << std::endl;
-
     this->drawPatching(heightMap);
     this->PSptr->patchingIndex.clear();
-
     // this->idMapPtr->printInRange(x0, y0, x1, y1);
+
     std::cout << std::endl;    
 }
 
@@ -279,7 +299,7 @@ cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1, bool clea
             // if (this->idMapPtr->getIDMapValue(y, x) >= 0)
             if (!this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(y, x), this->PSptr->mergingIndex))
             {
-                mask.at<unsigned char>(y - y0, x - x0) = 100;
+                mask.at<unsigned char>(y - y0, x - x0) = 10;
                 if (clearIdMap) this->idMapPtr->setToValue(y, x, -1);
             }
         }
