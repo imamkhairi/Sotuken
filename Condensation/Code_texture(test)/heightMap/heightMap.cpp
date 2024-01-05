@@ -207,17 +207,31 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     cv::Mat mask = this->generateMergingMask(x0, y0, x1, y1, false);
 
     cv::Mat slicedImg = (*heightMap)(cv::Rect(cv::Point(x0, y0), roiSize));
-    cv::Mat smoothingTarget = cv::Mat(slicedImg.size(), slicedImg.type());
-    slicedImg.copyTo(smoothingTarget);
-    // slicedImg.copyTo(smoothingTarget, mask);
+    cv::Mat smoothingTarget = cv::Mat::zeros(slicedImg.size(), slicedImg.type());
+    // slicedImg.copyTo(smoothingTarget);
+    slicedImg.copyTo(smoothingTarget, mask);
+
+    // for (int y = 0; y < roiSize.height; y++) 
+    // {
+    //     for (int x = 0; x < roiSize.width; x++)
+    //     {
+    //         if(mask.at<unsigned char>(y, x) > 0)
+    //         {
+    //             smoothingTarget.at<unsigned char>(y, x) = slicedImg.at<unsigned char>(y, x);
+    //         }
+    //     }
+    // }
+
+
+
 
     cv::imwrite("before.png", slicedImg);
+    cv::imwrite("after.png", smoothingTarget);
     cv::imwrite("mask.png", mask);
 
     cv::blur(smoothingTarget, smoothingTarget, cv::Size(3, 3), cv::Point(-1,-1), 0);
     cv::threshold(smoothingTarget, smoothingTarget, 8, 255, cv::THRESH_TOZERO);
 
-    cv::imwrite("after.png", smoothingTarget);
 
     //// MASK SEPERTINYA BISA DIHAPUS
     for (int y = 0; y < roiSize.height; y++) 
@@ -249,7 +263,8 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
             // }
             if (idValue >= 0 && this->PSptr->checkIndex(idValue, this->PSptr->mergingIndex))
             {   
-                this->PSptr->patchingIndex.push_back(idValue);
+                if (this->PSptr->checkIndex(idValue, this->PSptr->patchingIndex))
+                    this->PSptr->patchingIndex.push_back(idValue);
                 continue;
             }
             if (smoothingTarget.at<unsigned char>(y, x) > 0) 
@@ -282,16 +297,20 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     slicedImg.release();
     smoothingTarget.release();
 
+    std::cout << "patching: ";
+    for (int &i: this->PSptr->patchingIndex)
+        std::cout << i << ", ";
+    std::cout << std::endl;    
+     
     this->drawPatching(heightMap);
     this->PSptr->patchingIndex.clear();
     // this->idMapPtr->printInRange(x0, y0, x1, y1);
 
-    std::cout << std::endl;    
 }
 
 cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1, bool clearIdMap)
 {
-    cv::Mat mask = cv::Mat::zeros(cv::Size(x1-x0, y1-y0), CV_8UC1);
+    cv::Mat mask (cv::Size(x1-x0, y1-y0), CV_8UC1);
     for (int y = y0; y < y1; y++) 
     {
         for (int x = x0; x < x1; x++)
@@ -299,8 +318,12 @@ cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1, bool clea
             // if (this->idMapPtr->getIDMapValue(y, x) >= 0)
             if (!this->PSptr->checkIndex(this->idMapPtr->getIDMapValue(y, x), this->PSptr->mergingIndex))
             {
-                mask.at<unsigned char>(y - y0, x - x0) = 10;
+                mask.at<unsigned char>(y - y0, x - x0) = 100;
                 if (clearIdMap) this->idMapPtr->setToValue(y, x, -1);
+            }
+            else 
+            {
+                mask.at<unsigned char>(y - y0, x - x0) = 0;
             }
         }
     }

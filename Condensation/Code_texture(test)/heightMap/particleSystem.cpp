@@ -25,11 +25,11 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     std::vector <glm::vec2> position;
     
     //// for patching problem
-    // position.push_back(glm::vec2(23, 28));
-    // position.push_back(glm::vec2(24, 22));
-    // position.push_back(glm::vec2(20, 27));
-    // position.push_back(glm::vec2(17, 27));
-    // a->position = glm::vec3(position[i].x, position[i].y, 10);
+    position.push_back(glm::vec2(17, 8));
+    position.push_back(glm::vec2(14, 21));
+    position.push_back(glm::vec2(21, 25));
+    position.push_back(glm::vec2(23, 15));
+    a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// smoothing problem
     // position.push_back(glm::vec2(15, 8));
@@ -146,7 +146,7 @@ void particleSystem::updateMergingMass()
             continue;
         else 
         {
-            if (this->Particles[i].mass > 10) {
+            if (this->Particles[i].mass > 5) {
                 difMass += this->Particles[i].mass * 0.6;
                 this->Particles[i].mass -= this->Particles[i].mass * 0.6;
                 // std::cout << "after = " << this->Particles[i].mass << std::endl;
