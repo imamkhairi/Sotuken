@@ -172,8 +172,8 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i) {
 
 void heightMap::clearHeight(cv::Mat *heightMap) 
 {
-    int x0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleLeft, MINVALUE) - 1;
-    int y0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleTop, MINVALUE) - 1;
+    int x0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleLeft, MINVALUE) - 2;
+    int y0 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleTop, MINVALUE) - 2;
     int x1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleRight, MAXVALUE) + 2;
     int y1 = this->PSptr->getMergingCooridnate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
     
@@ -310,7 +310,7 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
 
 cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1, bool clearIdMap)
 {
-    cv::Mat mask (cv::Size(x1-x0, y1-y0), CV_8UC1);
+    cv::Mat mask = cv::Mat::zeros(cv::Size(x1-x0, y1-y0), CV_8UC1);
     for (int y = y0; y < y1; y++) 
     {
         for (int x = x0; x < x1; x++)
@@ -320,10 +320,6 @@ cv::Mat heightMap::generateMergingMask(int x0, int y0, int x1, int y1, bool clea
             {
                 mask.at<unsigned char>(y - y0, x - x0) = 100;
                 if (clearIdMap) this->idMapPtr->setToValue(y, x, -1);
-            }
-            else 
-            {
-                mask.at<unsigned char>(y - y0, x - x0) = 0;
             }
         }
     }
