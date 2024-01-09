@@ -8,24 +8,6 @@ const unsigned int height = 1000;
 const unsigned int texWidth = 1024;
 const unsigned int texHeight = 1024;
 
-//  =========================  Not Used (old plane vertices)
-// // Plane Vertices
-// float vertices[] =
-// {
-// 	// Coordinates      	/ Normals
-// 	-1.0f, -1.0f, -0.5f,  	0.0f, 0.0f, 1.0f,
-// 	-1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
-// 	 1.0f,  1.0f, -0.5f, 	0.0f, 0.0f, 1.0f,
-// 	 1.0f, -1.0f, -0.5f, 	0.0f, 0.0f, 1.0f
-// };
-
-//  =========================  Not Used (old plane indices)
-// // Plane Indices
-// unsigned int indices[] = {
-// 	0, 2, 3,  // lower triangle
-// 	0, 1, 2 // upper triangle
-// };
-
 float skyboxVertices[] =
 	{
 		//   Coordinates
@@ -60,23 +42,6 @@ unsigned int skyboxIndices[] =
 	3, 7, 6,
 	6, 2, 3
 };
-
-// float backGroundVertices[] = {
-// 	//   Coordinates
-// 	-1.0f, -1.0f, -1.0f, // 0
-// 	-1.0f,  1.0f, -1.0f, // 1
-// 	 1.0f,  1.0f, -1.0f, // 2
-// 	 1.0f, -1.0f, -1.0f  // 3
-// };
-
-// Test TBN Mat
-// std::vector<Vertex> vertices =
-// {
-// 	Vertex{glm::vec3(-1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-// 	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
-// 	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
-// 	Vertex{glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)}
-// };
 
 std::vector<Vertex> vertices =
 	{
