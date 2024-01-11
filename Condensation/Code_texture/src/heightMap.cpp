@@ -16,17 +16,16 @@ float heightMap::distance(float x1, float y1, float x2, float y2)
     return std::sqrt(std::pow(x1 - x2, 2) + std::pow(y1 - y2, 2));
 }
 
-// disini ada yang ditambah
 void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector <int> *updatedParticlesPtr)
 {
     for (auto &i : *updatedParticlesPtr)
     {
         // starting point
-        int x = (*PS)[i].position.x - (int)(*PS)[i].radius - 2;
-        int y = (*PS)[i].position.y - (int)(*PS)[i].radius - 2;
+        int x = (*PS)[i].position.x - (int)(*PS)[i].radius;
+        int y = (*PS)[i].position.y - (int)(*PS)[i].radius;
         // end point
-        int x1 = (*PS)[i].position.x + (int)(*PS)[i].radius + 2;
-        int y1 = (*PS)[i].position.y + (int)(*PS)[i].radius + 2;
+        int x1 = (*PS)[i].position.x + (int)(*PS)[i].radius;
+        int y1 = (*PS)[i].position.y + (int)(*PS)[i].radius;
 
         bool mergingFlag = false;
 
