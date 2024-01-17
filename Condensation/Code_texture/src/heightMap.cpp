@@ -82,7 +82,7 @@ void heightMap::generateHeightMap()
 
     // clock_t tStart = clock();
     cv::blur(this->heightMapMat, this->smoothedHeightMapMat, cv::Size(5, 5), cv::Point(-1,-1), 0);
-    // cv::blur(this->heightMapMat, this->smoothedHeightMapMat, cv::Size(5, 5), cv::Point(-1,-1), 0);
+
     cv::threshold(this->smoothedHeightMapMat, this->smoothedHeightMapMat, 8, 255, cv::THRESH_TOZERO);
     // printf("Smoothing and tresholding: %.5f ms\n", (double)(clock() - tStart)/(CLOCKS_PER_SEC/1000));
 }
@@ -104,6 +104,7 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i)
 cv::Mat heightMap::getHeightMap()
 {
     return this->smoothedHeightMapMat;
+    // return this->heightMapMat;
 }
 
 void heightMap::clearHeight()

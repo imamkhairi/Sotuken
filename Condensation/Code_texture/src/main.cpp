@@ -78,7 +78,7 @@ int main()
 		return -1;
 	}
 
-	particleSystem ParticleSystem(250, 1000, texHeight, texWidth);
+	particleSystem ParticleSystem(1000, 2000, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
 	clock_t tStart = clock();
@@ -250,10 +250,8 @@ int main()
 			prevTime = crntTime;
 			counter = 0;
 
-			// ParticleSystem.addParticle(1);
 			ParticleSystem.updateParticleSystem();
 			
-			// tStart = clock();
 			HeightMap.generateHeightMap();
 			// printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 
@@ -279,23 +277,8 @@ int main()
 
 		// Draw
 		shaderProgram.Activate();
-		// normalMap.Bind();
-		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "normal0"), 1);
-		// heightTex.Bind();
-		// glUniform1i(glGetUniformLocation(shaderProgram.ID, "height0"), 2);
-		// glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		plane.Draw(shaderProgram, camera);
-
-		//  =========================  Not Used (draw plane old)
-		// planeProgram.Activate();
-		// glUniform3f(glGetUniformLocation(planeProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		// // glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		// camera.Matrix(planeProgram, "camMatrix"); // give camMatrix to shader
-		// pVAO.Bind();
-		// glActiveTexture(GL_TEXTURE0);
-		// glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// sky box draw
 		glDepthFunc(GL_LEQUAL);
