@@ -184,5 +184,4 @@ void main()
 	}
 	else discard;
 
-	// FragColor = vec4(texture(height0, texCoord).r);
 }
