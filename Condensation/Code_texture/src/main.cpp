@@ -78,11 +78,7 @@ int main()
 		return -1;
 	}
 
-<<<<<<< HEAD
 	particleSystem ParticleSystem(3000, 3500, texHeight, texWidth);
-=======
-	particleSystem ParticleSystem(2000, 3000, texHeight, texWidth);
->>>>>>> 5f760d708bb3388bd00f97c53f2be1967214ffab
 	IDMap idMap(texWidth, texHeight);
 
 	clock_t tStart = clock();
