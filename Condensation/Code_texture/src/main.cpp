@@ -5,8 +5,8 @@
 // constanta ini sepertinya bisa disimpat di header file
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 512;
-const unsigned int texHeight = 512;
+const unsigned int texWidth = 1024;
+const unsigned int texHeight = 1024;
 
 float skyboxVertices[] =
 	{

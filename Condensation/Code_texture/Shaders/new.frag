@@ -128,9 +128,9 @@ float sobel_x[9] = float[]
 
 float sobel_y[9] = float[]
 (
-    -1, -2, -1,
+    1, 2, 1,
     0, 0, 0,
-    1, 2, 1
+    -1, -2, -1
 );
 
 float offset_x = 1.0f / mapSize; 
