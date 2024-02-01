@@ -25,6 +25,8 @@ uniform samplerCube skybox;
 // Gets the color of the light from the main function
 uniform vec4 lightColor;
 
+uniform float mapSize;
+
 
 
 vec4 pointLight()
@@ -131,8 +133,8 @@ float sobel_y[9] = float[]
     1, 2, 1
 );
 
-const float offset_x = 1.0f / 1024.0f; 
-const float offset_y = 1.0f / 1024.0f; 
+float offset_x = 1.0f / mapSize; 
+float offset_y = 1.0f / mapSize; 
 
 vec2 offsets[9] = vec2[](
     vec2(-offset_x, offset_y), vec2(0.0f, offset_y), vec2(offset_x, offset_y),

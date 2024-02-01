@@ -5,8 +5,8 @@
 // constanta ini sepertinya bisa disimpat di header file
 const unsigned int width = 1000;
 const unsigned int height = 1000;
-const unsigned int texWidth = 1024;
-const unsigned int texHeight = 1024;
+const unsigned int texWidth = 512;
+const unsigned int texHeight = 512;
 
 float skyboxVertices[] =
 	{
@@ -78,7 +78,7 @@ int main()
 		return -1;
 	}
 
-	int parAmount = 5000;
+	int parAmount = 500;
 	particleSystem ParticleSystem(parAmount, parAmount + 1000, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
@@ -121,6 +121,7 @@ int main()
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glUniform1f(glGetUniformLocation(shaderProgram.ID, "mapSize"), (float)texWidth);
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
 	//  =========================  Not Used (Bikin Shader)
