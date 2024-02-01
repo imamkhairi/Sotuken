@@ -78,7 +78,8 @@ int main()
 		return -1;
 	}
 
-	particleSystem ParticleSystem(3000, 3500, texHeight, texWidth);
+	int parAmount = 10000;
+	particleSystem ParticleSystem(parAmount, parAmount, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
 	clock_t tStart = clock();
