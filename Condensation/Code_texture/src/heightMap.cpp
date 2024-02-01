@@ -56,7 +56,6 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector
 
         if (mergingFlag)
         {
-            // std::cout << "merging nih boss " << std::endl;
             this->psPtr->getMergingIndex().push_back(i);
             this->clearHeight();
             this->psPtr->updateMergingMass();
@@ -114,6 +113,14 @@ void heightMap::clearHeight()
     int x1 = this->psPtr->getMergingCoordinate(&particleSystem::getParticleRight, MAXVALUE) + 2;
     int y1 = this->psPtr->getMergingCoordinate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
 
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) x0 = 0;
+    if (x1 > this->mapWidth) x1 = this->mapWidth;
+    if (y1 > this->mapWidth) y1 = this->mapHeight;
+
+    if (x0 < 0 || y0 < 0) std::cout << "clear offside awal" << std::endl;
+    if (x1 > this->mapWidth || y1 > this->mapHeight) std::cout << "clear offside akhir" << std::endl;
+
     cv::Size roiSize(x1-x0, y1-y0);
 
     cv::Mat mask = this->generateMergingMask(x0, y0, x1, y1, true);
@@ -162,6 +169,14 @@ void heightMap::smoothingMerging()
     int y0 = this->psPtr->getMergingCoordinate(&particleSystem::getParticleTop, MINVALUE) - 2;
     int x1 = this->psPtr->getMergingCoordinate(&particleSystem::getParticleRight, MAXVALUE) + 2;
     int y1 = this->psPtr->getMergingCoordinate(&particleSystem::getParticleBottom, MAXVALUE) + 2;
+
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) x0 = 0;
+    if (x1 > this->mapWidth) x1 = this->mapWidth ;
+    if (y1 > this->mapWidth) y1 = this->mapHeight;
+
+    if (x0 < 0 || y0 < 0) std::cout << "smoothing offside awal" << std::endl;
+    if (x1 > this->mapWidth || y1 > this->mapHeight) std::cout << "smoothing offside akhir" << std::endl;
 
     cv::Size roiSize(x1-x0, y1-y0);
     
