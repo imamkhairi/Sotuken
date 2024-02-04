@@ -78,7 +78,7 @@ int main()
 		return -1;
 	}
 
-	int parAmount = 500;
+	int parAmount = 1500;
 	particleSystem ParticleSystem(parAmount, parAmount + 1000, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
