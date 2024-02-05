@@ -60,7 +60,7 @@ void particleSystem::addParticle(int ammount)
 
 void particleSystem::updateParticleSystem() 
 {
-    this->addParticle(1);
+    this->addParticle(5);
     //// gerakan cuma untuk yg lewat threshold
     // for (int i = 0; i < this->particleAmmount; i++) {
     //     if (this->Particles[i].position.y < this->mapHeigth/2) {
