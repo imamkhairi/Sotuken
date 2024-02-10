@@ -152,8 +152,8 @@ void heightMap::generateHeightMap() {
     // this->smoothingHeightMap(heightMap);
     for (int i = 0; i < this->smCount; i++) 
     {
-        cv::blur(heightMap, heightMap, cv::Size(3, 3), cv::Point(-1, -1), 0);
-        cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
+        // cv::blur(heightMap, heightMap, cv::Size(3, 3), cv::Point(-1, -1), 0);
+        // cv::threshold(heightMap, heightMap, 8, 255, cv::THRESH_TOZERO);
     }
 
     cv::imwrite("heightMap.png", heightMap);
@@ -269,8 +269,8 @@ void heightMap::smoothingMerging(cv::Mat *heightMap)
     //     std::cout << i << ", ";
     // std::cout << std::endl;    
      
-    this->drawPatching(heightMap);
-    this->PSptr->patchingIndex.clear();
+    // this->drawPatching(heightMap);
+    // this->PSptr->patchingIndex.clear();
     // this->idMapPtr->printInRange(x0, y0, x1, y1);
 
 }

@@ -36,29 +36,29 @@ void particleSystem::initiateDroplet(Droplet *a, int i) {
     std::vector <glm::vec2> position;
     
     //// for patching problem
-    // position.push_back(glm::vec2(23, 27));
-    // position.push_back(glm::vec2(23, 25));
+    // position.push_back(glm::vec2(22, 25));
     // position.push_back(glm::vec2(18, 17));
-    // position.push_back(glm::vec2(17, 21));
+    // position.push_back(glm::vec2(20, 21));
+    // position.push_back(glm::vec2(30, 15));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// smoothing problem
-    // position.push_back(glm::vec2(15, 8));
-    // position.push_back(glm::vec2(19, 13));
-    // position.push_back(glm::vec2(22, 22));
-    // position.push_back(glm::vec2(14, 15));
-    // a->position = glm::vec3(position[i].x, position[i].y, 10);
+    position.push_back(glm::vec2(22, 18));
+    position.push_back(glm::vec2(21, 22));
+    position.push_back(glm::vec2(27, 24));
+    position.push_back(glm::vec2(30, 26));
+    a->position = glm::vec3(position[i].x, position[i].y, 10);
 
     //// bleeding problem
-    // position.push_back(glm::vec2(26, 23));
-    // position.push_back(glm::vec2(22, 22));
-    // position.push_back(glm::vec2(20, 26));
-    // position.push_back(glm::vec2(27, 23));
+    // position.push_back(glm::vec2(16, 16));
+    // position.push_back(glm::vec2(19, 12));
+    // position.push_back(glm::vec2(10, 22));
+    // position.push_back(glm::vec2(15, 17));
     // a->position = glm::vec3(position[i].x, position[i].y, 10);
 
-    a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
-        (rand() % (int)(this->mapHeigth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
-        10);
+    // a->position =  glm::vec3((rand() % (int)(this->mapWidth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
+    //     (rand() % (int)(this->mapHeigth - 2*(a->radius + 3))) + (int)(a->radius + 3), 
+    //     10);
     
     std::cout << a->position.x << ", " << a->position.y << std::endl;
 }
@@ -161,10 +161,10 @@ void particleSystem::updateMergingMass()
         }
     }
     
-    for (auto &i : midParticle)
-    {
-        this->mergingIndex.push_back(i);
-    }
+    // for (auto &i : midParticle)
+    // {
+    //     this->mergingIndex.push_back(i);
+    // }
 
     this->Particles[lowIndex].mass += difMass;
     this->calcRadius(&this->Particles[lowIndex]);
