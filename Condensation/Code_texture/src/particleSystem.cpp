@@ -22,7 +22,6 @@ void particleSystem::initiateParticleSystem()
 
 void particleSystem::initiateDroplet(Droplet *a) 
 {    
-    // a->mass = 20.0f;
     float m = (float) ((rand() % 45) + 15);
     a->mass = m;
     calcRadius(a);
@@ -61,7 +60,7 @@ void particleSystem::addParticle(int ammount)
 void particleSystem::updateParticleSystem() 
 {
     this->addParticle(5);
-    //// gerakan cuma untuk yg lewat threshold
+    // Not used
     // for (int i = 0; i < this->particleAmmount; i++) {
     //     if (this->Particles[i].position.y < this->mapHeigth/2) {
     //         this->Particles[i].position.y += 1;

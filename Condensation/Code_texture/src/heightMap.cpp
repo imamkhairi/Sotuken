@@ -37,15 +37,13 @@ void heightMap::drawHeightMap(cv::Mat dst, std::vector<Droplet> *PS, std::vector
                 if (h > 0)
                 {
                     if (dst.at<unsigned char>(y0, x0) < h * 8) {
-                        dst.at<unsigned char>(y0, x0) = h * 8; // 50 konstansta
+                        dst.at<unsigned char>(y0, x0) = h * 8; // 8 constanta
                         
-                        // if (this->idMapPtr->getIDvalue(y0, x0) >= 0) {}
                         if(this->idMapPtr->getIDvalue(y0, x0) >= 0 && this->idMapPtr->getIDvalue(y0, x0) != i &&
                         this->psPtr->checkIndex(this->idMapPtr->getIDvalue(y0, x0), this->psPtr->getMergingIndex()))
                         {
                             this->psPtr->getMergingIndex().push_back(this->idMapPtr->getIDvalue(y0, x0));
                             mergingFlag = true;
-                            // std::cout << "overlapping " << this->idMapPtr->getIDvalue(y0, x0) << ", " << i << std::endl ;
                         }
                         
                         this->idMapPtr->setToValue(y0, x0, i);
@@ -103,7 +101,6 @@ float heightMap::calcHeight(Droplet a, int x_i, int y_i)
 cv::Mat heightMap::getHeightMap()
 {
     return this->smoothedHeightMapMat;
-    // return this->heightMapMat;
 }
 
 void heightMap::clearHeight()
@@ -133,7 +130,6 @@ void heightMap::clearHeight()
     black.release();
 }
 
-// ini harusnya juga bisa dipake buat patching pake draw yang gede jg bisa tinggal bool buat cek merging
 void heightMap::drawMergingOrPatching(std::vector<int> *index)
 {
     for (int &i: (*index))

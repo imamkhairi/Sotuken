@@ -2,7 +2,6 @@
 #include <heightMap.h>
 #include <time.h>
 
-// constanta ini sepertinya bisa disimpat di header file
 const unsigned int width = 1000;
 const unsigned int height = 1000;
 const unsigned int texWidth = 1024;
@@ -56,7 +55,7 @@ std::vector<GLuint> indices =
 		0, 1, 2,
 		0, 2, 3};
 
-//  Remove FrameBuffer
+
 int main()
 {
 	clock_t timer = clock();
@@ -78,7 +77,7 @@ int main()
 		return -1;
 	}
 
-	int parAmount = 1000;
+	int parAmount = 1000;         // starting amount, final amount
 	particleSystem ParticleSystem(parAmount, parAmount + 2000, texHeight, texWidth);
 	IDMap idMap(texWidth, texHeight);
 
@@ -86,9 +85,7 @@ int main()
 	heightMap HeightMap(&ParticleSystem, &idMap, texHeight, texWidth);
 	printf("Generate High Map: %.5f ms\n", (double)(clock() - tStart) / (CLOCKS_PER_SEC / 1000));
 
-	// std::cout << ParticleSystem.getDrewAmmount() << std::endl;
 
-	// Introduce the window into the current context
 	glfwMakeContextCurrent(window);
 
 	gladLoadGL();
@@ -115,42 +112,17 @@ int main()
 	Shader shaderProgram("../Shaders/new.vert", "../Shaders/new.frag", "../Shaders/new.geom");
 	Shader skyboxShader("../Shaders/skybox.vert", "../Shaders/skybox.frag");
 
-	//  =========================  Not Used (old plane Shader)
-	// Shader planeProgram("../Shaders/plane.vert", "../Shaders/plane.frag");
-
 	shaderProgram.Activate();
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform1f(glGetUniformLocation(shaderProgram.ID, "mapSize"), (float)texWidth);
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
-	//  =========================  Not Used (Bikin Shader)
-	// planeProgram.Activate();
-	// glUniformMatrix4fv(glGetUniformLocation(planeProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
-	// glUniform1i(glGetUniformLocation(planeProgram.ID, "skybox"), 0);
-	// glUniform4f(glGetUniformLocation(planeProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	// glUniform3f(glGetUniformLocation(planeProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
-
-	// Load in a model
-	// Model treeModel("../Models/statue/scene.gltf");
-
-	//  =========================  Not Used (Initiate Plane old)
-	// Plane
-	// VAO pVAO;
-	// pVAO.Bind();
-	// VBO pVBO(vertices, sizeof(vertices));
-	// EBO pEBO(indices, sizeof(indices));
-	// pVAO.LinkAttrib(pVBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
-	// pVAO.LinkAttrib(pVBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-	// pVAO.Unbind();
-	// pVBO.Unbind();
-	// pEBO.Unbind();
 
 	// Sky box
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
@@ -168,7 +140,6 @@ int main()
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	// All the faces of the cubemap (make sure they are in this exact order)
 	std::string facesCubemap[6] =
 	{
 		"../skybox2/right1.jpg",
@@ -185,11 +156,11 @@ int main()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	// These are very important to prevent seams
+
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	// This might help with seams on some systems
+
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 	// Cycles through all the textures and attaches them to the cubemap object
@@ -212,20 +183,6 @@ int main()
 
 	//// new Plane
 	Mesh plane(vertices, indices, HeightMap.getHeightMap());
-	// std::vector<Texture> textures = {
-	// 	Texture(HeightMap.getHeightMap(), "height", 2)
-	// };
-
-	// Mesh plane(vertices, indices, textures);
-
-	// plane.textures.clear();
-	// textures[0].Unbind();
-	// textures[0].Delete();
-	// textures.clear();
-	// std::cout << "tex : " << textures.size() << std::endl;
-	// std::cout << "mesh : " << plane.textures.size() << std::endl;
-	// textures.push_back(Texture(HeightMap.getHeightMap(), "height", 2));
-
 
 	// FPS
 	double prevTime = 0.0;
@@ -308,13 +265,6 @@ int main()
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
-
-	// Delete all the objects we've created
-
-	//  =========================  Not Used (Delete Object)
-	// pVAO.Delete();
-	// pVBO.Delete();
-	// pEBO.Delete();
 
 	shaderProgram.Delete();
 	skyboxShader.Delete();
